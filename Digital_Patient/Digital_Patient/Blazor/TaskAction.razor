@@ -1,0 +1,224 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Digital_Patient.Models
+@using Digital_Patient.Data
+@inject NavigationManager Navigation
+@using Microsoft.EntityFrameworkCore.Design
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext>  factory
+
+
+<style>
+    .HideInput {
+        position: fixed;
+        left: -200px;
+        top: -200px;
+    }
+</style>
+
+
+
+
+@if (TaskId > 0)
+{
+    <div class="container">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <h2 class="form-control">   @tasktime.TimeOfDay  </h2>
+
+            </div>
+            <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+                <div class="form-group">
+                    <h2 class="form-control"> Kategoria  @model.taskToDo.TaskToDoCategory.CategoryName</h2>
+
+                </div>
+                @if (model.taskToDo.Measurements != null)
+                {
+
+
+                    foreach (var m in model.taskToDo.Measurements)
+                    {
+                        <div class="form-group">
+
+                            <h2 class="form-control ">Zbadaj @m.MeasurementCategory.CategoryName </h2>
+                        </div>
+                        <div class="form-group">
+                            @if (m.MeasurementCategory.pairType == PairType.numeric)
+                            {
+                                <InputText @bind-Value="m."></InputText>
+                            }
+                            else
+                            {
+                                <InputNumber @bind-Value="@model.mpToAdd.MeasurementNumber"></InputNumber>
+                            }
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Dodaj Notatkę</label>
+
+                            <InputTextArea @bind-Value="@m.Note.Text"></InputTextArea>
+
+                        </div>
+                    }
+
+
+                }
+
+                <div class="form-group">
+
+
+                </div>
+              
+                <div class="form-group">
+                    <h2 class="form-control">Czas @DateTime.Now.ToString("ddd, dd MMM yyy HH':'mm':'ss 'GMT'") </h2>
+
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-danger" type="submit">Zapisz</button>
+                </div>
+
+
+            </EditForm>
+
+
+
+
+
+        </div>
+    </div>
+
+}
+
+
+
+
+
+
+
+
+
+
+@code
+{
+
+    public TaskToDoActionModel model { get; set; } = new TaskToDoActionModel();
+
+    [Parameter]
+    public string TaskTime { get; set; }
+    public bool DataLogin = false;
+    public TaskToDo EditTask { get; set; } = new TaskToDo();
+    private Repository repository;
+
+    [Parameter]
+    public int TaskId { get; set; } = 0;
+
+    public DateTime tasktime { get; set; }
+
+    public bool Done { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<bool> CustomEvent { get; set; }
+
+    public string Tekst { get; set; } = "Brak";
+
+    public async Task DoneTask()
+    {
+
+        Done = true;
+        await CustomEvent.InvokeAsync(Done);
+
+    }
+
+
+    public DateTime GetTimeFromString(string Time)
+    {
+        int hour = Int32.Parse(Time.Split(":")[0]);
+        int minute = Int32.Parse(Time.Split(":")[1]);
+
+        DateTime time = new DateTime(2100, 1, 1, hour, minute, 0);
+        return time;
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+
+        //set time here 
+
+
+
+
+        //
+
+
+        EditTask = new TaskToDo();
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        if(TaskId!=0)
+        {
+
+
+            tasktime = GetTimeFromString(TaskTime);
+            model.taskToDo =  repository.GetTaskToDo(TaskId);
+        }
+
+    }
+
+
+    public async Task HandleValidSubmit()
+    {
+
+
+        if (DataLogin)
+        {
+            return;
+        }
+
+
+        try
+        {
+
+            using (var repo = new Repository(factory.CreateDbContext()))
+            {
+                model.TaskCorrectTime = tasktime;
+                repo.AddActionToTaskToDo(model);
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            //model = new TaskToDoActionModel();
+            DataLogin = false;
+
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+}
+
+
+
+

@@ -1,0 +1,14 @@
+﻿@model MainPageViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+    <component type="typeof(Digital_Patient.Blazor.MainPage)" param-ApplicationUserId="@Model.UserId"  render-mode="Server" />
+
+    @*<MainPage ApplicationUserId="@Model.UserId" Check="xxx" render-mode="Server"></MainPage>*@
+
+   
+
+</div>
