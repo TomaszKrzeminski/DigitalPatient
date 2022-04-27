@@ -38,30 +38,17 @@ namespace Digital_Patient.Models
                 break;
             }
             return taskCat;
-        }
-
-
-
-    
+        }    
 
 }
-
     public enum TaskCat
     {
         Stolec, Mocz, Lekarstwo, Płyn, Jedzenie, Ćwiczenia
-    }
-
-    //public enum MeasurementCat
-    //{
-    //    Ciśnienie, Waga, Saturacja, Temperatura, Ekg,Czas,Stan,Ilość,Uwaga,Kalorie
-    //}
-
+    }    
    public  interface ITaskCat
     {         
          List<MeasurementCategory> AddCategories();
     }
-
-
     public class Stolec : ITaskCat
     {
         public List<MeasurementCategory> AddCategories()
@@ -70,7 +57,6 @@ namespace Digital_Patient.Models
         }
        
     }
-
     public class Mocz : ITaskCat
     {
     public List<MeasurementCategory> AddCategories()
@@ -78,7 +64,6 @@ namespace Digital_Patient.Models
             return new List<MeasurementCategory>() { new MeasurementCategory() { CategoryName = "Ilość",pairType=PairType.text }, new MeasurementCategory() { CategoryName = "Uwaga",pairType=PairType.text } };
         }
 }
-
     public class Lekarstwo : ITaskCat
     {
     public List<MeasurementCategory> AddCategories()
@@ -86,7 +71,6 @@ namespace Digital_Patient.Models
             return new List<MeasurementCategory>() { new MeasurementCategory() { CategoryName = "Ilość",pairType=PairType.numeric }, new MeasurementCategory() { CategoryName = "Uwaga",pairType=PairType.text } };
         }
    }
-
     public class Płyn : ITaskCat
     {
     public List<MeasurementCategory> AddCategories()
@@ -94,7 +78,6 @@ namespace Digital_Patient.Models
             return new List<MeasurementCategory>() { new MeasurementCategory() { CategoryName = "Ilość",pairType=PairType.numeric }, new MeasurementCategory() { CategoryName = "Uwaga",pairType=PairType.text } };
         }
 }
-
     public class Jedzenie : ITaskCat
     {
     public List<MeasurementCategory> AddCategories()
@@ -102,18 +85,13 @@ namespace Digital_Patient.Models
             return new List<MeasurementCategory>() { new MeasurementCategory() { CategoryName = "Waga",pairType=PairType.numeric }, new MeasurementCategory() { CategoryName = "Uwaga",pairType=PairType.text } };
         }
 }
-
     public class Ćwiczenia : ITaskCat
     {
     public List<MeasurementCategory> AddCategories()
         {
-        return new List<MeasurementCategory>() { new MeasurementCategory() {CategoryName="Czas",pairType=PairType.text,PairsNumber=1},new MeasurementCategory() { CategoryName = "Ilość",pairType=PairType.numeric },new MeasurementCategory() {CategoryName="Kalorie" ,pairType=PairType.numeric} ,new MeasurementCategory() { CategoryName = "Ciśnienie",pairType=PairType.numeric },new MeasurementCategory() {CategoryName="Saturacja",pairType=PairType.numeric } };
+        return new List<MeasurementCategory>() { new MeasurementCategory() {CategoryName="Czas",pairType=PairType.text},new MeasurementCategory() { CategoryName = "Ilość",pairType=PairType.numeric },new MeasurementCategory() {CategoryName="Kalorie" ,pairType=PairType.numeric} ,new MeasurementCategory() { CategoryName = "Ciśnienie",pairType=PairType.numeric },new MeasurementCategory() {CategoryName="Saturacja",pairType=PairType.numeric } };
     }
 }
-
-
-
-
     public class MeasurementSelector
     {
         ITaskCat taskCat = null;

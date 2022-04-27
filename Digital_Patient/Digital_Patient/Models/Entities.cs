@@ -260,6 +260,14 @@ namespace Digital_Patient.Models
 
         public string Name { get; set; }
 
+        public MeasurementPair(string name,bool text=true)
+        {
+            Name = name;
+            Text = text;
+        }
+
+        public bool Text { get; set; }
+
         public string MeasurementText { get; set; }
 
         public double MeasurementNumber { get; set; }

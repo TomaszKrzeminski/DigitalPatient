@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7FtIHmCrvpPGumej9D9WnhLOUFswo0bk0CMMDrdqyiLbqK2qrEXm9cRI0DxA3jhl4iI1fDJNxDoHhfzZQg7M+w==",
+  "dgSpecHash": "jo3weYtUcHkkefOsjQgIRZq92r9zRgq/K8U3D6R92/5fRH22syJ2P7vtbIl6lVZkhYxq3zhHSbvLVTbk0188ZQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\tomszek\\source\\repos\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
+  "projectFilePath": "C:\\Users\\tomszek\\Desktop\\DigitalPatient\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tomszek\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.14\\microsoft.aspnetcore.cryptography.internal.5.0.14.nupkg.sha512",

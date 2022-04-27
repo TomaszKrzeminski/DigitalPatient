@@ -6178,11 +6178,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tomszek\\source\\repos\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
+      "projectUniqueName": "C:\\Users\\tomszek\\Desktop\\DigitalPatient\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
       "projectName": "Digital_Patient",
-      "projectPath": "C:\\Users\\tomszek\\source\\repos\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
+      "projectPath": "C:\\Users\\tomszek\\Desktop\\DigitalPatient\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
       "packagesPath": "C:\\Users\\tomszek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tomszek\\source\\repos\\Digital_Patient\\Digital_Patient\\obj\\",
+      "outputPath": "C:\\Users\\tomszek\\Desktop\\DigitalPatient\\Digital_Patient\\Digital_Patient\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
