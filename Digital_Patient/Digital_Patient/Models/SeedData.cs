@@ -33,7 +33,7 @@ namespace Digital_Patient.Models
 
             public MeasurementSelector selector { get; set; }
 
-            public List<string> TaskCategoryNames = new List<string>() { "Lekarstwa", "Mocz", "Stolec", "Napój", "Jedzenie","Waga" };
+         
             public ApplicationDbContext context;
             
             public enum UserRole
@@ -229,35 +229,46 @@ namespace Digital_Patient.Models
                     return intervalData.IntervalDataId;
                 }
  
-                int SeedMeasurement(string MeasurementCategoryName,int NoteId,int MeasurementPairId)
-                {
+                //int SeedMeasurement(string MeasurementCategoryName,int NoteId,int MeasurementPairId)
+                //{
 
-                    Note note = context.Notes.Find(NoteId);
-                    MeasurementPair measurementPair = context.MeasurementPairs.Find(MeasurementPairId);
-                    MeasurementCategory mCategory = context.MeasurementCategories.Where(x => x.CategoryName == MeasurementCategoryName).FirstOrDefault();
+                //    Note note = context.Notes.Find(NoteId);
+                //    MeasurementPair measurementPair = context.MeasurementPairs.Find(MeasurementPairId);
+                //    MeasurementCategory mCategory = context.MeasurementCategories.Where(x => x.CategoryName == MeasurementCategoryName).FirstOrDefault();
 
-                    Measurement measurement = new Measurement();
-                    context.Measurements.Add(measurement);
-                    context.SaveChanges();
+                //    Measurement measurement = new Measurement();
+                //    context.Measurements.Add(measurement);
+                //    context.SaveChanges();
 
                     
 
-                    measurement.MeasurementPairs.Add(measurementPair);
-                    context.SaveChanges();
-                    mCategory.Measurements.Add(measurement);
-                    context.SaveChanges();
+                //    measurement.MeasurementPairs.Add(measurementPair);
+                //    context.SaveChanges();
+                //    mCategory.Measurements.Add(measurement);
+                //    context.SaveChanges();
 
-                    measurement.Note = note;
-                    context.SaveChanges();
+                //    measurement.Note = note;
+                //    context.SaveChanges();
 
-                    return measurement.MeasurementId;
-                }
+                //    return measurement.MeasurementId;
+                //}
 
-                int SeedMeasurement2(string MeasurementCategoryName, int NoteId, int MeasurementPairId)
+               
+
+                int SeedMeasurement3(string MeasurementCategoryName, int NoteId, List<int> MeasurementPairIdList)
                 {
 
-                    Note note = context.Notes.Find(NoteId);
-                    MeasurementPair measurementPair = context.MeasurementPairs.Find(MeasurementPairId);
+                    //Note note = context.Notes.Find(NoteId);
+                    List<MeasurementPair> measurementPairs = new List<MeasurementPair>();
+
+                    foreach (var item in MeasurementPairIdList)
+                    {
+                       MeasurementPair pair= context.MeasurementPairs.Find(item);
+                        measurementPairs.Add(pair);
+                    }
+                        
+                        
+                        
                     MeasurementCategory mCategory = context.MeasurementCategories.Where(x => x.CategoryName == MeasurementCategoryName).FirstOrDefault();
 
                     Measurement measurement = new Measurement();
@@ -266,16 +277,17 @@ namespace Digital_Patient.Models
 
 
 
-                    measurement.MeasurementPairs.Add(measurementPair);
+                    measurement.MeasurementPairs.AddRange(measurementPairs);
                     context.SaveChanges();
                     mCategory.Measurements.Add(measurement);
                     context.SaveChanges();
 
-                    measurement.Note = note;
+                    //measurement.Note = note;
                     context.SaveChanges();
 
                     return measurement.MeasurementId;
                 }
+
 
 
                 int SeedMeasurementPair(string Name,double Number,string Text)
@@ -298,25 +310,7 @@ namespace Digital_Patient.Models
                     context.SaveChanges();
                     return note.NoteId;
                 }
-                //void SeeedTaskToDo(string UserEmail, int IntervalDataId, string CategoryName, int MeasurementId)
-                //{
-                //    Measurement measurement = context.Measurements.Find(MeasurementId);
-                //    IntervalData interval = context.IntervalData.Find(IntervalDataId);
-                //    TaskToDo taskToDo = new TaskToDo();
-                //    taskToDo.IntervalData = interval;
-                //    context.SaveChanges();
-                //    taskToDo.Measurements.Add(measurement);
-                //    context.TasksToDo.Add(taskToDo);
-
-                //    TaskToDoCategory taskCategory = context.TaskCategories.Where(x => x.CategoryName == CategoryName).FirstOrDefault();
-                //    taskCategory.TasksToDo.Add(taskToDo);
-                //    context.SaveChanges();
-
-                //    ApplicationUser user = context.Users.Where(x => x.Email == UserEmail).FirstOrDefault();
-                //    user.TasksToDo.Add(taskToDo);
-                //    context.SaveChanges();
-
-                //}
+              
                 void SeeedTaskToDo(string UserEmail,int IntervalDataId,string CategoryName,List<int> MeasurementIdList)
                 {
 
@@ -358,18 +352,7 @@ namespace Digital_Patient.Models
                     if (!context.Users.Any())
                     {
 
-                        // void AddTaskToUser(string UserEmail,string MeasurementName,double NumberMeasurement,string TextMeasurement,string MeasurementCategory,string TaskToDoCategory, int Number, TimeSpan Interval, DateTime StartTime, DateTime EndTime, bool Weekends, bool Holidays, List<DateTime> CorrectTimes)
-                        //{
-                        //    int NoteId = SeedNote();
-                        //    int MeasurementPairId = SeedMeasurementPair(MeasurementName, NumberMeasurement, TextMeasurement);
-                        //    int MeasurementId = SeedMeasurement(MeasurementCategory, NoteId, MeasurementPairId);
-
-
-                        //    //int IntervalDataId = SeedIntervalData(30, new TimeSpan(30, 0, 0, 0, 0), DateTime.Now, DateTime.Now.AddDays(30), true, true, true, true, true, true, true, true);
-                        //    int IntervalDataId = SeedIntervalData( Number,  StartTime,  EndTime,  Weekends,  Holidays,CorrectTimes);
-
-                        //    SeeedTaskToDo(UserEmail, IntervalDataId, MeasurementName, MeasurementId);
-                        //}
+                      
 
 
                         void AddTaskToUser(string UserEmail, string MeasurementName, double NumberMeasurement, string TextMeasurement, string MeasurementCategory, string TaskToDoCategory, int Number, TimeSpan Interval, DateTime StartTime, DateTime EndTime, bool Weekends, bool Holidays, List<DateTime> CorrectTimes)
@@ -385,18 +368,35 @@ namespace Digital_Patient.Models
                             List<int> measurementIdList = new List<int>();
 
 
+
                             foreach (var cat in categories)
-                            { 
-                                int NoteId = SeedNote();
-                                int MeasurementPairId = SeedMeasurementPair(MeasurementName, NumberMeasurement, TextMeasurement);
-                                int MeasurementId = SeedMeasurement(cat.CategoryName, NoteId, MeasurementPairId);
+                            {
+                                //int NoteId = SeedNote();
+                                //int MeasurementPairId = SeedMeasurementPair(MeasurementName, NumberMeasurement, TextMeasurement);
+
+                                List<int> MeasurementPairIdList = new List<int>();
+
+                                MeasurementCat mCat;
+                                Enum.TryParse<MeasurementCat>(cat.CategoryName, out mCat);
+                                MeasurementPairsFactory factory2 = new MeasurementPairsFactory();
+                                IMeasurementPair measurementPair = factory2.SetMeasurement(mCat);
+                                List<MeasurementPair> mList = measurementPair.AddPairs();
+
+
+                                foreach (var pairM in mList)
+                                {
+                                    context.MeasurementPairs.Add(pairM);
+                                    context.SaveChanges();
+                                    MeasurementPairIdList.Add(pairM.MeasurementPairId);
+                                }
+
+
+                                int MeasurementId = SeedMeasurement3(cat.CategoryName, 1, MeasurementPairIdList);
                                 measurementIdList.Add(MeasurementId);
                             }
 
-                            
 
 
-                            //int IntervalDataId = SeedIntervalData(30, new TimeSpan(30, 0, 0, 0, 0), DateTime.Now, DateTime.Now.AddDays(30), true, true, true, true, true, true, true, true);
                             int IntervalDataId = SeedIntervalData(Number, StartTime, EndTime, Weekends, Holidays, CorrectTimes);
 
                             SeeedTaskToDo(UserEmail, IntervalDataId, MeasurementName, measurementIdList);
@@ -430,7 +430,7 @@ namespace Digital_Patient.Models
                             SeddTaskToDoCategory(item);
                         }
 
-                        List<string> listMeasurementCategory = new List<string>() { "Ciśnienie", "Waga", "Saturacja", "Temperatura", "Ekg","Czas","Stan","Ilość","Uwaga","Kalorie"};
+                        List<string> listMeasurementCategory = new List<string>() { "Ciśnienie","Waga", "Saturacja","Temperatura","Ekg","Czas","Stan", "Ilość","Uwaga","Kalorie" };
 
                         foreach (var item in listMeasurementCategory)
                         {

@@ -14,7 +14,7 @@ namespace Digital_Patient.Models
 
     public enum MeasurementCat
     {
-        Ciśnienie, Waga, Saturacja, Temperatura, Ekg,Czas,Stan,Ilość,Uwaga,Kalorie
+        Ciśnienie,Waga,Saturacja,Temperatura,Ekg,Czas,Stan,Ilość,Uwaga,Kalorie
     }
 
     public class Ciśnienie : IMeasurementPair
@@ -126,7 +126,7 @@ namespace Digital_Patient.Models
     {
         public IMeasurementPair mp { get; set; }
 
-        public virtual IMeasurementPair SetTaskCat(MeasurementCat cat)
+        public virtual IMeasurementPair SetMeasurement(MeasurementCat cat)
         {
             switch (cat)
             {      
@@ -183,7 +183,7 @@ namespace Digital_Patient.Models
         public Measurement AddMeasurementPairToMeasurement(MeasurementCat cat, Measurement measurement)
         {
             MeasurementPairsFactory factory = new MeasurementPairsFactory();
-            IMeasurementPair mPair = factory.SetTaskCat(cat);
+            IMeasurementPair mPair = factory.SetMeasurement(cat);
             List<MeasurementPair> categories = mPair.AddPairs();
             List<Measurement> measurementList = new List<Measurement>();
 

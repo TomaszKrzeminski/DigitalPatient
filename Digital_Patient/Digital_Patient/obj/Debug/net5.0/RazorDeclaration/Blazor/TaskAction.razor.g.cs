@@ -82,7 +82,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 109 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskAction.razor"
+#line 124 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskAction.razor"
  
 
     public TaskToDoActionModel model { get; set; } = new TaskToDoActionModel();
@@ -149,6 +149,41 @@ using Microsoft.EntityFrameworkCore;
     }
 
 
+    public async Task HandleInvalidSubmit()
+    {
+        if (DataLogin)
+        {
+            return;
+        }
+
+
+        try
+        {
+
+            using (var repo = new Repository(factory.CreateDbContext()))
+            {
+                model.TaskCorrectTime = tasktime;
+                repo.ChangeMeasurmentsData(model);
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            //model = new TaskToDoActionModel();
+            DataLogin = false;
+
+        }
+    }
+
+
+
+
+
+
     public async Task HandleValidSubmit()
     {
 
@@ -165,7 +200,7 @@ using Microsoft.EntityFrameworkCore;
             using (var repo = new Repository(factory.CreateDbContext()))
             {
                 model.TaskCorrectTime = tasktime;
-                repo.AddActionToTaskToDo(model);
+                repo.ChangeMeasurmentsData(model);
             }
 
         }

@@ -17,6 +17,66 @@ namespace Digital_Patient.Models
         }
 
 
+
+
+        
+
+
+
+
+        public bool ChangeMeasurmentsData(TaskToDoActionModel model)
+        {
+
+            try
+            {
+
+                TaskToDo task = ctx.TasksToDo.Include(x=>x.Measurements).ThenInclude(x=>x.MeasurementPairs).Include(x=>x.Measurements).ThenInclude(x=>x.Note).Where(x => x.TaskToDoId == model.taskToDo.TaskToDoId).First();
+
+                List<Measurement> listMeasurements = task.Measurements.ToList();
+                List<Measurement> listNewMeasurements = model.taskToDo.Measurements.ToList();
+
+                foreach (var measurement in listMeasurements)
+                {
+
+                    Note n = listNewMeasurements.Where(x => x.MeasurementId == measurement.MeasurementId).Select(x=>x.Note).First();
+                    Note n1 = measurement.Note;
+                    n1.Text = n.Text;                   
+              
+                    ctx.SaveChanges();
+                }
+
+
+
+
+                List<MeasurementPair> listMeasurementPairs = task.Measurements.SelectMany(x=>x.MeasurementPairs).ToList();
+                List<MeasurementPair> ListMeasurementPairsNew = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
+
+                foreach (var mp in listMeasurementPairs)
+                {
+
+                    MeasurementPair measuementPair = ListMeasurementPairsNew.Where(x => x.MeasurementPairId == mp.MeasurementPairId).FirstOrDefault();
+                    mp.MeasurementNumber = measuementPair.MeasurementNumber;
+                    mp.MeasurementText = measuementPair.MeasurementText;
+                    mp.Name = measuementPair.Name;
+                    mp.Text = measuementPair.Text;
+
+                    ctx.SaveChanges();
+
+                }
+
+
+
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+
         public bool AddActionToTaskToDo(TaskToDoActionModel model)
         {
             try
@@ -43,7 +103,7 @@ namespace Digital_Patient.Models
             try
             {
 
-                taskToDo =  ctx.TasksToDo.Include(x=>x.IntervalData).ThenInclude(x=>x.CorrectTimes).ThenInclude(x=>x.IntervalCorrectTimeActions).Include(x=>x.Measurements).ThenInclude(x=>x.MeasurementCategory).Include(x=>x.Measurements).ThenInclude(x=>x.MeasurementPairs).Include(x=>x.TaskToDoCategory)
+                taskToDo =  ctx.TasksToDo.Include(x=>x.IntervalData).ThenInclude(x=>x.CorrectTimes).ThenInclude(x=>x.IntervalCorrectTimeActions).Include(x=>x.Measurements).ThenInclude(x=>x.MeasurementCategory).Include(x=>x.Measurements).ThenInclude(x=>x.MeasurementPairs).Include(x=>x.TaskToDoCategory).Include(x=>x.Measurements).ThenInclude(x=>x.Note)
                     .Where(x => x.TaskToDoId == TaskId).FirstOrDefault();
 
                 return taskToDo;

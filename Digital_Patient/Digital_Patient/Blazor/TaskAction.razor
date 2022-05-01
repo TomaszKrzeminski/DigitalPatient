@@ -32,7 +32,7 @@
                 <h2 class="form-control">   @tasktime.TimeOfDay  </h2>
 
             </div>
-            <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+            <EditForm Model="@model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
                 <div class="form-group">
                     <h2 class="form-control"> Kategoria  @model.taskToDo.TaskToDoCategory.CategoryName</h2>
 
@@ -48,13 +48,28 @@
                             <h2 class="form-control ">Zbadaj @m.MeasurementCategory.CategoryName </h2>
                         </div>
                         <div class="form-group">
-                            @if (m.MeasurementCategory.pairType == PairType.numeric)
+                            
+                            @foreach (var pair in m.MeasurementPairs)
                             {
-                                <InputText @bind-Value="m."></InputText>
-                            }
-                            else
-                            {
-                                <InputNumber @bind-Value="@model.mpToAdd.MeasurementNumber"></InputNumber>
+
+                            <div clss="row">
+                                <div class="col col-lg-12">
+                                    @pair.Name
+                                </div>
+                                <div class="col col-lg-12">
+                                    @if(pair.Text)
+                                    {
+                                        <InputText @bind-Value="pair.MeasurementText"></InputText>
+                                    }
+                                    else
+                                     {
+                                        <InputNumber @bind-Value="pair.MeasurementNumber"></InputNumber>
+                                     }
+                                </div>
+                            </div>
+
+
+
                             }
 
                         </div>
@@ -172,6 +187,41 @@
     }
 
 
+    public async Task HandleInvalidSubmit()
+    {
+        if (DataLogin)
+        {
+            return;
+        }
+
+
+        try
+        {
+
+            using (var repo = new Repository(factory.CreateDbContext()))
+            {
+                model.TaskCorrectTime = tasktime;
+                repo.ChangeMeasurmentsData(model);
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            //model = new TaskToDoActionModel();
+            DataLogin = false;
+
+        }
+    }
+
+
+
+
+
+
     public async Task HandleValidSubmit()
     {
 
@@ -188,7 +238,7 @@
             using (var repo = new Repository(factory.CreateDbContext()))
             {
                 model.TaskCorrectTime = tasktime;
-                repo.AddActionToTaskToDo(model);
+                repo.ChangeMeasurmentsData(model);
             }
 
         }
