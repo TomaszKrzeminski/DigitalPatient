@@ -18,7 +18,7 @@
 
 <div class="container-fluid alert-info">       
     
-    <h1>@CompleteTask</h1>
+    @*<h1>@CompleteTask</h1>*@
     <div class="row">
         <div class="col-lg-6">
             <div class="row">
@@ -63,11 +63,6 @@
                 </div>                                   
                                 }
 
-
-
-
-
-
                             }
 
 
@@ -99,6 +94,9 @@
 
 @code {
 
+
+    [Parameter]
+    public string UserRole { get; set; }
     int SelectedTaskId { get; set; } = 0;
     string FullTime { get; set; }
 

@@ -1,5 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> userManager
+@{
+
+    var user = await userManager.GetUserAsync(User);
+
+    string role = "";
+
+    @if(user!=null)
+    {
+         role = userManager.GetRolesAsync(user).Result.First();
+    }
+
+
+}
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,13 +37,16 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+
+                        @if (role == "Doctor")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="TaskPanel">Panel Lekarza    </a>
+                            </li>
+                        }
+
+
+                        </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -35,7 +54,7 @@
     </header>
     <div @*class="container"*@>
         @*<main role="main" class="pb-3">*@
-            @RenderBody()
+        @RenderBody()
         @*</main>*@
     </div>
     <script src="_framework/blazor.server.js"></script>

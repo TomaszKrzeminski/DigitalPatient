@@ -8,12 +8,14 @@ namespace Digital_Patient.Models
   public class  MainPageViewModel
     {
 
-        public MainPageViewModel(string UserId)
+        public MainPageViewModel(string UserId,string Role)
         {
             this.UserId = UserId;
+            this.Role = Role;
         }
 
         public string UserId { get; set; }
+        public string Role { get; set; }
 
     }
 }

@@ -83,9 +83,12 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 100 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\MainPage.razor"
+#line 95 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\MainPage.razor"
        
 
+
+    [Parameter]
+    public string UserRole { get; set; }
     int SelectedTaskId { get; set; } = 0;
     string FullTime { get; set; }
 

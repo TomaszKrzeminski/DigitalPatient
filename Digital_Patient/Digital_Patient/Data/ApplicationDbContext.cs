@@ -19,6 +19,55 @@ namespace Digital_Patient.Data
             base.OnModelCreating(modelBuilder);
 
 
+            modelBuilder.Entity<DoctorUser>()       // THIS IS FIRST
+        .HasOne(u => u.Doctor).WithMany(u => u.DoctorUsers).IsRequired().OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<DoctorUser>().HasKey(sc => new { sc.DoctorId, sc.ApplicationUserId });
+
+            modelBuilder.Entity<DoctorUser>()
+                .HasOne(pt => pt.ApplicationUser)
+                .WithMany(p => p.DoctorUsers)
+                .HasForeignKey(pt => pt.ApplicationUserId);
+
+
+
+
+
+
+            modelBuilder.Entity<HealthCarerUser>()       // THIS IS FIRST
+       .HasOne(u => u.HealthCarer).WithMany(u => u.HealthCarerUsers).IsRequired().OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<HealthCarerUser>().HasKey(sc => new { sc.HealthCarerId, sc.ApplicationUserId });
+
+            modelBuilder.Entity<HealthCarerUser>()
+                .HasOne(pt => pt.ApplicationUser)
+                .WithMany(p => p.HealthCarerUsers)
+                .HasForeignKey(pt => pt.ApplicationUserId);
+
+
+
+
+
+
+
+
+            //modelBuilder.Entity<HealthCarerUser>().HasKey(sc => new { sc.HealthCarerId, sc.ApplicationUserId });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             modelBuilder.Entity<TaskToDo>()
            .HasOne<IntervalData>(s => s.IntervalData)
@@ -45,6 +94,12 @@ namespace Digital_Patient.Data
         public DbSet<IntervalCorrectTimeAction> IntervalCorrectTimeActions { get; set; }
         public DbSet<IntervalCorrectTime> CorrectTimes { get; set; }
 
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<HealthCarer> HealthCarers { get; set; }
+
+
+        public DbSet<HealthCarerUser> HealthCarerUsers { get; set; }
+        public DbSet<DoctorUser> DoctorUsers { get; set; }
 
 
 

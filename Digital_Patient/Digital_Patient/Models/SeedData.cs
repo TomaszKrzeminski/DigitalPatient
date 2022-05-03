@@ -227,31 +227,7 @@ namespace Digital_Patient.Models
                     
 
                     return intervalData.IntervalDataId;
-                }
- 
-                //int SeedMeasurement(string MeasurementCategoryName,int NoteId,int MeasurementPairId)
-                //{
-
-                //    Note note = context.Notes.Find(NoteId);
-                //    MeasurementPair measurementPair = context.MeasurementPairs.Find(MeasurementPairId);
-                //    MeasurementCategory mCategory = context.MeasurementCategories.Where(x => x.CategoryName == MeasurementCategoryName).FirstOrDefault();
-
-                //    Measurement measurement = new Measurement();
-                //    context.Measurements.Add(measurement);
-                //    context.SaveChanges();
-
-                    
-
-                //    measurement.MeasurementPairs.Add(measurementPair);
-                //    context.SaveChanges();
-                //    mCategory.Measurements.Add(measurement);
-                //    context.SaveChanges();
-
-                //    measurement.Note = note;
-                //    context.SaveChanges();
-
-                //    return measurement.MeasurementId;
-                //}
+                }           
 
                
 
@@ -287,8 +263,6 @@ namespace Digital_Patient.Models
 
                     return measurement.MeasurementId;
                 }
-
-
 
                 int SeedMeasurementPair(string Name,double Number,string Text)
                 {
@@ -343,17 +317,12 @@ namespace Digital_Patient.Models
                     user.TasksToDo.Add(taskToDo);
                     context.SaveChanges();           
 
-                }     
+                } 
                 
-
-
                 if (context.Database.EnsureCreated())
                 {
                     if (!context.Users.Any())
-                    {
-
-                      
-
+                    {                     
 
                         void AddTaskToUser(string UserEmail, string MeasurementName, double NumberMeasurement, string TextMeasurement, string MeasurementCategory, string TaskToDoCategory, int Number, TimeSpan Interval, DateTime StartTime, DateTime EndTime, bool Weekends, bool Holidays, List<DateTime> CorrectTimes)
                         {
@@ -401,9 +370,6 @@ namespace Digital_Patient.Models
 
                             SeeedTaskToDo(UserEmail, IntervalDataId, MeasurementName, measurementIdList);
                         }
-
-
-
 
                         List<ApplicationUser> UserList = new List<ApplicationUser>();
 

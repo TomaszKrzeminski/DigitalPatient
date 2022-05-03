@@ -26,8 +26,9 @@ namespace Digital_Patient.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            IdentityUser user = await _userManager.GetUserAsync(HttpContext.User);           
-            return View(new MainPageViewModel(user.Id));
+            IdentityUser user = await _userManager.GetUserAsync(HttpContext.User);
+            
+            return View(new MainPageViewModel(user.Id,"Brak"));
         }
 
         public IActionResult Privacy()

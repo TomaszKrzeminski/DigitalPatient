@@ -12,8 +12,107 @@ namespace Digital_Patient.Models
         Mężczyzna, Kobieta
     }
 
+
+    public class Doctor : IdentityUser
+    {
+        public Doctor()
+        {
+
+
+            DoctorUsers = new List<DoctorUser>();
+        }
+
+        public string FirstName { get; set; } = "Testowe 1";
+        public string Surname { get; set; } = "Testowe 1";
+
+        public Sex sex { get; set; } = Sex.Kobieta;
+        public DateTime Dateofbirth { get; set; } = DateTime.Now;
+        public string City { get; set; } = "Miasto";
+
+        public string Street { get; set; } = "Ulica";
+
+        public string PostalCode { get; set; } = "86-100";
+
+        public string HouseNumber { get; set; } = "10";
+
+
+        public override string PhoneNumber { get; set; } = "794219756";
+
+        public string UserImagePath { get; set; } = "~/wwwroot/UserImages/DefaultUserPicture.jpg";
+        
+        public  List<DoctorUser> DoctorUsers { get; set; }
+
+    }
+
+
+    public class DoctorUser
+    {
+
+        public string DoctorId { get; set; }
+        public Doctor Doctor { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
+    }
+
+
+    public class HealthCarerUser
+    {
+
+        public string HealthCarerId { get; set; }
+        public HealthCarer HealthCarer { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
+    }
+
+
+    public class HealthCarer : IdentityUser
+    {
+        public HealthCarer()
+        {
+
+            HealthCarerUsers = new List<HealthCarerUser>();
+
+        }
+
+        public string FirstName { get; set; } = "Testowe 1";
+        public string Surname { get; set; } = "Testowe 1";
+
+        public Sex sex { get; set; } = Sex.Kobieta;
+        public DateTime Dateofbirth { get; set; } = DateTime.Now;
+        public string City { get; set; } = "Miasto";
+
+        public string Street { get; set; } = "Ulica";
+
+        public string PostalCode { get; set; } = "86-100";
+
+        public string HouseNumber { get; set; } = "10";
+
+
+        public override string PhoneNumber { get; set; } = "794219756";
+
+        public string UserImagePath { get; set; } = "~/wwwroot/UserImages/DefaultUserPicture.jpg";
+
+        public List<HealthCarerUser> HealthCarerUsers { get; set; }
+    }
+
+
+
     public class   ApplicationUser:IdentityUser
     {
+        public ApplicationUser()
+        {
+            TasksToDo = new List<TaskToDo>();
+            Breakfast = new DateTime(2022, 1, 1, 7, 0, 0);
+            Lunch = new DateTime(2022, 1, 1, 13, 0, 0);
+            Supper = new DateTime(2022, 1, 1, 19, 0, 0);
+            DoctorUsers = new List<DoctorUser>();
+            HealthCarerUsers = new List<HealthCarerUser>();
+
+        }
 
         public string FirstName { get; set; } = "Testowe 1";
         public string Surname { get; set; } = "Testowe 1";
@@ -40,19 +139,10 @@ namespace Digital_Patient.Models
 
 
 
-        public ApplicationUser()
-        {
-            TasksToDo = new List<TaskToDo>();
-            Breakfast = new DateTime(2022, 1, 1, 7, 0, 0);
-            Lunch = new DateTime(2022, 1, 1, 13, 0, 0);
-            Supper = new DateTime(2022, 1, 1, 19, 0, 0);
 
 
-
-        }
-
-
-
+        public List<HealthCarerUser> HealthCarerUsers { get; set; }
+        public  List<DoctorUser> DoctorUsers { get; set; }
 
         public virtual List<TaskToDo> TasksToDo { get; set; }
     }

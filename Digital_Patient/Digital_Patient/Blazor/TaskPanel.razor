@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Digital_Patient.Models
+@using Digital_Patient.Data
+@inject NavigationManager Navigation
+@using Microsoft.EntityFrameworkCore.Design
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext>  factory
+
+
+<h3>TaskPanel</h3>
+
+<h1>@UserId</h1>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-4">
+            Pacjenci
+        </div>
+        <div class="col col-lg-4">
+            Zadania
+        </div>
+        <div class="col col-lg-4">
+            Dodaj Nowe
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public string UserId { get; set; }
+    private Repository repository;
+
+    protected async override Task OnParametersSetAsync()
+    {
+
+
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        //if (TaskId != 0)
+        //{
+
+
+        //    tasktime = GetTimeFromString(TaskTime);
+        //    model.taskToDo = repository.GetTaskToDo(TaskId);
+        //}
+
+    }
+
+
+
+
+
+}
