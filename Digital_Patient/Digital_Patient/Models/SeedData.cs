@@ -136,7 +136,7 @@ namespace Digital_Patient.Models
 
                 }
 
-                void SeedUser(string Name, string Surname, string Sex, string City, string Email, DateTime Dateofbirth,UserRole userRole)
+                void SeedUser(string Name, string Surname, string Sex, string City, string Email, DateTime Dateofbirth, UserRole userRole)
                 {
 
 
@@ -196,6 +196,137 @@ namespace Digital_Patient.Models
 
 
                 }
+
+                void SeedHealthCarer(string Name, string Surname, string Sex, string City, string Email, DateTime Dateofbirth, UserRole userRole)
+                {
+
+
+                    try
+                    {
+                        DateTime Now = DateTime.Now;
+                        TimeSpan ts = Now - Dateofbirth;
+                        int age = ts.Days / 365;
+
+                        var User = new HealthCarer()
+                        {
+
+                            FirstName = Name,
+                            Email = Email,
+                            Surname = Surname,
+                            //Sex = Sex,
+                            City = City,
+                            Dateofbirth = Dateofbirth,
+                            UserName = Email,
+                            EmailConfirmed = true,
+                            LockoutEnabled = true,
+                            SecurityStamp = Guid.NewGuid().ToString(),
+                            NormalizedEmail = Email.ToUpper(),
+                            NormalizedUserName = Email.ToUpper(),
+                        };
+
+                        if (!context.Users.Any(u => u.UserName == User.UserName))
+                        {
+                            var password = new PasswordHasher<HealthCarer>();
+                            var hashed = password.HashPassword(User, "Sekret123@");
+                            User.PasswordHash = hashed;
+                            UserStore<HealthCarer> userStore;
+
+                            userStore = new UserStore<HealthCarer>(context);
+
+                            //userStore.CreateAsync(User).Wait();
+                            userStore.CreateAsync(User).Wait();
+                            ////////
+                            Claim claim = new Claim(ClaimTypes.Email, User.Email);
+                            List<Claim> claims = new List<Claim>();
+                            claims.Add(claim);
+                            userStore.AddClaimsAsync(User, claims).Wait();
+                            userStore.AddToRoleAsync(User, userRole.ToString()).Wait();
+
+                        }
+                        context.SaveChanges();
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+
+
+
+
+
+                }
+
+                void SeedDoctor(string Name, string Surname, string Sex, string City, string Email, DateTime Dateofbirth, UserRole userRole)
+                {
+
+
+                    try
+                    {
+                        DateTime Now = DateTime.Now;
+                        TimeSpan ts = Now - Dateofbirth;
+                        int age = ts.Days / 365;
+
+                        var User = new Doctor()
+                        {
+
+                            FirstName = Name,
+                            Email = Email,
+                            Surname = Surname,
+                            //Sex = Sex,
+                            City = City,
+                            Dateofbirth = Dateofbirth,
+                            UserName = Email,
+                            EmailConfirmed = true,
+                            LockoutEnabled = true,
+                            SecurityStamp = Guid.NewGuid().ToString(),
+                            NormalizedEmail = Email.ToUpper(),
+                            NormalizedUserName = Email.ToUpper(),
+                        };
+
+                        if (!context.Users.Any(u => u.UserName == User.UserName))
+                        {
+                            var password = new PasswordHasher<Doctor>();
+                            var hashed = password.HashPassword(User, "Sekret123@");
+                            User.PasswordHash = hashed;
+                            UserStore<Doctor> userStore;
+
+                            userStore = new UserStore<Doctor>(context);
+
+                            //userStore.CreateAsync(User).Wait();
+                            userStore.CreateAsync(User).Wait();
+                            ////////
+                            Claim claim = new Claim(ClaimTypes.Email, User.Email);
+                            List<Claim> claims = new List<Claim>();
+                            claims.Add(claim);
+                            userStore.AddClaimsAsync(User, claims).Wait();
+                            userStore.AddToRoleAsync(User, userRole.ToString()).Wait();
+
+                        }
+                        context.SaveChanges();
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+
+
+
+
+
+                }
+
+
+
+
+
+
+
+
+
 
                 void SeddTaskToDoCategory(string CategoryName)
                 {
@@ -377,17 +508,17 @@ namespace Digital_Patient.Models
 
                         SeedAdmin("Ada", "Krzemińska", "Kobieta", "Świecie", "Ada@gmail.com", new DateTime(1984, 8, 21));
 
-                        SeedUser("Doctor1", "Surname1", "Kobieta", "Świecie", "Doctor1@gmail.com", DateTime.Now,UserRole.Doctor);
-                        SeedUser("Doctor2", "Surname2", "Kobieta", "Świecie", "Doctor2@gmail.com", DateTime.Now, UserRole.Doctor);
-                        SeedUser("Doctor3", "Surname3", "Kobieta", "Świecie", "Doctor3@gmail.com", DateTime.Now, UserRole.Doctor);
+                        SeedDoctor("Doctor1", "Surname1", "Kobieta", "Świecie", "Doctor1@gmail.com", DateTime.Now,UserRole.Doctor);
+                        SeedDoctor("Doctor2", "Surname2", "Kobieta", "Świecie", "Doctor2@gmail.com", DateTime.Now, UserRole.Doctor);
+                        SeedDoctor("Doctor3", "Surname3", "Kobieta", "Świecie", "Doctor3@gmail.com", DateTime.Now, UserRole.Doctor);
 
                         SeedUser("Patient1", "Surname1", "Kobieta", "Świecie", "Patient1@gmail.com", DateTime.Now, UserRole.Patient);
                         SeedUser("Patient2", "Surname2", "Kobieta", "Świecie", "Patient2@gmail.com", DateTime.Now, UserRole.Patient);
                         SeedUser("Patient3", "Surname3", "Kobieta", "Świecie", "Patient3@gmail.com", DateTime.Now, UserRole.Patient);
 
-                        SeedUser("HealthCarer1", "Surname1", "Kobieta", "Świecie", "HealthCarer1@gmail.com", DateTime.Now, UserRole.Doctor);
-                        SeedUser("HealthCarer2", "Surname2", "Kobieta", "Świecie", "HealthCarer2@gmail.com", DateTime.Now, UserRole.Doctor);
-                        SeedUser("HealthCarer3", "Surname3", "Kobieta", "Świecie", "HealthCarer3@gmail.com", DateTime.Now, UserRole.Doctor);
+                        SeedHealthCarer("HealthCarer1", "Surname1", "Kobieta", "Świecie", "HealthCarer1@gmail.com", DateTime.Now, UserRole.Doctor);
+                        SeedHealthCarer("HealthCarer2", "Surname2", "Kobieta", "Świecie", "HealthCarer2@gmail.com", DateTime.Now, UserRole.Doctor);
+                        SeedHealthCarer("HealthCarer3", "Surname3", "Kobieta", "Świecie", "HealthCarer3@gmail.com", DateTime.Now, UserRole.Doctor);
 
                         List<string> listTaskToDoCategory = new List<string>() { "Stolec", "Mocz", "Lekarstwo", "Płyn", "Jedzenie", "Ćwiczenia","Zabiegi","Sen" };
 
@@ -417,15 +548,18 @@ namespace Digital_Patient.Models
 
                         List<DateTime> times = new List<DateTime>() { d1, d2, d3 };
 
-                        AddTaskToUser("Ada@gmail.com", "Jedzenie", 83, "", "Waga", "Jedzenie", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times );
-                        AddTaskToUser("Ada@gmail.com", "Jedzenie", 83, "", "Waga", "Jedzenie", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times);
+                        AddTaskToUser("Patient1@gmail.com", "Jedzenie", 83, "", "Waga", "Jedzenie", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times );
+                        AddTaskToUser("Patient1@gmail.com", "Jedzenie", 83, "", "Waga", "Jedzenie", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times);
 
-                        AddTaskToUser("Ada@gmail.com", "Ćwiczenia", 83, "", "Czas", "Ćwiczenia", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
-                        AddTaskToUser("Ada@gmail.com", "Ćwiczenia", 83, "", "Czas", "Ćwiczenia", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
-                        AddTaskToUser("Ada@gmail.com", "Ćwiczenia", 83, "", "Czas", "Ćwiczenia", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
-                        AddTaskToUser("Ada@gmail.com", "Lekarstwo", 83, "", "Stan", "Lekarstwo", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
-                        AddTaskToUser("Ada@gmail.com", "Lekarstwo", 83, "", "Stan", "Lekarstwo", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
-                        AddTaskToUser("Ada@gmail.com", "Lekarstwo", 83, "", "Stan", "Lekarstwo", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+                        AddTaskToUser("Patient1@gmail.com", "Ćwiczenia", 83, "", "Czas", "Ćwiczenia", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+                        AddTaskToUser("Patient1@gmail.com", "Ćwiczenia", 83, "", "Czas", "Ćwiczenia", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+                        AddTaskToUser("Patient1@gmail.com", "Ćwiczenia", 83, "", "Czas", "Ćwiczenia", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+                        AddTaskToUser("Patient1@gmail.com", "Lekarstwo", 83, "", "Stan", "Lekarstwo", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+                        AddTaskToUser("Patient1@gmail.com", "Lekarstwo", 83, "", "Stan", "Lekarstwo", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+                        AddTaskToUser("Patient1@gmail.com", "Lekarstwo", 83, "", "Stan", "Lekarstwo", 30, new TimeSpan(), DateTime.Now, DateTime.Now.AddDays(30), true, true, times1);
+
+
+
 
                     }
 

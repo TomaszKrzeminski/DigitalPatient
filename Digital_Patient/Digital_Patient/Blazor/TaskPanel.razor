@@ -19,13 +19,28 @@
 
 <div class="container">
     <div class="row">
-        <div class="col col-lg-4">
+        <div class="col col-lg-3">
             Pacjenci
+            @foreach (var u in allpatients.OrderBy(x=>x))
+            {
+                <div @onclick="@(()=>AddToMyPatients(u))">
+                    @u
+                </div>
+            }
         </div>
-        <div class="col col-lg-4">
+        <div class="col col-lg-3">
+            Moi Pacjenci
+            @foreach (var u in patients.OrderBy(x=>x.Email))
+            {
+                <div>
+                    @u.Email
+                </div>
+            }
+        </div>
+        <div class="col col-lg-3">
             Zadania
         </div>
-        <div class="col col-lg-4">
+        <div class="col col-lg-3">
             Dodaj Nowe
         </div>
     </div>
@@ -44,7 +59,14 @@
 
     [Parameter]
     public string UserId { get; set; }
+
+    public string SelectedPatientEmail { get; set; }
+
     private Repository repository;
+
+    List<ApplicationUser> patients = new List<ApplicationUser>();
+
+    List<string> allpatients = new List<string>();
 
     protected async override Task OnParametersSetAsync()
     {
@@ -53,18 +75,24 @@
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
-        //if (TaskId != 0)
-        //{
+        patients = repository.GetDoctorPatients(UserId );
 
+        List<string> listExcept = new List<string>();
 
-        //    tasktime = GetTimeFromString(TaskTime);
-        //    model.taskToDo = repository.GetTaskToDo(TaskId);
-        //}
+        if(patients!=null&&patients.Count>0)
+        {
+            listExcept = patients.Select(x => x.Email).ToList();
+        }
+
+        allpatients = repository.GetAllPatients(listExcept);
+
 
     }
 
-
-
+    public void AddToMyPatients(string Email)
+    {
+        repository.AddUserToDoctorPatients(Email, UserId);
+    }
 
 
 }

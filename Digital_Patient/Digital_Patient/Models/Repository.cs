@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Digital_Patient.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Nager.Date;
 
@@ -11,17 +12,114 @@ namespace Digital_Patient.Models
     public class Repository:IDisposable
     {
         ApplicationDbContext ctx;
+       
         public Repository(ApplicationDbContext context)
         {
             ctx = context;
+       
+        }
+
+
+        public bool AddUserToDoctorPatients(string Email,string DoctorId)
+        {
+            try
+            {
+                
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+   
+        public bool AddTaskToUser(AddTaskToUserModel model)
+        {
+            try
+            {
+                ApplicationUser user = ctx.Users.Find(model.UserId);
+                user.TasksToDo.Add(model.tasktoDo);
+                ctx.SaveChanges();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
 
 
 
+        public List<TaskToDo>  GetUserTasksToDo(string UserId)
+        {
+            List<TaskToDo> list = new List<TaskToDo>();
+            try
+            {
+                list = ctx.Users.Include(x => x.TasksToDo).Where(x => x.Id == UserId).First().TasksToDo.ToList();
+                return list;
+            }
+            catch(Exception ex)
+            {
+                return list;
+            }
+        }
 
+
+        public List<string> GetAllPatients(List<string> exceptList)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string RoleId = ctx.Roles.Where(x => x.Name == "Patient").Select(x=>x.Id).FirstOrDefault();
+                List<string> UserIdList = ctx.UserRoles.Where(x => x.RoleId == RoleId).Select(x=>x.UserId).ToList();
+                list = ctx.Users.Where(x =>UserIdList.Contains(x.Id)).Select(x=>x.Email).ToList();
+                list = list.Except(exceptList).ToList();
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                return list;
+            }
+        }
         
 
 
+        public List<ApplicationUser>  GetDoctorPatients(string DoctorId)
+        {
+            List<ApplicationUser> list = new List<ApplicationUser>();
+            try
+            {
+
+              list = ctx.Doctors.Include(x => x.DoctorUsers).ThenInclude(x => x.ApplicationUser).Where(x => x.Id == DoctorId).SelectMany(x => x.DoctorUsers).Select(x => x.ApplicationUser).ToList();
+
+
+
+                return list;
+            }
+            catch(Exception ex)
+            {
+                return list;
+            }
+        }
+
+
+        public List<ApplicationUser> GetHealthCarerPatients(string HealthCarerId)
+        {
+            List<ApplicationUser> list = new List<ApplicationUser>();
+            
+            try
+            {
+                list = ctx.HealthCarers.Include(x => x.HealthCarerUsers).ThenInclude(x => x.ApplicationUser).Where(x => x.Id == HealthCarerId).SelectMany(x => x.HealthCarerUsers).Select(x => x.ApplicationUser).ToList();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                return list;
+            }
+        }
 
 
         public bool ChangeMeasurmentsData(TaskToDoActionModel model)

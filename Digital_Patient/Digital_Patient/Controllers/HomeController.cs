@@ -27,8 +27,10 @@ namespace Digital_Patient.Controllers
         public async Task<IActionResult> Index()
         {
             IdentityUser user = await _userManager.GetUserAsync(HttpContext.User);
-            
-            return View(new MainPageViewModel(user.Id,"Brak"));
+            var roles = await _userManager.GetRolesAsync(user);
+            string role = roles.First();
+
+            return View(new MainPageViewModel(user.Id,role));
         }
 
         public IActionResult Privacy()
