@@ -12,9 +12,9 @@
 @inject IDbContextFactory<ApplicationDbContext>  factory
 
 
-<h3>TaskPanel</h3>
 
-<h1>@UserId</h1>
+
+<h1>@Action</h1>
 
 
 <div class="container">
@@ -32,16 +32,26 @@
             Moi Pacjenci
             @foreach (var u in patients.OrderBy(x=>x.Email))
             {
-                <div>
+                <div  @onclick="@(()=>ShowPatientTasks(u.Email))">
                     @u.Email
                 </div>
             }
         </div>
         <div class="col col-lg-3">
             Zadania
+            @foreach (var tasktoDo in PatientTaskList)
+            {
+                <div>
+                    @tasktoDo.TaskToDoCategory.CategoryName
+                    @tasktoDo.Description
+                </div>
+            }
         </div>
         <div class="col col-lg-3">
             Dodaj Nowe
+
+
+
         </div>
     </div>
 </div>
@@ -57,8 +67,12 @@
 
 @code {
 
+    public string Action { get; set; }
+
     [Parameter]
     public string UserId { get; set; }
+
+    public string PatientEmail { get; set; }
 
     public string SelectedPatientEmail { get; set; }
 
@@ -67,6 +81,8 @@
     List<ApplicationUser> patients = new List<ApplicationUser>();
 
     List<string> allpatients = new List<string>();
+
+    List<TaskToDo> PatientTaskList = new List<TaskToDo>();
 
     protected async override Task OnParametersSetAsync()
     {
@@ -91,8 +107,31 @@
 
     public void AddToMyPatients(string Email)
     {
-        repository.AddUserToDoctorPatients(Email, UserId);
+        bool check= repository.AddUserToDoctorPatients(Email, UserId);
+
+        if(check)
+        {
+            Action = "Dodano" + " " + Email + " do twoich Pacjentów";
+            ShowPatientTasks(Email);
+            OnParametersSetAsync();
+        }
+
+
     }
+
+    public void ShowPatientTasks(string PatientId)
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        PatientTaskList = repository.GetUserTasksToDo2(PatientId);
+
+
+
+
+    }
+
+
 
 
 }

@@ -82,8 +82,10 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 58 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+#line 65 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
        
+
+    public string Action { get; set; }
 
     [Parameter]
     public string UserId { get; set; }
@@ -95,6 +97,8 @@ using Microsoft.EntityFrameworkCore;
     List<ApplicationUser> patients = new List<ApplicationUser>();
 
     List<string> allpatients = new List<string>();
+
+    List<TaskToDo> PatientTaskList = new List<TaskToDo>();
 
     protected async override Task OnParametersSetAsync()
     {
@@ -119,8 +123,31 @@ using Microsoft.EntityFrameworkCore;
 
     public void AddToMyPatients(string Email)
     {
-        repository.AddUserToDoctorPatients(Email, UserId);
+        bool check= repository.AddUserToDoctorPatients(Email, UserId);
+
+        if(check)
+        {
+            Action = "Dodano" + " " + Email + " do twoich Pacjentów";
+            ShowPatientTasks(Email);
+            OnParametersSetAsync();
+        }
+
+
     }
+
+    public void ShowPatientTasks(string PatientId)
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        PatientTaskList = repository.GetUserTasksToDo2(PatientId);
+
+
+
+
+    }
+
+
 
 
 

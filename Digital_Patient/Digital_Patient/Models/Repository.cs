@@ -24,6 +24,15 @@ namespace Digital_Patient.Models
         {
             try
             {
+                Doctor doctor = ctx.Doctors.Include(x=>x.DoctorUsers).Where(x=>x.Id==DoctorId).First();
+                ApplicationUser user = ctx.Users.Include(x => x.DoctorUsers).Where(x => x.Email == Email).First();
+
+                DoctorUser doctorUser = new DoctorUser();
+                doctorUser.ApplicationUser = user;
+                doctorUser.Doctor = doctor;
+
+                doctor.DoctorUsers.Add(doctorUser);
+                ctx.SaveChanges();
                 
                 return true;
             }
@@ -50,7 +59,19 @@ namespace Digital_Patient.Models
             }
         }
 
-
+        public List<TaskToDo> GetUserTasksToDo2(string PatientEmail)
+        {
+            List<TaskToDo> list = new List<TaskToDo>();
+            try
+            {
+                list = ctx.Users.Include(x => x.TasksToDo).ThenInclude(x=>x.TaskToDoCategory).Where(x => x.Email == PatientEmail).First().TasksToDo.ToList();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                return list;
+            }
+        }
 
         public List<TaskToDo>  GetUserTasksToDo(string UserId)
         {
