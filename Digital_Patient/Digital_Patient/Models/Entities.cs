@@ -196,14 +196,18 @@ namespace Digital_Patient.Models
 
         public IntervalData()
         {
-            Number = 999999;
+            Number = 30;
             Weekends = true;
             Holidays = true;
             Interval = new TimeSpan(0, 0, 0);
         }
 
 
-        
+        public IntervalData(DateTime startTime,DateTime endTime)
+        {
+            this.StartTime = startTime;
+            this.EndTime = endTime;
+        }
 
 
         public IntervalData(int Number,DateTime StartTime,DateTime EndTime,bool Weekends,bool Holidays)
@@ -227,12 +231,7 @@ namespace Digital_Patient.Models
         [Required]
         public DateTime EndTime { get; set; }
 
-        /// <summary>
-
-        //public DateTime CorrectTime1 { get; set; } 
-        //public DateTime CorrectTime2 { get; set; } 
-        //public DateTime CorrectTime3 { get; set; } 
-        //public DateTime CorrectTime4 { get; set; } 
+        
 
 
 

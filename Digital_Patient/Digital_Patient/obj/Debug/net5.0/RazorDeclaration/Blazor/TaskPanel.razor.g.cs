@@ -82,15 +82,19 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 65 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+#line 309 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
        
 
     public string Action { get; set; }
 
+    public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
+
     [Parameter]
     public string UserId { get; set; }
 
-    public string SelectedPatientEmail { get; set; }
+    public string PatientEmail { get; set; }
+
+    //public string SelectedPatientEmail { get; set; }
 
     private Repository repository;
 
@@ -107,11 +111,11 @@ using Microsoft.EntityFrameworkCore;
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
-        patients = repository.GetDoctorPatients(UserId );
+        patients = repository.GetDoctorPatients(UserId);
 
         List<string> listExcept = new List<string>();
 
-        if(patients!=null&&patients.Count>0)
+        if (patients != null && patients.Count > 0)
         {
             listExcept = patients.Select(x => x.Email).ToList();
         }
@@ -123,9 +127,9 @@ using Microsoft.EntityFrameworkCore;
 
     public void AddToMyPatients(string Email)
     {
-        bool check= repository.AddUserToDoctorPatients(Email, UserId);
+        bool check = repository.AddUserToDoctorPatients(Email, UserId);
 
-        if(check)
+        if (check)
         {
             Action = "Dodano" + " " + Email + " do twoich Pacjentów";
             ShowPatientTasks(Email);
@@ -135,18 +139,95 @@ using Microsoft.EntityFrameworkCore;
 
     }
 
-    public void ShowPatientTasks(string PatientId)
+    public void ShowPatientTasks(string PatientEmail)
     {
+
+
+
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
-        PatientTaskList = repository.GetUserTasksToDo2(PatientId);
+        PatientTaskList = repository.GetUserTasksToDo2(PatientEmail);
+        this.PatientEmail = PatientEmail;
+        model.UserId = PatientEmail;
 
+
+        ShowTaskDetails(null);
+
+
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+        repository.AddTaskToUser2(model);
+
+    }
+
+
+    public async Task HandleInvalidSubmit()
+    {
+
+    }
+
+
+    void ShowTaskDetails(ChangeEventArgs e)
+    {
+        string SelectedString = "Stolec";
+        if(e!=null)
+        {
+            SelectedString = e.Value.ToString();
+            model.TaskToDoCategory = SelectedString;
+        }
+
+
+
+
+
+
+
+        TaskToDoCategory taskCategory = new TaskToDoCategory();
+        taskCategory.CategoryName = SelectedString;
+
+        model.measurementcaterogiesList = new List<MeasurementCategory>();
+        model.measurementList = new List<Measurement>();
+
+        model.measurementcaterogiesList=model.SetMeasurementCategories(SelectedString);
+        model.SetMeasurements();
 
 
 
     }
 
+    public   void AddCorrectTime()
+    {
+        for (int i = 0; i < model.showTimes.Count; i++)
+        {
+            if(model.showTimes[i]==false)
+            {
+                model.showTimes[i] = true;
+                break;
+            }
+        }
+
+    }
+
+    public   void RemoveTime()
+    {
+
+        for (int i = 10; i >=0 ; i--)
+        {
+            if (model.showTimes[i] == true)
+            {
+                model.showTimes[i] = false;
+                break;
+            }
+        }
+
+
+
+    }
 
 
 

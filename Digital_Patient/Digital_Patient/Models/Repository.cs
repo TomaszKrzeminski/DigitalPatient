@@ -19,6 +19,7 @@ namespace Digital_Patient.Models
        
         }
 
+       
 
         public bool AddUserToDoctorPatients(string Email,string DoctorId)
         {
@@ -42,12 +43,224 @@ namespace Digital_Patient.Models
             }
         }
 
-   
+        public int AddMeasurement(string MeasurementCategoryName, int NoteId, List<int> MeasurementPairIdList)
+        {
+
+            //Note note = context.Notes.Find(NoteId);
+            List<MeasurementPair> measurementPairs = new List<MeasurementPair>();
+
+            foreach (var item in MeasurementPairIdList)
+            {
+                MeasurementPair pair = ctx.MeasurementPairs.Find(item);
+                measurementPairs.Add(pair);
+            }
+
+
+
+            MeasurementCategory mCategory = ctx.MeasurementCategories.Where(x => x.CategoryName == MeasurementCategoryName).FirstOrDefault();
+
+            Measurement measurement = new Measurement();
+            ctx.Measurements.Add(measurement);
+            ctx.SaveChanges();
+
+
+
+            measurement.MeasurementPairs.AddRange(measurementPairs);
+            ctx.SaveChanges();
+            mCategory.Measurements.Add(measurement);
+            ctx.SaveChanges();
+
+            //measurement.Note = note;
+            ctx.SaveChanges();
+
+            return measurement.MeasurementId;
+        }
+
+        int AddIntervalData(int Number, DateTime StartTime, DateTime EndTime, bool Weekends, bool Holidays, List<DateTime> CorrectTimes)
+        {
+
+            IntervalData intervalData = new IntervalData(Number, StartTime, EndTime, Weekends, Holidays);
+
+            ctx.IntervalData.Add(intervalData);
+            ctx.SaveChanges();
+
+            foreach (var item in CorrectTimes)
+            {
+                intervalData.CorrectTimes.Add(new IntervalCorrectTime(item));
+                ctx.SaveChanges();
+            }
+            return intervalData.IntervalDataId;
+        }
+
+        int AddMeasurementPair(string Name, double Number, string Text)
+        {
+            MeasurementPair pair = new MeasurementPair();
+            pair.Name = Name;
+            pair.MeasurementText = Text;
+            pair.MeasurementNumber = Number;
+            ctx.MeasurementPairs.Add(pair);
+            ctx.SaveChanges();
+            return pair.MeasurementPairId;
+        }
+
+        int SeedNote(string Text = "Text notatki", bool Important = true)
+        {
+            Note note = new Note(Text, Important);
+            ctx.Notes.Add(note);
+            ctx.SaveChanges();
+            return note.NoteId;
+        }
+
+        void AddTaskToDo(string Description,string UserEmail, int IntervalDataId, string CategoryName, List<int> MeasurementIdList)
+        {
+
+            List<Measurement> measurementList = new List<Measurement>();
+
+            foreach (var item in MeasurementIdList)
+            {
+                Measurement measurement = ctx.Measurements.Find(item);
+                measurementList.Add(measurement);
+            }
+
+            IntervalData interval = ctx.IntervalData.Find(IntervalDataId);
+            TaskToDo taskToDo = new TaskToDo();
+            taskToDo.IntervalData = interval;
+            ctx.SaveChanges();
+
+
+            taskToDo.Description = Description;
+            taskToDo.Measurements.AddRange(measurementList);
+            ctx.TasksToDo.Add(taskToDo);
+            ctx.SaveChanges();
+
+            TaskToDoCategory taskCategory = ctx.TaskCategories.Where(x => x.CategoryName == CategoryName).FirstOrDefault();
+            taskCategory.TasksToDo.Add(taskToDo);
+            ctx.SaveChanges();
+
+            ApplicationUser user = ctx.Users.Where(x => x.Email == UserEmail).FirstOrDefault();
+            user.TasksToDo.Add(taskToDo);
+            ctx.SaveChanges();
+
+        }
+
+        List<DateTime> StringToDateTimeList(List<string> list)
+        {
+            List<DateTime> x = new List<DateTime>();
+
+            try
+            {
+
+                foreach (var h in list)
+                {
+
+                }
+
+
+
+
+                return x;
+            }
+            catch(Exception ex)
+            {
+                return x;
+
+            }
+
+
+        }
+
+
+        public bool AddTaskToUser2(AddTaskToUserModel model       )
+        {
+
+            string UserEmail = model.UserId;
+
+            string TaskCategoryName = model.TaskToDoCategory;
+
+            int Number = model.intervalData.Number;
+
+            DateTime StartTime = model.intervalData.StartTime;
+            DateTime EndTime = model.intervalData.EndTime;
+            bool Weekends = model.intervalData.Weekends;
+            bool Holidays = model.intervalData.Holidays;
+
+
+            List<DateTime> CorrectTimes = model.correctTimes;
+
+
+
+
+            try
+            {
+
+                TaskCat taskcat;
+                Enum.TryParse<TaskCat>(TaskCategoryName, out taskcat);
+                MeasurementCategoryFactory factory = new MeasurementCategoryFactory();
+                ITaskCat tasktoDoCat = factory.SetTaskCat(taskcat);
+                List<MeasurementCategory> categories = tasktoDoCat.AddCategories();
+
+                List<int> measurementIdList = new List<int>();
+
+
+
+                foreach (var cat in categories)
+                {
+                    
+                    List<int> MeasurementPairIdList = new List<int>();
+
+                    MeasurementCat mCat;
+                    Enum.TryParse<MeasurementCat>(cat.CategoryName, out mCat);
+                    MeasurementPairsFactory factory2 = new MeasurementPairsFactory();
+                    IMeasurementPair measurementPair = factory2.SetMeasurement(mCat);
+                    List<MeasurementPair> mList = measurementPair.AddPairs();
+
+
+                    foreach (var pairM in mList)
+                    {
+                        ctx.MeasurementPairs.Add(pairM);
+                        ctx.SaveChanges();
+                        MeasurementPairIdList.Add(pairM.MeasurementPairId);
+                    }
+
+
+                    int MeasurementId = AddMeasurement(cat.CategoryName, 1, MeasurementPairIdList);
+                    measurementIdList.Add(MeasurementId);
+                }
+
+
+
+                int IntervalDataId = AddIntervalData(Number, StartTime, EndTime, Weekends, Holidays, CorrectTimes);
+
+                AddTaskToDo(model.Description,UserEmail, IntervalDataId, TaskCategoryName, measurementIdList);
+
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+            
+        }
+
+
+
+
         public bool AddTaskToUser(AddTaskToUserModel model)
         {
             try
             {
                 ApplicationUser user = ctx.Users.Find(model.UserId);
+
+
+
+
+
+
+
+
+
+
                 user.TasksToDo.Add(model.tasktoDo);
                 ctx.SaveChanges();
 

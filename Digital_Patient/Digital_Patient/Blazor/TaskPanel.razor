@@ -17,44 +17,285 @@
 <h1>@Action</h1>
 
 
-<div class="container">
-    <div class="row">
-        <div class="col col-lg-3">
-            Pacjenci
-            @foreach (var u in allpatients.OrderBy(x=>x))
+
+    <div class="row ">
+        <div class="col col-lg-2">
+            <h3>Pacjenci</h3>
+            @foreach (var u in allpatients.OrderBy(x => x))
             {
-                <div @onclick="@(()=>AddToMyPatients(u))">
+                <div @onclick="@(() => AddToMyPatients(u))">
                     @u
                 </div>
             }
         </div>
-        <div class="col col-lg-3">
-            Moi Pacjenci
-            @foreach (var u in patients.OrderBy(x=>x.Email))
-            {
-                <div  @onclick="@(()=>ShowPatientTasks(u.Email))">
-                    @u.Email
-                </div>
-            }
-        </div>
-        <div class="col col-lg-3">
-            Zadania
-            @foreach (var tasktoDo in PatientTaskList)
-            {
-                <div>
-                    @tasktoDo.TaskToDoCategory.CategoryName
-                    @tasktoDo.Description
-                </div>
-            }
-        </div>
-        <div class="col col-lg-3">
-            Dodaj Nowe
+        <div class="col col-lg-2">
+            <h3>Moi Pacjenci</h3>
+            <div class="list-group">
+                
 
+                @foreach (var u in patients.OrderBy(x => x.Email))
+                {
+
+                    <a class="list-group-item list-group-item-action" @onclick="@(() => ShowPatientTasks(u.Email))">@u.Email</a>
+
+                }
+
+            </div>
+
+
+
+
+
+
+            @*@foreach (var u in patients.OrderBy(x => x.Email))
+        {
+            <div @onclick="@(() => ShowPatientTasks(u.Email))">
+                @u.Email
+            </div>
+        }*@
+
+
+
+
+
+
+        </div>
+        <div class="col col-lg-2">
+            <h3>Zadania</h3>
+            @foreach (var tasktoDo in PatientTaskList)
+            {       
+
+            <a class="list-group-item list-group-item-action"> @tasktoDo.TaskToDoCategory.CategoryName    @tasktoDo.Description</a>
+                     
+   
+            }
+
+
+
+
+            @*@foreach (var tasktoDo in PatientTaskList)
+        {
+            <div>
+                @tasktoDo.TaskToDoCategory.CategoryName
+                @tasktoDo.Description
+            </div>
+        }*@
+        </div>
+        <div class="col col-lg-3">
+
+
+            @if (PatientEmail != null && PatientEmail != "")
+            {
+                <h3>Dodaj Nowe Zadanie</h3>
+
+
+                <EditForm Model="@model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+                    <div class="form-group">
+                        <label>Kategoria zadania</label>
+                        <select @onchange="ShowTaskDetails">
+
+                            @foreach (var taskcat in Enum.GetValues(typeof(TaskCat)))
+                            {
+                                <option value=@taskcat>@taskcat</option>
+                            }
+                        </select>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label>
+                            Opis zadania
+                        </label>
+                        <InputText @bind-Value="model.Description" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Weekendy
+                        </label>
+                        <InputCheckbox @bind-Value="model.intervalData.Weekends" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Święta
+                        </label>
+                        <InputCheckbox @bind-Value="model.intervalData.Holidays" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Data Rozpoczęcia
+                        </label>
+                        <InputDate @bind-Value="model.intervalData.StartTime" />
+                    </div>
+                    <div class="form-group">
+                        <label>Data Zakończenia</label>
+                        <InputDate @bind-Value="model.intervalData.EndTime" />
+                    </div>
+                    <div class="form-group">
+                        <label>Godziny Zadania</label>
+                        <div>
+                            <input type="time" @bind="model.correctTimes[0]" />
+                        </div>
+
+
+                        @if (model.showTimes[0])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[1]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[1])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[2]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[2])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[3]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[3])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[4]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[4])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[5]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[5])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[6]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[6])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[7]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[7])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[8]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[8])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[9]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[9])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[10]" />
+                            </div>
+                        }
+
+                        @if (model.showTimes[10])
+                        {
+                            <div>
+                                <input type="time" @bind="model.correctTimes[11]" />
+                            </div>
+                        }
+
+                        @*@for (int i = 0; i < 12; i++)
+                {
+            <div>
+
+                <input type="times" @bind="model.correctTimes[i]" />
+            </div>
+                }*@
+
+
+
+
+
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-light" @onclick="AddCorrectTime"  value="Wiecej" ><input class="btn btn-dark" @onclick="RemoveTime" value="Mniej" >
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-danger" type="submit">Dodaj</button>
+                    </div>
+
+                </EditForm>
+              
+
+
+
+
+
+            }
+
+
+
+        </div>
+        <div class="col col-lg-3">
+            <h3>Pomiary</h3>
+
+            @if (model.measurementList != null && model.measurementList.Count > 0)
+            {
+
+
+                foreach (var mcl in model.measurementList)
+                {
+
+                    <h5> @mcl.MeasurementCategory.CategoryName</h5>
+
+                    <ul class="list-group">
+
+                        @foreach (var item in mcl.MeasurementPairs)
+                        {
+
+                            @if (item.Text)
+                            {
+                                <li class="list-group-item list-group-item-secondary">
+                                    @item.MeasurementText
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item list-group-item-secondary">
+                                    @item.Name
+                                </li>
+                            }
+
+                        }
+
+                    </ul>
+                }
+
+
+
+
+
+
+
+            }
 
 
         </div>
     </div>
-</div>
+
 
 
 
@@ -69,12 +310,14 @@
 
     public string Action { get; set; }
 
+    public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
+
     [Parameter]
     public string UserId { get; set; }
 
     public string PatientEmail { get; set; }
 
-    public string SelectedPatientEmail { get; set; }
+    //public string SelectedPatientEmail { get; set; }
 
     private Repository repository;
 
@@ -91,11 +334,11 @@
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
-        patients = repository.GetDoctorPatients(UserId );
+        patients = repository.GetDoctorPatients(UserId);
 
         List<string> listExcept = new List<string>();
 
-        if(patients!=null&&patients.Count>0)
+        if (patients != null && patients.Count > 0)
         {
             listExcept = patients.Select(x => x.Email).ToList();
         }
@@ -107,9 +350,9 @@
 
     public void AddToMyPatients(string Email)
     {
-        bool check= repository.AddUserToDoctorPatients(Email, UserId);
+        bool check = repository.AddUserToDoctorPatients(Email, UserId);
 
-        if(check)
+        if (check)
         {
             Action = "Dodano" + " " + Email + " do twoich Pacjentów";
             ShowPatientTasks(Email);
@@ -119,18 +362,95 @@
 
     }
 
-    public void ShowPatientTasks(string PatientId)
+    public void ShowPatientTasks(string PatientEmail)
     {
+
+
+
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
-        PatientTaskList = repository.GetUserTasksToDo2(PatientId);
+        PatientTaskList = repository.GetUserTasksToDo2(PatientEmail);
+        this.PatientEmail = PatientEmail;
+        model.UserId = PatientEmail;
 
+
+        ShowTaskDetails(null);
+
+
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+        repository.AddTaskToUser2(model);
+
+    }
+
+
+    public async Task HandleInvalidSubmit()
+    {
+
+    }
+
+
+    void ShowTaskDetails(ChangeEventArgs e)
+    {
+        string SelectedString = "Stolec";
+        if(e!=null)
+        {
+            SelectedString = e.Value.ToString();
+            model.TaskToDoCategory = SelectedString;
+        }
+
+
+
+
+
+
+
+        TaskToDoCategory taskCategory = new TaskToDoCategory();
+        taskCategory.CategoryName = SelectedString;
+
+        model.measurementcaterogiesList = new List<MeasurementCategory>();
+        model.measurementList = new List<Measurement>();
+
+        model.measurementcaterogiesList=model.SetMeasurementCategories(SelectedString);
+        model.SetMeasurements();
 
 
 
     }
 
+    public   void AddCorrectTime()
+    {
+        for (int i = 0; i < model.showTimes.Count; i++)
+        {
+            if(model.showTimes[i]==false)
+            {
+                model.showTimes[i] = true;
+                break;
+            }
+        }
+
+    }
+
+    public   void RemoveTime()
+    {
+
+        for (int i = 10; i >=0 ; i--)
+        {
+            if (model.showTimes[i] == true)
+            {
+                model.showTimes[i] = false;
+                break;
+            }
+        }
+
+
+
+    }
 
 
 
