@@ -16,7 +16,7 @@ namespace Digital_Patient.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);              
 
 
             modelBuilder.Entity<DoctorUser>()       // THIS IS FIRST
@@ -46,27 +46,7 @@ namespace Digital_Patient.Data
                 .WithMany(p => p.HealthCarerUsers)
                 .HasForeignKey(pt => pt.ApplicationUserId);
 
-
-
-
-
-
-
-
-            //modelBuilder.Entity<HealthCarerUser>().HasKey(sc => new { sc.HealthCarerId, sc.ApplicationUserId });
-
-
-
-
-
-
-
-
-
-
-
-
-
+                 
 
 
             modelBuilder.Entity<TaskToDo>()

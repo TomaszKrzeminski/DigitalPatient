@@ -82,8 +82,18 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 309 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+#line 436 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
        
+
+
+    public bool AddEditTask { get; set; } = true;
+
+
+    public int TaskIdToEdit { get; set; }
+
+    public EditTaskToDoModel modelEdit { get; set; } = new EditTaskToDoModel();
+
+
 
     public string Action { get; set; }
 
@@ -94,7 +104,7 @@ using Microsoft.EntityFrameworkCore;
 
     public string PatientEmail { get; set; }
 
-    //public string SelectedPatientEmail { get; set; }
+
 
     private Repository repository;
 
@@ -151,6 +161,7 @@ using Microsoft.EntityFrameworkCore;
         this.PatientEmail = PatientEmail;
         model.UserId = PatientEmail;
 
+        AddEditTask = true;
 
         ShowTaskDetails(null);
 
@@ -161,8 +172,12 @@ using Microsoft.EntityFrameworkCore;
     {
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
-        repository.AddTaskToUser2(model);
 
+
+        Action = repository.AddTaskToUser2(model);
+        model = new AddTaskToUserModel();
+
+        ShowPatientTasks(PatientEmail);
     }
 
 
@@ -229,7 +244,63 @@ using Microsoft.EntityFrameworkCore;
 
     }
 
+    public void SetEdit(int TaskId)
+    {
 
+        TaskIdToEdit = TaskId;
+        AddEditTask = false;
+
+        modelEdit = repository.EditTaskToDo(TaskId);
+
+
+    }
+
+    public async Task HandleValidSubmitEdit()
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        modelEdit.TaskToDoId = TaskIdToEdit;
+        repository.ChangeTaskToDo(modelEdit);
+
+
+        ShowPatientTasks(PatientEmail);
+    }
+
+
+    public async Task HandleInvalidSubmitEdit()
+    {
+
+    }
+
+    public void AddCorrectTime2()
+    {
+        for (int i = 0; i < modelEdit.showTimes.Count; i++)
+        {
+            if (modelEdit.showTimes[i] == false)
+            {
+                modelEdit.showTimes[i] = true;
+                break;
+            }
+        }
+
+    }
+
+    public void RemoveTime2()
+    {
+
+        for (int i = 10; i >= 0; i--)
+        {
+            if (modelEdit.showTimes[i] == true)
+            {
+                modelEdit.showTimes[i] = false;
+                break;
+            }
+        }
+
+
+
+    }
 
 
 #line default

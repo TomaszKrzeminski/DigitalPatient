@@ -249,6 +249,14 @@ namespace Digital_Patient.Models
     public class IntervalCorrectTime
     {
 
+        public IntervalCorrectTime(string special)
+        {
+            
+            IntervalCorrectTimeActions = new List<IntervalCorrectTimeAction>();
+        }
+
+
+
         public IntervalCorrectTime()
         {
             Time = new DateTime();

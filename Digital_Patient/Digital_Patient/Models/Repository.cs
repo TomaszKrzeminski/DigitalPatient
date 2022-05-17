@@ -143,39 +143,131 @@ namespace Digital_Patient.Models
 
         }
 
-        List<DateTime> StringToDateTimeList(List<string> list)
-        {
-            List<DateTime> x = new List<DateTime>();
 
+
+        public bool CheckIfTaskExists(string UserEmail, List<DateTime> Times, DateTime StartTime, DateTime EndTime, bool Weekends, bool Holidays)
+        {
             try
             {
+                List<TaskToDo> list = ctx.Users.Include(x => x.TasksToDo).ThenInclude(x => x.IntervalData).ThenInclude(x => x.CorrectTimes).ThenInclude(x => x.IntervalCorrectTimeActions).Include(x => x.TasksToDo).ThenInclude(x => x.Measurements).ThenInclude(x => x.MeasurementCategory).Include(x => x.TasksToDo).ThenInclude(x => x.Measurements).ThenInclude(x => x.MeasurementPairs).Include(x => x.TasksToDo).ThenInclude(x => x.TaskToDoCategory).Include(x => x.TasksToDo).ThenInclude(x => x.Measurements).ThenInclude(x => x.Note)
+                   .Where(x => x.Email == UserEmail).FirstOrDefault().TasksToDo.ToList();
 
-                foreach (var h in list)
+
+                //bool task = ctx.Users.Include(x => x.TasksToDo).ThenInclude(x => x.IntervalData).ThenInclude(x => x.CorrectTimes).ThenInclude(x => x.IntervalCorrectTimeActions).Include(x => x.TasksToDo).ThenInclude(x => x.Measurements).ThenInclude(x => x.MeasurementCategory).Include(x => x.TasksToDo).ThenInclude(x => x.Measurements).ThenInclude(x => x.MeasurementPairs).Include(x => x.TasksToDo).ThenInclude(x => x.TaskToDoCategory).Include(x => x.TasksToDo).ThenInclude(x => x.Measurements).ThenInclude(x => x.Note)
+                //    .Where(x => x.Email == UserEmail&&x.TasksToDo.Any(y=>y.IntervalData.Holidays==Holidays&&y.IntervalData.Weekends==Weekends&&y.IntervalData.CorrectTimes.Any(y=>Times.Contains(y.Time)&&y.IntervalData.StartTime==StartTime&&y.IntervalData.EndTime==EndTime))).FirstOrDefault().TasksToDo.Any();
+
+
+                bool task = false;
+                List<TaskToDo> list2 = new List<TaskToDo>();
+                if(list!=null&&list.Count>0)
                 {
-
+                 list2 = list.Where(y=> y.IntervalData.Holidays == Holidays && y.IntervalData.Weekends == Weekends&&y.IntervalData.CorrectTimes.Any(y => Times.Contains(y.Time.Date) && y.IntervalData.StartTime.Date == StartTime.Date && y.IntervalData.EndTime.Date == EndTime.Date)).ToList();
+                
                 }
-
-
-
-
-                return x;
+               return task;
+               
             }
             catch(Exception ex)
             {
-                return x;
-
+                return false;
             }
-
-
         }
 
 
-        public bool AddTaskToUser2(AddTaskToUserModel model       )
+     
+        public EditTaskToDoModel  EditTaskToDo(int TaskId)
+        {
+            EditTaskToDoModel taskmodel = new EditTaskToDoModel();
+            try
+            {
+
+                TaskToDo task = GetTaskToDo(TaskId);
+                taskmodel.Description = task.Description;
+                taskmodel.correctTimes = task.IntervalData.CorrectTimes.Select(x => x.Time).ToList();
+                taskmodel.RemoveDuplicationsDateTime();
+
+
+
+                taskmodel.intervalData = task.IntervalData;
+
+              int howMany=  taskmodel.correctTimes.Count();
+
+                for (int i = 0; i < (howMany-1); i++)
+                {
+                    taskmodel.showTimes[i] = true;
+                }
+
+
+                int x = 12 - howMany;
+
+                for (int i = 0; i < x; i++)
+                {
+                    taskmodel.correctTimes.Add(new DateTime());
+                }
+
+
+                return taskmodel;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+
+        }
+
+        public bool ChangeTaskToDo(EditTaskToDoModel model)
+        {
+            try
+            {
+                TaskToDo task  = ctx.TasksToDo.Include(x => x.IntervalData).ThenInclude(x => x.CorrectTimes).ThenInclude(x => x.IntervalCorrectTimeActions).Include(x => x.Measurements).ThenInclude(x => x.MeasurementCategory).Include(x => x.Measurements).ThenInclude(x => x.MeasurementPairs).Include(x => x.TaskToDoCategory).Include(x => x.Measurements).ThenInclude(x => x.Note)
+                    .Where(x => x.TaskToDoId == model.TaskToDoId).FirstOrDefault();
+
+                task.Description = model.Description;
+               
+
+                IntervalData data = task.IntervalData;
+                data.Holidays = model.intervalData.Holidays;
+                data.Weekends = model.intervalData.Weekends;
+                data.StartTime = model.intervalData.StartTime;
+                data.EndTime = model.intervalData.EndTime;
+
+                ctx.SaveChanges();
+
+
+                IntervalData interval = ctx.IntervalData.Include(x => x.CorrectTimes).Where(x => x.TaskToDo.IntervalData.IntervalDataId == data.IntervalDataId).FirstOrDefault();
+
+                List<IntervalCorrectTime> times = interval.CorrectTimes;
+
+                for (int i = 0; i < times.Count; i++)                
+                {
+                    interval.CorrectTimes.Remove(times[i]);
+                }
+
+                ctx.SaveChanges();
+
+                for (int i = 0; i < model.correctTimes.Count; i++)
+                {
+                    interval.CorrectTimes.Add(new IntervalCorrectTime("special") { Time = model.correctTimes[i] });
+                }
+
+                ctx.SaveChanges();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        public string AddTaskToUser2(AddTaskToUserModel model  )
         {
 
             string UserEmail = model.UserId;
-
+            model.RemoveDuplicationsDateTime();
             string TaskCategoryName = model.TaskToDoCategory;
+
 
             int Number = model.intervalData.Number;
 
@@ -184,8 +276,16 @@ namespace Digital_Patient.Models
             bool Weekends = model.intervalData.Weekends;
             bool Holidays = model.intervalData.Holidays;
 
+             List<DateTime> CorrectTimes = model.correctTimes;
 
-            List<DateTime> CorrectTimes = model.correctTimes;
+        bool check=   CheckIfTaskExists( UserEmail, CorrectTimes,  StartTime,  EndTime,  Weekends,  Holidays);
+
+            if(check)
+            {
+                return "Podobne zadanie już istnieje";
+            }
+
+            
 
 
 
@@ -234,17 +334,14 @@ namespace Digital_Patient.Models
                 AddTaskToDo(model.Description,UserEmail, IntervalDataId, TaskCategoryName, measurementIdList);
 
 
-                return true;
+                return "Zadanie "+model.Description + " dodano poprawnie";
             }
             catch(Exception ex)
             {
-                return false;
+                return "Nie udało się dodać zadania";
             }
             
         }
-
-
-
 
         public bool AddTaskToUser(AddTaskToUserModel model)
         {
@@ -275,6 +372,13 @@ namespace Digital_Patient.Models
         public List<TaskToDo> GetUserTasksToDo2(string PatientEmail)
         {
             List<TaskToDo> list = new List<TaskToDo>();
+
+
+            //////check if task exists
+
+
+
+
             try
             {
                 list = ctx.Users.Include(x => x.TasksToDo).ThenInclude(x=>x.TaskToDoCategory).Where(x => x.Email == PatientEmail).First().TasksToDo.ToList();
@@ -317,8 +421,7 @@ namespace Digital_Patient.Models
             {
                 return list;
             }
-        }
-        
+        }       
 
 
         public List<ApplicationUser>  GetDoctorPatients(string DoctorId)
@@ -424,8 +527,7 @@ namespace Digital_Patient.Models
             {
                 return false;
             }
-        }
-        
+        }       
 
 
         public TaskToDo GetTaskToDo(int TaskId)

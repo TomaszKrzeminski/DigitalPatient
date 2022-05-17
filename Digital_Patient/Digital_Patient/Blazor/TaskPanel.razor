@@ -42,49 +42,25 @@
 
             </div>
 
-
-
-
-
-
-            @*@foreach (var u in patients.OrderBy(x => x.Email))
-        {
-            <div @onclick="@(() => ShowPatientTasks(u.Email))">
-                @u.Email
-            </div>
-        }*@
-
-
-
-
-
-
         </div>
         <div class="col col-lg-2">
             <h3>Zadania</h3>
             @foreach (var tasktoDo in PatientTaskList)
-            {       
+            {
 
-            <a class="list-group-item list-group-item-action"> @tasktoDo.TaskToDoCategory.CategoryName    @tasktoDo.Description</a>
-                     
-   
+            <a class="list-group-item list-group-item-action"   @onclick="@(() => SetEdit(tasktoDo.TaskToDoId))"        > @tasktoDo.TaskToDoCategory.CategoryName    @tasktoDo.Description</a>
+
+
             }
 
 
 
 
-            @*@foreach (var tasktoDo in PatientTaskList)
-        {
-            <div>
-                @tasktoDo.TaskToDoCategory.CategoryName
-                @tasktoDo.Description
-            </div>
-        }*@
         </div>
         <div class="col col-lg-3">
 
 
-            @if (PatientEmail != null && PatientEmail != "")
+            @if (PatientEmail != null && PatientEmail != ""&&AddEditTask)
             {
                 <h3>Dodaj Nowe Zadanie</h3>
 
@@ -218,12 +194,12 @@
                         }
 
                         @*@for (int i = 0; i < 12; i++)
-                {
-            <div>
+                        {
+                    <div>
 
-                <input type="times" @bind="model.correctTimes[i]" />
-            </div>
-                }*@
+                        <input type="times" @bind="model.correctTimes[i]" />
+                    </div>
+                        }*@
 
 
 
@@ -231,14 +207,14 @@
 
                     </div>
                     <div class="form-group">
-                        <input class="btn btn-light" @onclick="AddCorrectTime"  value="Wiecej" ><input class="btn btn-dark" @onclick="RemoveTime" value="Mniej" >
+                        <input class="btn btn-light" @onclick="AddCorrectTime" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime" value="Mniej">
                     </div>
                     <div class="form-group">
                         <button class="btn btn-danger" type="submit">Dodaj</button>
                     </div>
 
                 </EditForm>
-              
+
 
 
 
@@ -246,7 +222,158 @@
 
             }
 
+            @if (TaskIdToEdit > 0&&!AddEditTask)
+            {
+                <h3>Edytuj Zadanie</h3> ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+                <EditForm Model="@modelEdit" OnValidSubmit="HandleValidSubmitEdit" OnInvalidSubmit="HandleInvalidSubmitEdit">
+                    <div class="form-group">
+                        <label>Kategoria zadania</label>
+                       <h4>@modelEdit.TaskToDoCategory</h4>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label>
+                            Opis zadania
+                        </label>
+                        <InputText @bind-Value="modelEdit.Description" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Weekendy
+                        </label>
+                        <InputCheckbox @bind-Value="modelEdit.intervalData.Weekends" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Święta
+                        </label>
+                        <InputCheckbox @bind-Value="modelEdit.intervalData.Holidays" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Data Rozpoczęcia
+                        </label>
+                        <InputDate @bind-Value="modelEdit.intervalData.StartTime" />
+                    </div>
+                    <div class="form-group">
+                        <label>Data Zakończenia</label>
+                        <InputDate @bind-Value="modelEdit.intervalData.EndTime" />
+                    </div>
+                    <div class="form-group">
+                        <label>Godziny Zadania</label>
+                 
+                    <div>
+                        <input type="time" @bind="modelEdit.correctTimes[0]" />
+                    </div>
+               
+                        
+
+
+                        @if (modelEdit.showTimes[0])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[1]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[1])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[2]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[2])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[3]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[3])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[4]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[4])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[5]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[5])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[6]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[6])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[7]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[7])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[8]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[8])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[9]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[9])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[10]" />
+                            </div>
+                        }
+
+                        @if (modelEdit.showTimes[10])
+                        {
+                            <div>
+                                <input type="time" @bind="modelEdit.correctTimes[11]" />
+                            </div>
+                        }
+
+                       
+
+
+
+
+
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-light" @onclick="AddCorrectTime2" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime2" value="Mniej">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-danger" type="submit">Zmień</button>
+                    </div>
+
+                </EditForm>
+
+
+
+
+
+
+            }
 
         </div>
         <div class="col col-lg-3">
@@ -308,6 +435,16 @@
 
 @code {
 
+
+    public bool AddEditTask { get; set; } = true;
+
+
+    public int TaskIdToEdit { get; set; }
+
+    public EditTaskToDoModel modelEdit { get; set; } = new EditTaskToDoModel();
+
+
+
     public string Action { get; set; }
 
     public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
@@ -317,7 +454,7 @@
 
     public string PatientEmail { get; set; }
 
-    //public string SelectedPatientEmail { get; set; }
+
 
     private Repository repository;
 
@@ -374,6 +511,7 @@
         this.PatientEmail = PatientEmail;
         model.UserId = PatientEmail;
 
+        AddEditTask = true;
 
         ShowTaskDetails(null);
 
@@ -384,8 +522,12 @@
     {
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
-        repository.AddTaskToUser2(model);
 
+
+        Action = repository.AddTaskToUser2(model);
+        model = new AddTaskToUserModel();
+
+        ShowPatientTasks(PatientEmail);
     }
 
 
@@ -452,6 +594,62 @@
 
     }
 
+    public void SetEdit(int TaskId)
+    {
 
+        TaskIdToEdit = TaskId;
+        AddEditTask = false;
+
+        modelEdit = repository.EditTaskToDo(TaskId);
+
+
+    }
+
+    public async Task HandleValidSubmitEdit()
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        modelEdit.TaskToDoId = TaskIdToEdit;
+        repository.ChangeTaskToDo(modelEdit);
+
+
+        ShowPatientTasks(PatientEmail);
+    }
+
+
+    public async Task HandleInvalidSubmitEdit()
+    {
+
+    }
+
+    public void AddCorrectTime2()
+    {
+        for (int i = 0; i < modelEdit.showTimes.Count; i++)
+        {
+            if (modelEdit.showTimes[i] == false)
+            {
+                modelEdit.showTimes[i] = true;
+                break;
+            }
+        }
+
+    }
+
+    public void RemoveTime2()
+    {
+
+        for (int i = 10; i >= 0; i--)
+        {
+            if (modelEdit.showTimes[i] == true)
+            {
+                modelEdit.showTimes[i] = false;
+                break;
+            }
+        }
+
+
+
+    }
 
 }

@@ -320,14 +320,6 @@ namespace Digital_Patient.Models
                 }
 
 
-
-
-
-
-
-
-
-
                 void SeddTaskToDoCategory(string CategoryName)
                 {
                     context.TaskCategories.Add(new TaskToDoCategory() { CategoryName = CategoryName });
@@ -358,9 +350,8 @@ namespace Digital_Patient.Models
                     
 
                     return intervalData.IntervalDataId;
-                }           
-
-               
+                }         
+                              
 
                 int SeedMeasurement3(string MeasurementCategoryName, int NoteId, List<int> MeasurementPairIdList)
                 {
