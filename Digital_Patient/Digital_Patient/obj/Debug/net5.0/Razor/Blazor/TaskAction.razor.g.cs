@@ -9,6 +9,13 @@ namespace Digital_Patient.Blazor
     using System.Linq;
     using System.Threading.Tasks;
 #nullable restore
+#line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
+using Syncfusion.Blazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskAction.razor"
 using Microsoft.AspNetCore.Components.Forms;
 

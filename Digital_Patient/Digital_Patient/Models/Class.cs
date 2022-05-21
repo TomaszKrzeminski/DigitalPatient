@@ -18,13 +18,20 @@ namespace Digital_Patient.Models
             measurementcaterogiesList = new List<MeasurementCategory>();
             measurementList = new List<Measurement>();
             intervalData = new IntervalData(DateTime.Now,DateTime.Now.AddDays(30));
-            correctTimes = new List<DateTime>();
+            correctTimes = new List<DateTime?>();
             showTimes = new List<bool>();
 
-            for (int i = 0; i < 12; i++)
+            //for (int i = 0; i < 12; i++)
+            //{
+            //    correctTimes.Add(new DateTime(2022,1,1,12,00,1));
+            //}
+
+            correctTimes.Add(DateTime.Now);
+            for (int i = 1; i < 12; i++)
             {
-                correctTimes.Add(new DateTime(2022,1,1,12,00,1));
+                correctTimes.Add(null);
             }
+
 
             for (int i = 0; i < 11; i++)
             {
@@ -53,22 +60,11 @@ namespace Digital_Patient.Models
 
         public void RemoveDuplicationsDateTime()
         {
-            List<DateTime> list2 = new List<DateTime>();
+            List<DateTime?> list2 = new List<DateTime?>();
              list2=correctTimes.Distinct().ToList();
-            DateTime dt = new DateTime(2022, 1, 1, 12, 00, 1);
 
-            int count = list2.Count;
 
-            for (int i = 0; i < count; i++)
-            {
-
-                if(list2[i]==dt)
-                {
-                    list2.RemoveAt(i);
-                    break;
-                }
-
-            }
+            list2.RemoveAll(x => x == null);
 
             correctTimes = list2;
                 
@@ -115,7 +111,7 @@ namespace Digital_Patient.Models
         public List<Measurement> measurementList { get; set; }
 
         public IntervalData intervalData { get; set; }
-        public List<DateTime> correctTimes { get; set; }
+        public List<DateTime?> correctTimes { get; set; }
 
         public List<bool> showTimes { get; set; }
 
@@ -131,18 +127,34 @@ namespace Digital_Patient.Models
             measurementcaterogiesList = new List<MeasurementCategory>();
             measurementList = new List<Measurement>();
             intervalData = new IntervalData(DateTime.Now, DateTime.Now.AddDays(30));
-            correctTimes = new List<DateTime>();
+            correctTimes = new List<DateTime?>();
             showTimes = new List<bool>();
 
-            for (int i = 0; i < 12; i++)
+
+            for (int i = 1; i < 12; i++)
             {
-                correctTimes.Add(new DateTime());
+                correctTimes.Add(null);
             }
 
-            for (int i = 0; i < 12; i++)
+
+            for (int i = 0; i < 11; i++)
             {
                 showTimes.Add(false);
             }
+
+
+
+
+
+            //for (int i = 0; i < 12; i++)
+            //{
+            //    correctTimes.Add(new DateTime());
+            //}
+
+            //for (int i = 0; i < 12; i++)
+            //{
+            //    showTimes.Add(false);
+            //}
 
 
         }
@@ -153,8 +165,12 @@ namespace Digital_Patient.Models
 
         public void RemoveDuplicationsDateTime()
         {
-            List<DateTime> list2 = new List<DateTime>();
+            List<DateTime?> list2 = new List<DateTime?>();
             list2 = correctTimes.Distinct().ToList();
+
+
+            list2.RemoveAll(x => x == null);
+
             correctTimes = list2;
 
         }
@@ -169,12 +185,12 @@ namespace Digital_Patient.Models
         [Required]
         public string Description { get; set; }
 
-        public string TaskToDoCategory { get; set; } = "Stolec";
+        public string TaskToDoCategory { get; set; } 
         public List<MeasurementCategory> measurementcaterogiesList { get; set; }
         public List<Measurement> measurementList { get; set; }
 
         public IntervalData intervalData { get; set; }
-        public List<DateTime> correctTimes { get; set; }
+        public List<DateTime?> correctTimes { get; set; }
 
         public List<bool> showTimes { get; set; }
 

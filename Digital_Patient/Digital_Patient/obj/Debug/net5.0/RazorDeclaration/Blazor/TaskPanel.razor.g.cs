@@ -12,6 +12,13 @@ namespace Digital_Patient.Blazor
     using System.Linq;
     using System.Threading.Tasks;
 #nullable restore
+#line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
+using Syncfusion.Blazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -82,7 +89,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 436 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+#line 497 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
        
 
 
@@ -113,6 +120,29 @@ using Microsoft.EntityFrameworkCore;
     List<string> allpatients = new List<string>();
 
     List<TaskToDo> PatientTaskList = new List<TaskToDo>();
+    public void  RemoveFromMyPatients(string PatientId)
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        bool check=   repository.RemovePateintFromDoctor( UserId,  PatientId);
+
+        if (check)
+        {
+            Action = "Usunięto twojego Pacjenta ";
+
+            OnParametersSetAsync();
+        }
+
+
+        PatientTaskList = new List<TaskToDo>();
+
+        model.measurementList = null;
+        AddEditTask = false;
+
+
+
+    }
 
     protected async override Task OnParametersSetAsync()
     {
@@ -134,6 +164,10 @@ using Microsoft.EntityFrameworkCore;
 
 
     }
+
+
+
+
 
     public void AddToMyPatients(string Email)
     {
@@ -161,7 +195,12 @@ using Microsoft.EntityFrameworkCore;
         this.PatientEmail = PatientEmail;
         model.UserId = PatientEmail;
 
+
         AddEditTask = true;
+
+
+
+
 
         ShowTaskDetails(null);
 
@@ -190,7 +229,7 @@ using Microsoft.EntityFrameworkCore;
     void ShowTaskDetails(ChangeEventArgs e)
     {
         string SelectedString = "Stolec";
-        if(e!=null)
+        if (e != null)
         {
             SelectedString = e.Value.ToString();
             model.TaskToDoCategory = SelectedString;
@@ -208,34 +247,44 @@ using Microsoft.EntityFrameworkCore;
         model.measurementcaterogiesList = new List<MeasurementCategory>();
         model.measurementList = new List<Measurement>();
 
-        model.measurementcaterogiesList=model.SetMeasurementCategories(SelectedString);
+        model.measurementcaterogiesList = model.SetMeasurementCategories(SelectedString);
         model.SetMeasurements();
 
 
 
     }
 
-    public   void AddCorrectTime()
+    public void AddCorrectTime()
     {
         for (int i = 0; i < model.showTimes.Count; i++)
         {
-            if(model.showTimes[i]==false)
+            if (model.showTimes[i] == false)
             {
+
+
+                DateTime now = DateTime.Now;
+
+
                 model.showTimes[i] = true;
+                model.correctTimes[i + 1] = now;
                 break;
+
+
+
             }
         }
 
     }
 
-    public   void RemoveTime()
+    public void RemoveTime()
     {
 
-        for (int i = 10; i >=0 ; i--)
+        for (int i = 10; i >= 0; i--)
         {
             if (model.showTimes[i] == true)
             {
                 model.showTimes[i] = false;
+                model.correctTimes[i + 1] = null;
                 break;
             }
         }
@@ -279,10 +328,20 @@ using Microsoft.EntityFrameworkCore;
         {
             if (modelEdit.showTimes[i] == false)
             {
+
+
+                DateTime now = DateTime.Now;
+
+
                 modelEdit.showTimes[i] = true;
+                modelEdit.correctTimes[i + 1] = now;
                 break;
+
+
+
             }
         }
+
 
     }
 
@@ -294,11 +353,12 @@ using Microsoft.EntityFrameworkCore;
             if (modelEdit.showTimes[i] == true)
             {
                 modelEdit.showTimes[i] = false;
+                modelEdit.correctTimes[i + 1] = null;
                 break;
             }
         }
 
-
+        EditTaskToDoModel x = modelEdit;
 
     }
 

@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
+
 namespace Digital_Patient
 {
     public class Startup
@@ -53,7 +54,7 @@ namespace Digital_Patient
             services.AddRazorPages();
 
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
-
+           
 
 
 

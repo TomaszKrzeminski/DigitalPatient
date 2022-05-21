@@ -67,6 +67,14 @@
             "Nager.Date": {
               "target": "Package",
               "version": "[1.33.1, )"
+            },
+            "Syncfusion.Blazor": {
+              "target": "Package",
+              "version": "[20.1.0.56, )"
+            },
+            "Syncfusion.Blazor.Themes": {
+              "target": "Package",
+              "version": "[20.1.0.56, )"
             }
           },
           "imports": [

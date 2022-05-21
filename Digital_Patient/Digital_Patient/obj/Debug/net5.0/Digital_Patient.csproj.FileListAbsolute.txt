@@ -195,3 +195,12 @@ C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debu
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.pdb
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.genruntimeconfig.cache
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.csproj.AssemblyReference.cache
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Syncfusion.Blazor.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Syncfusion.Blazor.Themes.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Syncfusion.ExcelExport.Net.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Syncfusion.Licensing.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Syncfusion.PdfExport.Net.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.Text.Encodings.Web.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.Text.Json.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\libman.json

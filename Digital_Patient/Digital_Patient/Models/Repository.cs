@@ -19,7 +19,35 @@ namespace Digital_Patient.Models
        
         }
 
-       
+
+
+      public bool  RemovePateintFromDoctor(string DoctorId,string PatientId)
+        {
+            try
+            {
+
+                Doctor doctor = ctx.Doctors.Include(x => x.DoctorUsers).Where(x => x.Id == DoctorId).First();
+               
+
+
+                DoctorUser du = ctx.DoctorUsers.Where(x => x.DoctorId == DoctorId && x.ApplicationUserId == PatientId).FirstOrDefault();
+
+                ctx.DoctorUsers.Remove(du);
+
+                ctx.SaveChanges();
+
+
+
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+
 
         public bool AddUserToDoctorPatients(string Email,string DoctorId)
         {
@@ -183,9 +211,9 @@ namespace Digital_Patient.Models
 
                 TaskToDo task = GetTaskToDo(TaskId);
                 taskmodel.Description = task.Description;
-                taskmodel.correctTimes = task.IntervalData.CorrectTimes.Select(x => x.Time).ToList();
+                taskmodel.correctTimes = task.IntervalData.CorrectTimes.Select(x =>new DateTime?(x.Time) ).ToList<DateTime?>();
                 taskmodel.RemoveDuplicationsDateTime();
-
+                taskmodel.TaskToDoCategory = task.TaskToDoCategory.CategoryName;
 
 
                 taskmodel.intervalData = task.IntervalData;
@@ -202,7 +230,7 @@ namespace Digital_Patient.Models
 
                 for (int i = 0; i < x; i++)
                 {
-                    taskmodel.correctTimes.Add(new DateTime());
+                    taskmodel.correctTimes.Add(null);
                 }
 
 
@@ -223,7 +251,9 @@ namespace Digital_Patient.Models
                     .Where(x => x.TaskToDoId == model.TaskToDoId).FirstOrDefault();
 
                 task.Description = model.Description;
-               
+
+                model.RemoveDuplicationsDateTime();
+
 
                 IntervalData data = task.IntervalData;
                 data.Holidays = model.intervalData.Holidays;
@@ -238,16 +268,31 @@ namespace Digital_Patient.Models
 
                 List<IntervalCorrectTime> times = interval.CorrectTimes;
 
-                for (int i = 0; i < times.Count; i++)                
-                {
-                    interval.CorrectTimes.Remove(times[i]);
-                }
+                //for (int i = 0; i < times.Count; i++)                
+                //{
+                //    interval.CorrectTimes.Remove(times[i]);
+                //   ctx.SaveChanges();
+                //}
 
+
+
+
+                ctx.CorrectTimes.Where(p => p.IntervalDataId == interval.IntervalDataId)
+               .ToList().ForEach(p => ctx.CorrectTimes.Remove(p));
                 ctx.SaveChanges();
+
+
+
+                interval.CorrectTimes = new List<IntervalCorrectTime>();
+                ctx.SaveChanges();
+               
+
+
+
 
                 for (int i = 0; i < model.correctTimes.Count; i++)
                 {
-                    interval.CorrectTimes.Add(new IntervalCorrectTime("special") { Time = model.correctTimes[i] });
+                    interval.CorrectTimes.Add(new IntervalCorrectTime("special") { Time = (DateTime)model.correctTimes[i] });
                 }
 
                 ctx.SaveChanges();
@@ -276,7 +321,16 @@ namespace Digital_Patient.Models
             bool Weekends = model.intervalData.Weekends;
             bool Holidays = model.intervalData.Holidays;
 
-             List<DateTime> CorrectTimes = model.correctTimes;
+            List<DateTime> CorrectTimes = new List<DateTime>();
+
+
+            foreach (var item in model.correctTimes)
+            {
+                CorrectTimes.Add((DateTime)item);
+            }
+                
+                
+                
 
         bool check=   CheckIfTaskExists( UserEmail, CorrectTimes,  StartTime,  EndTime,  Weekends,  Holidays);
 

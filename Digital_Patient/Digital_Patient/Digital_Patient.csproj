@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.14" />
     <PackageReference Include="Nager.Date" Version="1.33.1" />
+    <PackageReference Include="Syncfusion.Blazor" Version="20.1.0.56" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="20.1.0.56" />
   </ItemGroup>
 
 </Project>

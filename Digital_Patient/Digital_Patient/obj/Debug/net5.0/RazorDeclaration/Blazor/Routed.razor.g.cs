@@ -60,6 +60,13 @@ using Digital_Patient.Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
+using Syncfusion.Blazor;
+
+#line default
+#line hidden
+#nullable disable
     public partial class Routed : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
