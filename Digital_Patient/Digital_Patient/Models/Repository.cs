@@ -20,7 +20,86 @@ namespace Digital_Patient.Models
         }
 
 
+        public bool RemoveTaskByDoctor(string DoctroId,int TaskId)
+        {
+            try
+            {
 
+                Doctor doctor = ctx.Doctors.Where(x => x.Id == DoctroId).FirstOrDefault();
+
+                if(doctor!=null)
+                {
+
+                    TaskToDo task = ctx.TasksToDo.Include(x=>x.Measurements).Include(x=>x.IntervalData).Where(x=>x.TaskToDoId==TaskId).FirstOrDefault();
+                    ApplicationUser user = ctx.Users.Include(x=>x.TasksToDo).Where(x=>x.Id==task.ApplicationUserId).FirstOrDefault();
+
+
+                    List<Measurement> listMeasurement = ctx.TasksToDo.Include(x => x.Measurements).ThenInclude(x=>x.MeasurementPairs).Include(x=>x.Measurements).ThenInclude(x=>x.Note).Where(x => x.TaskToDoId == task.TaskToDoId).First().Measurements.ToList();
+
+                    //MeasurementPairs
+                    foreach (var item in listMeasurement)
+                    {
+                        ctx.MeasurementPairs.Where(x => x.MeasurementId == item.MeasurementId).ToList().ForEach(x => ctx.MeasurementPairs.Remove(x));
+                    }
+
+
+
+                    //Notes
+                    foreach (var item in listMeasurement)
+                    {
+                        ctx.Notes.Where(x => x.MeasurementId == item.MeasurementId).ToList().ForEach(x => ctx.Notes.Remove(x));
+                    }
+
+
+                    //Measurements
+                    ctx.Measurements.Where(x => x.TaskToDo.TaskToDoId == task.TaskToDoId).ToList().ForEach(p => ctx.Measurements.Remove(p));
+
+
+                    IntervalData intervaldata = ctx.IntervalData.Include(x => x.CorrectTimes).ThenInclude(x=>x.IntervalCorrectTimeActions).Where(x => x.IntervalDataId == task.IntervalData.IntervalDataId).FirstOrDefault();
+
+                    //IntervalCorrectTimesActions
+
+                    intervaldata.CorrectTimes.SelectMany(x => x.IntervalCorrectTimeActions).ToList().ForEach(x => ctx.IntervalCorrectTimeActions.Remove(x));
+
+                    //CorrectTimes
+                    ctx.CorrectTimes.Where(p => p.IntervalDataId == intervaldata.IntervalDataId)
+                    .ToList().ForEach(p => ctx.CorrectTimes.Remove(p));
+                    ctx.SaveChanges();
+
+                    //IntervalData
+                   
+                    ctx.IntervalData.Remove(intervaldata);
+
+                   
+
+
+                    
+
+
+                   
+                    
+
+
+
+
+                    //TaskToDo
+                    user.TasksToDo.Remove(task);
+
+                    ctx.TasksToDo.Remove(task);
+
+                    ctx.SaveChanges();
+
+
+                }
+
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
       public bool  RemovePateintFromDoctor(string DoctorId,string PatientId)
         {
             try

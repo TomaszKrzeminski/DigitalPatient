@@ -89,7 +89,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 497 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+#line 500 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
        
 
 
@@ -165,8 +165,24 @@ using Microsoft.EntityFrameworkCore;
 
     }
 
+    public async Task RemovePatientTask( )
+    {
 
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
 
+        bool check = repository.RemoveTaskByDoctor(UserId, TaskIdToEdit);
+
+        if (check)
+        {
+            Action = "Usunięto jedno z zadań  Pacjenta ";
+
+            //OnParametersSetAsync();
+        }
+
+        ShowPatientTasks(PatientEmail);
+
+    }
 
 
     public void AddToMyPatients(string Email)

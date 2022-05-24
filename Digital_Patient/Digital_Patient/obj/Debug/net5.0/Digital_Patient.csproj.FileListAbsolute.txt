@@ -204,3 +204,9 @@ C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debu
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.Text.Encodings.Web.dll
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.Text.Json.dll
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\libman.json
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Views\Statistics\PatientStatistics.cshtml.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Views\Statistics\DoctorStatistics.cshtml.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\DoctorStatistics.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\DoctorStatistics.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\PatientStatistics.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\PatientStatistics.razor.g.cs

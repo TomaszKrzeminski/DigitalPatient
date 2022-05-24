@@ -288,146 +288,149 @@
             <h3>Edytuj Zadanie</h3> ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            <EditForm Model="@modelEdit" OnValidSubmit="HandleValidSubmitEdit" OnInvalidSubmit="HandleInvalidSubmitEdit">
-                <div class="form-group">
-                    <label>Kategoria zadania</label>
-                    <h4>@modelEdit.TaskToDoCategory</h4>
+    <EditForm Model="@modelEdit" OnValidSubmit="HandleValidSubmitEdit" OnInvalidSubmit="HandleInvalidSubmitEdit">
+        <div class="form-group">
+            <label>Kategoria zadania</label>
+            <h4>@modelEdit.TaskToDoCategory</h4>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label>
+                Opis zadania
+            </label>
+            <InputText @bind-Value="modelEdit.Description" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Weekendy
+            </label>
+            <InputCheckbox @bind-Value="modelEdit.intervalData.Weekends" />
+        </div>
+        <div class="form-group">
+            <label>
+                Święta
+            </label>
+            <InputCheckbox @bind-Value="modelEdit.intervalData.Holidays" />
+        </div>
+        <div class="form-group">
+            <label>
+                Data Rozpoczęcia
+            </label>
+            <InputDate @bind-Value="modelEdit.intervalData.StartTime" />
+        </div>
+        <div class="form-group">
+            <label>Data Zakończenia</label>
+            <InputDate @bind-Value="modelEdit.intervalData.EndTime" />
+        </div>
+        <div class="form-group">
+            <label>Godziny Zadania</label>
+
+            <div>
+                <input type="time" @bind="modelEdit.correctTimes[0]" />
+            </div>
+
+
+
+
+            @if (modelEdit.showTimes[0])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[1]" />
                 </div>
+            }
 
-
-
-
-                <div class="form-group">
-                    <label>
-                        Opis zadania
-                    </label>
-                    <InputText @bind-Value="modelEdit.Description" />
+            @if (modelEdit.showTimes[1])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[2]" />
                 </div>
+            }
 
-                <div class="form-group">
-                    <label>
-                        Weekendy
-                    </label>
-                    <InputCheckbox @bind-Value="modelEdit.intervalData.Weekends" />
+            @if (modelEdit.showTimes[2])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[3]" />
                 </div>
-                <div class="form-group">
-                    <label>
-                        Święta
-                    </label>
-                    <InputCheckbox @bind-Value="modelEdit.intervalData.Holidays" />
+            }
+
+            @if (modelEdit.showTimes[3])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[4]" />
                 </div>
-                <div class="form-group">
-                    <label>
-                        Data Rozpoczęcia
-                    </label>
-                    <InputDate @bind-Value="modelEdit.intervalData.StartTime" />
+            }
+
+            @if (modelEdit.showTimes[4])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[5]" />
                 </div>
-                <div class="form-group">
-                    <label>Data Zakończenia</label>
-                    <InputDate @bind-Value="modelEdit.intervalData.EndTime" />
+            }
+
+            @if (modelEdit.showTimes[5])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[6]" />
                 </div>
-                <div class="form-group">
-                    <label>Godziny Zadania</label>
+            }
 
-                    <div>
-                        <input type="time" @bind="modelEdit.correctTimes[0]" />
-                    </div>
-
-
-
-
-                    @if (modelEdit.showTimes[0])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[1]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[1])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[2]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[2])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[3]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[3])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[4]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[4])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[5]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[5])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[6]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[6])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[7]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[7])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[8]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[8])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[9]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[9])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[10]" />
-                        </div>
-                    }
-
-                    @if (modelEdit.showTimes[10])
-                    {
-                        <div>
-                            <input type="time" @bind="modelEdit.correctTimes[11]" />
-                        </div>
-                    }
-
-
-
-
-
-
-
+            @if (modelEdit.showTimes[6])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[7]" />
                 </div>
-                <div class="form-group">
-                    <input class="btn btn-light" @onclick="AddCorrectTime2" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime2" value="Mniej">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-danger" type="submit">Zmień</button>
-                </div>
+            }
 
-            </EditForm>
+            @if (modelEdit.showTimes[7])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[8]" />
+                </div>
+            }
+
+            @if (modelEdit.showTimes[8])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[9]" />
+                </div>
+            }
+
+            @if (modelEdit.showTimes[9])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[10]" />
+                </div>
+            }
+
+            @if (modelEdit.showTimes[10])
+            {
+                <div>
+                    <input type="time" @bind="modelEdit.correctTimes[11]" />
+                </div>
+            }
+
+
+
+
+
+
+
+        </div>
+        <div class="form-group">
+            <input class="btn btn-light" @onclick="AddCorrectTime2" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime2" value="Mniej">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-warning" type="submit">Zmień</button>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-danger"   @onclick="(()=>RemovePatientTask())"     type="button">Usuń</button>
+        </div>
+
+    </EditForm>
 
 
 
@@ -569,8 +572,24 @@
 
     }
 
+    public async Task RemovePatientTask( )
+    {
 
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
 
+        bool check = repository.RemoveTaskByDoctor(UserId, TaskIdToEdit);
+
+        if (check)
+        {
+            Action = "Usunięto jedno z zadań  Pacjenta ";
+
+            //OnParametersSetAsync();
+        }
+
+        ShowPatientTasks(PatientEmail);
+
+    }
 
 
     public void AddToMyPatients(string Email)
