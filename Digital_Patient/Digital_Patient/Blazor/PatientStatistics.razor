@@ -1,5 +1,85 @@
-﻿<h3>PatientStatistics</h3>
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Digital_Patient.Models
+@using Digital_Patient.Data
+@inject NavigationManager Navigation
+@using Microsoft.EntityFrameworkCore.Design
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext>  factory
+
+<style>
+    .show:hover{
+
+        background-color:lightslategrey;
+    } 
+</style>
+
+<h3>PatientStatistics   @ApplicationUserId</h3>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col col-lg-3 bg-light">
+            Zadania
+            <div class="col col-lg-12">
+                <ul class="list-group">
+                    @foreach (var task in PatientTasks.OrderBy(x=>x.TaskToDoId))
+                    {
+
+                        <li class="list-group-item show">
+                          <label>@task.TaskToDoId</label>  <label>@task.TaskToDoCategory.CategoryName</label> <label>@task.Description</label>
+                        </li>
+                         
+
+                    }
+                </ul>
+            </div>
+
+        </div>
+        <div class="col col-lg-9 bg-dark">
+            Statystyki
+        </div>
+
+    </div>
+</div>
+
+
 
 @code {
+    [Parameter]
+    public string ApplicationUserId { get; set; }
+
+    public List<TaskToDo> PatientTasks { get; set; }
+
+    private Repository repository;
+
+    public StatisticsViewModel model = new StatisticsViewModel();
+
+    protected override void OnParametersSet()
+    {
+
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        PatientTasks = repository.GetUserTasksToDo(ApplicationUserId);
+
+    }
+
+
+    public async void GetTaskStatistics(int TaskId)
+    {
+
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        model = repository.GetTaskToDoStatistics(TaskId);
+
+
+    }
+
+
 
 }

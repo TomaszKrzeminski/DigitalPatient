@@ -528,7 +528,7 @@ namespace Digital_Patient.Models
             List<TaskToDo> list = new List<TaskToDo>();
             try
             {
-                list = ctx.Users.Include(x => x.TasksToDo).Where(x => x.Id == UserId).First().TasksToDo.ToList();
+                list = ctx.Users.Include(x => x.TasksToDo).ThenInclude(x=>x.TaskToDoCategory).Where(x => x.Id == UserId).First().TasksToDo.ToList();
                 return list;
             }
             catch(Exception ex)
@@ -837,6 +837,30 @@ namespace Digital_Patient.Models
         {
             ctx.DisposeAsync();
         }
+
+
+       StatisticsViewModel GetTaskToDoStatistics(int TaskId)
+        {
+            StatisticsViewModel model = new StatisticsViewModel();
+            try
+            {
+
+
+
+
+
+
+
+
+
+                return model;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
 
 
     }
