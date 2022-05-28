@@ -357,6 +357,8 @@ namespace Digital_Patient.Models
 
         public string Name { get; set; }
 
+        public DateTime TimeOfMeasurement { get; set; }
+
         public MeasurementPair()
         {
           
@@ -367,6 +369,15 @@ namespace Digital_Patient.Models
             Name = name;
             Text = text;
         }
+
+        public MeasurementPair(string name, bool text ,DateTime time)
+        {
+            Name = name;
+            Text = text;
+            TimeOfMeasurement = time;
+        }
+
+
 
         public bool Text { get; set; }
 

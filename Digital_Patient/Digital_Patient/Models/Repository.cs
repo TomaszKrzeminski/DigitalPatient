@@ -592,7 +592,7 @@ namespace Digital_Patient.Models
         }
 
 
-        public bool ChangeMeasurmentsData(TaskToDoActionModel model)
+        public bool ChangeMeasurmentsData2(TaskToDoActionModel model)
         {
 
             try
@@ -645,6 +645,98 @@ namespace Digital_Patient.Models
         }
 
 
+        public bool ChangeMeasurmentsData(TaskToDoActionModel model)
+        {
+
+            try
+            {
+
+                TaskToDo task = ctx.TasksToDo.Include(x => x.Measurements).ThenInclude(x => x.MeasurementPairs).Include(x => x.Measurements).ThenInclude(x => x.Note).Where(x => x.TaskToDoId == model.taskToDo.TaskToDoId).First();
+
+                List<Measurement> listMeasurements = task.Measurements.ToList();
+                List<Measurement> listNewMeasurements = model.taskToDo.Measurements.ToList();
+
+
+
+
+                foreach (var measurement in listNewMeasurements)
+                {
+
+
+                    foreach (var pair in measurement.MeasurementPairs)
+                    {
+
+                        if(pair.MeasurementPairId!=0)
+                        {
+                            Measurement measurement1 = ctx.Measurements.Include(x => x.MeasurementPairs).Where(x => x.MeasurementId == measurement.MeasurementId).First();
+                            MeasurementPair pair1=  measurement1.MeasurementPairs.Where(x => x.MeasurementPairId == pair.MeasurementPairId).First();
+                            pair1.MeasurementText = pair.MeasurementText;
+                            pair1.MeasurementNumber = pair.MeasurementNumber;
+
+                        }
+                        else
+                        {
+                            Measurement measurement1 = ctx.Measurements.Include(x => x.MeasurementPairs).Where(x => x.MeasurementId == measurement.MeasurementId).First();
+                            measurement1.MeasurementPairs.Add(pair);
+                        }
+
+                        ctx.SaveChanges();
+
+                    }
+
+
+
+
+
+                }
+
+
+                foreach (var measurement in listMeasurements)
+                {
+
+                    Note n = listNewMeasurements.Where(x => x.MeasurementId == measurement.MeasurementId).Select(x => x.Note).First();
+                    Note n1 = measurement.Note;
+                    n1.Text = n.Text;
+
+                    ctx.SaveChanges();
+                }
+
+
+
+
+                //List<MeasurementPair> listMeasurementPairs = task.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
+                //List<MeasurementPair> ListMeasurementPairsNew = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
+
+                //foreach (var mp in listMeasurementPairs)
+                //{
+
+                //    MeasurementPair measuementPair = ListMeasurementPairsNew.Where(x => x.MeasurementPairId == mp.MeasurementPairId).FirstOrDefault();
+                //    mp.MeasurementNumber = measuementPair.MeasurementNumber;
+                //    mp.MeasurementText = measuementPair.MeasurementText;
+                //    mp.Name = measuementPair.Name;
+                //    mp.Text = measuementPair.Text;
+
+                //    ctx.SaveChanges();
+
+                //}
+
+
+
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+
+
+
+
+
         public bool AddActionToTaskToDo(TaskToDoActionModel model)
         {
             try
@@ -681,6 +773,73 @@ namespace Digital_Patient.Models
             }
 
         }
+
+
+        public TaskToDo GetTaskToDo2(int TaskId,DateTime time)
+        {
+
+            DateTime date = DateTime.Now.Date;
+            date= date.Date + new TimeSpan(time.Hour, time.Minute, 0);
+
+            TaskToDo taskToDo = new TaskToDo();
+            try
+            {
+
+                taskToDo = ctx.TasksToDo.Include(x => x.IntervalData).ThenInclude(x => x.CorrectTimes).ThenInclude(x => x.IntervalCorrectTimeActions).Include(x => x.Measurements).ThenInclude(x => x.MeasurementCategory).Include(x => x.Measurements).ThenInclude(x => x.MeasurementPairs).Include(x => x.TaskToDoCategory).Include(x => x.Measurements).ThenInclude(x => x.Note)
+                    .Where(x => x.TaskToDoId == TaskId).FirstOrDefault();
+
+               
+                foreach (var measurement in taskToDo.Measurements)
+                {
+
+
+                    //List<MeasurementPair> list = measurement.MeasurementPairs.GroupBy(x => x.Name).Select(x => x.First()).ToList();
+                    
+                    List<MeasurementPair> list = measurement.MeasurementPairs.OrderByDescending(x=>x.MeasurementPairId).GroupBy(x => x.Name).Select(x => x.First()).ToList();
+                    int count = list.Count;
+
+                    List<MeasurementPair> list2 = measurement.MeasurementPairs.Where(x=>x.TimeOfMeasurement==date).OrderByDescending(x => x.MeasurementPairId).GroupBy(x => x.Name).Select(x => x.First()).ToList();
+
+                    List<MeasurementPair> list3 = new List<MeasurementPair>();
+ 
+
+                    for (int i = 0; i < list.Count; i++)
+                    {
+
+                      string name=  list[i].Name;
+
+                        MeasurementPair pair = measurement.MeasurementPairs.Where(x => x.Name == name && x.TimeOfMeasurement == date).FirstOrDefault();
+                        if(pair!=null)
+                        {
+                            list3.Add(pair);
+                        }
+                        else
+                        {
+                            MeasurementPair pairn = new MeasurementPair(name, list[i].Text, date);
+                            pairn.Measurement = measurement;
+                            pairn.MeasurementId = measurement.MeasurementId;
+                            list3.Add(pairn);
+                        }
+
+
+                    }
+
+                    measurement.MeasurementPairs = list3;
+
+
+                }
+
+
+
+                return taskToDo;
+            }
+            catch (Exception ex)
+            {
+                return taskToDo;
+            }
+
+        }
+
 
         public async Task<List<Hour>> GetHoursData(string ApplicationUserId)
         {
@@ -839,7 +998,7 @@ namespace Digital_Patient.Models
         }
 
 
-       StatisticsViewModel GetTaskToDoStatistics(int TaskId)
+     public  StatisticsViewModel GetTaskToDoStatistics(int TaskId)
         {
             StatisticsViewModel model = new StatisticsViewModel();
             try

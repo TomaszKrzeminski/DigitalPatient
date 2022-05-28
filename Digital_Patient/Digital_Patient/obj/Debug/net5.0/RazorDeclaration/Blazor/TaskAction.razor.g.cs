@@ -150,7 +150,16 @@ using Microsoft.EntityFrameworkCore;
 
 
             tasktime = GetTimeFromString(TaskTime);
-            model.taskToDo =  repository.GetTaskToDo(TaskId);
+            model.taskToDo =  repository.GetTaskToDo2(TaskId,tasktime);
+
+
+           //check if measurement pair is in time               TaskTime//
+
+
+
+
+
+
         }
 
     }
@@ -208,6 +217,9 @@ using Microsoft.EntityFrameworkCore;
             {
                 model.TaskCorrectTime = tasktime;
                 repo.ChangeMeasurmentsData(model);
+
+
+
             }
 
         }
