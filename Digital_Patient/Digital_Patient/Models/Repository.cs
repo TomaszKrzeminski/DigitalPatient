@@ -1004,8 +1004,120 @@ namespace Digital_Patient.Models
             try
             {
 
+                TaskToDo task = GetTaskToDo(TaskId);               
+
+                bool Weekends=   task.IntervalData.Weekends;
+                bool Holidays = task.IntervalData.Holidays;
+                DateTime start = task.IntervalData.StartTime;
+                DateTime end = task.IntervalData.EndTime;
+
+                List<DateTime> correctTimes = task.IntervalData.CorrectTimes.Select(x => x.Time).ToList();
+
+                DateTime now = DateTime.Now;
+                int lastDay = DateTime.DaysInMonth(now.Year, now.Month);
 
 
+                DateTime monthStart = new DateTime(now.Year, now.Month, 1);
+                DateTime monthEnd = new DateTime(now.Year, now.Month, lastDay);
+
+                int WeekendsCount = 0;
+                int HolidaysCount = 0;
+
+
+
+                if (start > monthEnd)
+                {
+                    model.SpecialMessage = "Zadanie rozpocznie się " + start;
+                    return model;
+                }
+                if (monthStart > end)
+                {
+                    model.SpecialMessage = "Zadanie już się zakończyło " + end;
+                    return model;
+                }
+
+
+
+
+                //tasks copleted today   this week   this month
+
+                List<DateTime> holidaysThisMonth = new List<DateTime>();
+                List<DateTime> weekendsThisMonth = new List<DateTime>();
+
+
+                    for (int i = 1; i < (lastDay+1); i++)
+                    {
+                        DateTime checkHolidays = new DateTime(now.Day, now.Month, i);
+                      if (DateSystem.IsPublicHoliday(checkHolidays, CountryCode.PL))
+                    {
+                            holidaysThisMonth.Add(checkHolidays);
+                    }
+
+                        if ((checkHolidays.DayOfWeek == DayOfWeek.Saturday) || (checkHolidays.DayOfWeek == DayOfWeek.Sunday))
+                        {
+                            weekendsThisMonth.Add(checkHolidays);
+                        }
+
+                    }
+
+
+               List<DateTime> datesofTask = new List<DateTime>();
+
+                for (var dt = start; dt <= end; dt = dt.AddDays(1))
+                {
+                    datesofTask.Add(dt);
+                }
+
+
+                List<DateTime> datesOfThisMonthLeft = new List<DateTime>();
+
+                for (int i = now.Day; i < (lastDay+1); i++)
+                {
+                    datesOfThisMonthLeft.Add(new DateTime(now.Year, now.Month, i));
+                }
+
+
+
+                List<DateTime> final1 = datesOfThisMonthLeft.Intersect(datesofTask).ToList();
+
+
+
+                int MaxTasksMonth = 0;
+                int MaxTasksWeek = 0;
+                int MaxTasksToday = 0;
+
+
+
+                if(!Holidays)
+                {
+                    final1 = final1.Except(holidaysThisMonth).ToList();
+                }
+
+
+                if(!Weekends)
+                {
+                    final1 = final1.Except(weekendsThisMonth).ToList();
+                }
+
+                MaxTasksMonth = (final1.Count) * correctTimes.Count;
+
+
+                /// This week
+                DateTime baseDate = DateTime.Now;
+                var thisWeekStart = baseDate.AddDays(-(int)baseDate.DayOfWeek);
+                var thisWeekEnd = thisWeekStart.AddDays(7).AddSeconds(-1);
+
+
+
+
+
+
+
+
+
+
+
+                ///
 
 
 

@@ -9,7 +9,7 @@ namespace Digital_Patient.Models
     public class StatisticPairDigit
     {
 
-        public StatisticPairDigit(string Name,double val1,double val2)
+        public StatisticPairDigit(string Name, double val1, double val2)
         {
             this.Name = Name;
             Val1 = val1;
@@ -28,13 +28,13 @@ namespace Digital_Patient.Models
 
     public enum Status
     {
-        Waiting,Done,NotMade
+        Waiting, Done, NotMade
     }
 
     public class DayPairStats
     {
 
-        public DayPairStats(DateTime time,Status status)
+        public DayPairStats(DateTime time, Status status)
         {
             Time = time;
             Status = status;
@@ -67,6 +67,7 @@ namespace Digital_Patient.Models
             ListOfPatientsId = new List<string>();
             ListOfPatientsTasks = new List<TaskToDo>();
         }
+        public string SpecialMessage { get; set; } = "";
 
         public StatisticsCalendar calendar { get; set; }
         public string UserId { get; set; }

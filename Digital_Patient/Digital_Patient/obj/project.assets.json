@@ -641,7 +641,7 @@
           }
         }
       },
-      "Nager.Date/1.33.1": {
+      "Nager.Date/1.34.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Nager.Date.dll": {}
@@ -2812,10 +2812,10 @@
         "version.txt"
       ]
     },
-    "Nager.Date/1.33.1": {
-      "sha512": "VBQdsI09GLm3tYXj0KPrm+OgY9LvVhc+RQjjgtkgum0dPK9uFiQqbmsqHSJ3PJ+o1ahunxbNqRa67sAF8EpQOA==",
+    "Nager.Date/1.34.1": {
+      "sha512": "c0gznJZPPUYN/E8H5eV5iMuoV+HBrN2RVPpVwcITV1OWV5HWDGyh7pQa2ZbouMQcgj3oGB8YG9b1LMy0d8d6xQ==",
       "type": "package",
-      "path": "nager.date/1.33.1",
+      "path": "nager.date/1.34.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2828,7 +2828,7 @@
         "lib/net6.0/Nager.Date.xml",
         "lib/netstandard2.0/Nager.Date.dll",
         "lib/netstandard2.0/Nager.Date.xml",
-        "nager.date.1.33.1.nupkg.sha512",
+        "nager.date.1.34.1.nupkg.sha512",
         "nager.date.nuspec",
         "readme.txt"
       ]
@@ -6608,7 +6608,7 @@
       "Microsoft.AspNetCore.Identity.UI >= 5.0.14",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.14",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.14",
-      "Nager.Date >= 1.33.1",
+      "Nager.Date >= 1.34.1",
       "Syncfusion.Blazor >= 20.1.0.56",
       "Syncfusion.Blazor.Themes >= 20.1.0.56"
     ]
@@ -6679,7 +6679,7 @@
           },
           "Nager.Date": {
             "target": "Package",
-            "version": "[1.33.1, )"
+            "version": "[1.34.1, )"
           },
           "Syncfusion.Blazor": {
             "target": "Package",

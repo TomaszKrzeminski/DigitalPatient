@@ -12,10 +12,9 @@
 @inject IDbContextFactory<ApplicationDbContext>  factory
 
 <style>
-    .show:hover{
-
-        background-color:lightslategrey;
-    } 
+    .show:hover {
+        background-color: lightslategrey;
+    }
 </style>
 
 <h3>PatientStatistics   @ApplicationUserId</h3>
@@ -26,21 +25,56 @@
             Zadania
             <div class="col col-lg-12">
                 <ul class="list-group">
-                    @foreach (var task in PatientTasks.OrderBy(x=>x.TaskToDoId))
+                    @foreach (var task in PatientTasks.OrderBy(x => x.TaskToDoId))
                     {
 
-                        <li class="list-group-item show">
-                          <label>@task.TaskToDoId</label>  <label>@task.TaskToDoCategory.CategoryName</label> <label>@task.Description</label>
+                        <li class="list-group-item show" @onclick="(() => GetTaskStatistics(task.TaskToDoId))">
+                            <label>@task.TaskToDoId</label>  <label>@task.TaskToDoCategory.CategoryName</label> <label>@task.Description</label>
                         </li>
-                         
+
 
                     }
                 </ul>
             </div>
 
         </div>
-        <div class="col col-lg-9 bg-dark">
-            Statystyki
+        <div class="col col-lg-9 bg-transparent">
+
+            @if (SelectedTask != null && SelectedTask.TaskToDoId != 0)
+            {
+                <div class="row">
+                    <h3>@SelectedTask.Description</h3>
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Ilość wykonanych zadań</th>
+                                <th scope="col">Dziś</th>
+                                <th scope="col">Tydzień</th>
+                                <th scope="col">Miesiąc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">wykonana</th>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">max</th>
+                                <td>11</td>
+                                <td>22</td>
+                                <td>33</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            }
         </div>
 
     </div>
@@ -49,14 +83,16 @@
 
 
 @code {
-    [Parameter]
-    public string ApplicationUserId { get; set; }
+        [Parameter]
+        public string ApplicationUserId { get; set; }
 
-    public List<TaskToDo> PatientTasks { get; set; }
+public List<TaskToDo> PatientTasks { get; set; }
 
     private Repository repository;
 
     public StatisticsViewModel model = new StatisticsViewModel();
+
+    public TaskToDo SelectedTask { get; set; } = new TaskToDo();
 
     protected override void OnParametersSet()
     {
@@ -75,6 +111,7 @@
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
+        SelectedTask = repository.GetTaskToDo(TaskId);
         model = repository.GetTaskToDoStatistics(TaskId);
 
 

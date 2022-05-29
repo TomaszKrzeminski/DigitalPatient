@@ -89,16 +89,18 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 51 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\PatientStatistics.razor"
+#line 85 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\PatientStatistics.razor"
        
-    [Parameter]
-    public string ApplicationUserId { get; set; }
+        [Parameter]
+        public string ApplicationUserId { get; set; }
 
-    public List<TaskToDo> PatientTasks { get; set; }
+public List<TaskToDo> PatientTasks { get; set; }
 
     private Repository repository;
 
     public StatisticsViewModel model = new StatisticsViewModel();
+
+    public TaskToDo SelectedTask { get; set; } = new TaskToDo();
 
     protected override void OnParametersSet()
     {
@@ -117,6 +119,7 @@ using Microsoft.EntityFrameworkCore;
         ApplicationDbContext context = factory.CreateDbContext();
         repository = new Repository(context);
 
+        SelectedTask = repository.GetTaskToDo(TaskId);
         model = repository.GetTaskToDoStatistics(TaskId);
 
 

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "bEXQrE3ZIqtlPeDIfINyILqPNlJw3j0/04oVjS51PhMk3aZoAEK6UH6rEuOrpevbUr9C5BfVNigr8rx2JovQJA==",
+  "dgSpecHash": "25VhkBgCL86dv8V5MQXUyJ76iQe9bhWKbmpv3SiuOoLgKkiukS6uaaTr723eGO2ZAp2WjHLkXtwMdm+jJxzEgg==",
   "success": true,
   "projectFilePath": "C:\\Users\\tomszek\\Desktop\\DigitalPatient\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
   "expectedPackageFiles": [
@@ -50,7 +50,7 @@
     "C:\\Users\\tomszek\\.nuget\\packages\\microsoft.netcore.targets\\1.1.3\\microsoft.netcore.targets.1.1.3.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Users\\tomszek\\.nuget\\packages\\nager.date\\1.33.1\\nager.date.1.33.1.nupkg.sha512",
+    "C:\\Users\\tomszek\\.nuget\\packages\\nager.date\\1.34.1\\nager.date.1.34.1.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\netstandard.library\\2.0.0\\netstandard.library.2.0.0.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
