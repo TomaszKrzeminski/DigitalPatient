@@ -66,7 +66,11 @@ namespace Digital_Patient.Models
         {
             ListOfPatientsId = new List<string>();
             ListOfPatientsTasks = new List<TaskToDo>();
+            StatisticsPairsDigits = new List<StatisticPairDigit>();
         }
+        public DateTime Start { get; set; }
+
+        public DateTime End { get; set; }
         public string SpecialMessage { get; set; } = "";
 
         public StatisticsCalendar calendar { get; set; }

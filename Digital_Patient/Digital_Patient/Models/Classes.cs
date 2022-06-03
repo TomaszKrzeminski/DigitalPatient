@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 namespace Digital_Patient.Models
 {
 
+   public class PublicHoliday
+    {
+        public DateTime Date { get; set; }
+        public string LocalName { get; set; }
+        public string Name { get; set; }
+        public string CountryCode { get; set; }
+        public bool Fixed { get; set; }
+        public bool Global { get; set; }
+        public string[] Counties { get; set; }
+        public int? LaunchYear { get; set; }
+        public string[] Types { get; set; }
+    }
+
+
+
     public class TaskToDoActionModel
     {
         public TaskToDoActionModel()

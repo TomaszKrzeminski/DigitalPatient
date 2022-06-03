@@ -42,8 +42,13 @@
 
             @if (SelectedTask != null && SelectedTask.TaskToDoId != 0)
             {
-                <div class="row">
+            <div class="row">
+                <div class="col col-lg-12">
                     <h3>@SelectedTask.Description</h3>
+                </div>
+               
+                <div class="col col-lg-6">
+                    
                     <table class="table table-striped">
 
                         <thead>
@@ -57,20 +62,47 @@
                         <tbody>
                             <tr>
                                 <th scope="row">wykonana</th>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
+                                <td>@model.StatisticsPairsDigits[2].Val1</td>
+                                <td>@model.StatisticsPairsDigits[1].Val1</td>
+                                <td>@model.StatisticsPairsDigits[0].Val1</td>
                             </tr>
                             <tr>
                                 <th scope="row">max</th>
-                                <td>11</td>
-                                <td>22</td>
-                                <td>33</td>
+                                <td>@model.StatisticsPairsDigits[2].Val2</td>
+                                <td>@model.StatisticsPairsDigits[1].Val2</td>
+                                <td>@model.StatisticsPairsDigits[0].Val2</td>
                             </tr>
 
                         </tbody>
                     </table>
                 </div>
+                <div class="col col-lg-6">
+                   
+
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                               
+                                <th scope="col">Rozpoczęcie</th>
+                                <th scope="col">Zakończenie</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                
+                                <td>@model.Start.ToShortDateString()</td>
+                                <td>@model.End.ToShortDateString()</td>
+                               
+                            </tr>                          
+
+                        </tbody>
+                    </table>
+                </div>
+               
+               
+            </div>
 
 
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Digital_Patient.Data;
 using Microsoft.AspNetCore.Identity;
@@ -733,10 +735,6 @@ namespace Digital_Patient.Models
         }
 
 
-
-
-
-
         public bool AddActionToTaskToDo(TaskToDoActionModel model)
         {
             try
@@ -922,7 +920,7 @@ namespace Digital_Patient.Models
             try
             {
                 DateTime dateTime = DateTime.Now;
-                List<DateTime> Holidays = DateSystem.GetPublicHolidays(dateTime.Year, "PL").Select(x => x.Date).ToList();
+                List<DateTime> Holidays = GetHolidays().Select(x => x.Date).ToList();
 
                 bool holiday = Holidays.Contains(dateTime.Date);
                 bool weekend = dateTime.DayOfWeek == DayOfWeek.Saturday || dateTime.DayOfWeek == DayOfWeek.Sunday;
@@ -998,22 +996,54 @@ namespace Digital_Patient.Models
         }
 
 
+        public List<PublicHoliday> GetHolidays()
+        {
+            List<PublicHoliday> list = new List<PublicHoliday>();
+            try
+            {
+
+
+                var jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                using var httpClient = new HttpClient();
+                var response =  httpClient.GetAsync("https://date.nager.at/api/v3/publicholidays/2022/PL").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    using var jsonStream = response.Content.ReadAsStream();
+                    list = (JsonSerializer.Deserialize<PublicHoliday[]>(jsonStream, jsonSerializerOptions)).ToList();
+                }
+
+
+
+                return list;
+            }
+            catch(Exception ex)
+            {
+                return list;
+            }
+
+        }
+
      public  StatisticsViewModel GetTaskToDoStatistics(int TaskId)
         {
             StatisticsViewModel model = new StatisticsViewModel();
             try
             {
 
+                List<PublicHoliday> listHolidays = GetHolidays();
+
                 TaskToDo task = GetTaskToDo(TaskId);               
 
                 bool Weekends=   task.IntervalData.Weekends;
                 bool Holidays = task.IntervalData.Holidays;
-                DateTime start = task.IntervalData.StartTime;
-                DateTime end = task.IntervalData.EndTime;
+                DateTime start = task.IntervalData.StartTime.Date;
+                DateTime end = task.IntervalData.EndTime.Date;
+                model.Start = start;
+                model.End = end;
 
                 List<DateTime> correctTimes = task.IntervalData.CorrectTimes.Select(x => x.Time).ToList();
 
-                DateTime now = DateTime.Now;
+                DateTime now = DateTime.Now.Date;
                 int lastDay = DateTime.DaysInMonth(now.Year, now.Month);
 
 
@@ -1039,7 +1069,7 @@ namespace Digital_Patient.Models
 
 
 
-                //tasks copleted today   this week   this month
+                //tasks completed today   this week   this month
 
                 List<DateTime> holidaysThisMonth = new List<DateTime>();
                 List<DateTime> weekendsThisMonth = new List<DateTime>();
@@ -1047,8 +1077,8 @@ namespace Digital_Patient.Models
 
                     for (int i = 1; i < (lastDay+1); i++)
                     {
-                        DateTime checkHolidays = new DateTime(now.Day, now.Month, i);
-                      if (DateSystem.IsPublicHoliday(checkHolidays, CountryCode.PL))
+                        DateTime checkHolidays = new DateTime(now.Year, now.Month, i);
+                      if (listHolidays.Any(x=>x.Date.Date==checkHolidays.Date))
                     {
                             holidaysThisMonth.Add(checkHolidays);
                     }
@@ -1099,29 +1129,55 @@ namespace Digital_Patient.Models
                     final1 = final1.Except(weekendsThisMonth).ToList();
                 }
 
-                MaxTasksMonth = (final1.Count) * correctTimes.Count;
 
+
+                int DayTasks = 0;
+                int WeekTasks = 0;
+                int MonthTasks = 0;
+                DayTasks = task.Measurements.SelectMany(x => x.MeasurementPairs).Where(x => x.TimeOfMeasurement.Date == now.Date).Count();
+                int MeasurementsCount = task.Measurements.Count;
+
+
+
+                
 
                 /// This week
                 DateTime baseDate = DateTime.Now;
-                var thisWeekStart = baseDate.AddDays(-(int)baseDate.DayOfWeek);
-                var thisWeekEnd = thisWeekStart.AddDays(7).AddSeconds(-1);
+                DateTime thisWeekStart = DateTimeExtensions.StartOfWeek(baseDate.Date, DayOfWeek.Monday);
+                DateTime thisWeekEnd = thisWeekStart.AddDays(7).AddSeconds(-1);
+
+                List<DateTime> ThisWeek = new List<DateTime>();
+
+                WeekTasks = task.Measurements.SelectMany(x => x.MeasurementPairs).Where(x => x.TimeOfMeasurement.Date >= thisWeekStart && x.TimeOfMeasurement.Date <= thisWeekEnd).Count();
+                MonthTasks = task.Measurements.SelectMany(x => x.MeasurementPairs).Where(x => x.TimeOfMeasurement.Date >= monthStart && x.TimeOfMeasurement.Date <= monthEnd).Count();
+                 MaxTasksMonth = (final1.Count) * correctTimes.Count* MeasurementsCount;
+                model.StatisticsPairsDigits.Add(new StatisticPairDigit("Max Miesiąc", MonthTasks, MaxTasksMonth));
+
+                for (var i = thisWeekStart; i <= thisWeekEnd; i=i.AddDays(1))
+                {
+                    ThisWeek.Add(i);
+                }
+
+              
 
 
 
-
-
-
-
-
-
-
+                List<DateTime> final2 = datesofTask.Intersect(ThisWeek).ToList();
+                MaxTasksWeek = (final2.Count) * correctTimes.Count * MeasurementsCount;
+                model.StatisticsPairsDigits.Add(new StatisticPairDigit("Max Tydzień", WeekTasks, MaxTasksWeek));
 
                 ///
 
+                MaxTasksToday = correctTimes.Count * MeasurementsCount;
+                model.StatisticsPairsDigits.Add(new StatisticPairDigit("Max dzień",  DayTasks, MaxTasksToday));
 
 
+                
 
+
+               
+
+               
 
 
                 return model;

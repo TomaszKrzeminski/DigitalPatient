@@ -157,11 +157,14 @@ using Microsoft.EntityFrameworkCore;
     //}
 
 
-    protected  override void OnParametersSet()
+    
+
+
+    protected async  override Task  OnParametersSetAsync()
     {
         string x = Check;
         string Id = ApplicationUserId;
-        GetHoursView(Id);
+      await  GetHoursView(Id);
 
     }
 

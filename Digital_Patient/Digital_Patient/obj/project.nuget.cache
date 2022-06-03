@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "25VhkBgCL86dv8V5MQXUyJ76iQe9bhWKbmpv3SiuOoLgKkiukS6uaaTr723eGO2ZAp2WjHLkXtwMdm+jJxzEgg==",
+  "dgSpecHash": "d7YBFsS3dLV1d0AUwrWv4QaZVleWiOWEKSNUX5R5CzXbHrJ/XvqqeJYkkF+rPnb4OHc2fQyXEKUczj9VVNBK5Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\tomszek\\Desktop\\DigitalPatient\\Digital_Patient\\Digital_Patient\\Digital_Patient.csproj",
   "expectedPackageFiles": [
@@ -114,7 +114,7 @@
     "C:\\Users\\tomszek\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\system.text.encoding.extensions\\4.3.0\\system.text.encoding.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
-    "C:\\Users\\tomszek\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
+    "C:\\Users\\tomszek\\.nuget\\packages\\system.text.json\\6.0.4\\system.text.json.6.0.4.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\system.text.regularexpressions\\4.3.0\\system.text.regularexpressions.4.3.0.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\tomszek\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
