@@ -1,0 +1,152 @@
+﻿@using Digital_Patient.Models 
+<h3>BlazorCalendar</h3>
+
+<select @onchange="LoadCalendar">
+    @foreach(string monthName in MonthNames)
+    {
+        <option>
+            @monthName
+        </option>
+    }
+</select>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+          @for (int dayIndex = 0; dayIndex < Days.Count(); dayIndex++)
+          {
+              <th>@Days[dayIndex]</th>
+          }
+        </tr>
+    </thead>
+    <tbody>
+        @for (int weekIndex = 0; weekIndex < weeks.Count; weekIndex++)
+        {
+            <tr>
+
+                @for (int dayIndex = 0; dayIndex < (weeks[weekIndex].Dates.Count()); dayIndex++)
+                {
+
+                    var wIndex = weekIndex;
+                    var dIndex = dayIndex;
+
+                    @weeks[wIndex].Dates[dayIndex].DateValue
+                    
+                   
+                    
+
+
+
+
+                }
+
+               
+
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+
+
+
+
+@code {
+
+    List<string> MonthNames { get; set; }
+    List<string> Days { get; set; }
+    List<Week> weeks { get; set; }
+
+    DateTime StartDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    DateTime EndDate { get; set; } = ( new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(1).AddDays(-1);
+
+
+    protected override void OnInitialized()
+    {
+        MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
+        GenerateCalendarHead();
+        GenerateCalendarBody();
+    }
+
+
+    public void LoadCalendar(ChangeEventArgs e)
+    {
+        var month = e.Value.ToString();
+        int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
+        StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
+        EndDate= new DateTime(DateTime.Now.Year, monthIndex, 1).AddMonths(1).AddDays(-1);
+
+    }
+
+    private void GenerateCalendarHead()
+    {
+
+        var day1 = new List<string>();
+
+        for (var dt = StartDate; dt < EndDate;dt=dt.AddDays(1))
+        {
+            day1.Add(dt.ToString("dddd"));
+        }
+
+        Days = day1.Distinct().ToList();
+
+
+
+
+
+    }
+
+    private void GenerateCalendarBody()
+    {
+
+        weeks = new List<Week>();
+        int flag = 0;
+        Week week = new Week();
+        List<DayEvent> dates = new List<DayEvent>();
+        var totalDays = (int)(EndDate - StartDate).TotalDays;
+        int CountDays = 0;
+
+
+        for (var dt = StartDate; dt < EndDate; dt = dt.AddDays(1))
+        {
+            flag++;
+            dates.Add(new DayEvent()
+            {
+                DateValue = dt.ToString("dd-MMM-yyyy"),
+                DayName=dt.ToString("ddd")
+
+            });
+
+            if(flag==7)
+            {
+                week = new Week();
+                week.Dates = dates;
+                weeks.Add(week);
+                dates = new List<DayEvent>();
+                flag = 0;
+            }
+
+            if(CountDays==totalDays)
+            {
+                week = new Week();
+                week.Dates = dates;
+                weeks.Add(week);
+                dates = new List<DayEvent>();
+                flag = 0;
+                break;
+            }
+
+            CountDays++;
+
+        }
+
+    }
+
+
+
+
+}

@@ -46,9 +46,9 @@
                 <div class="col col-lg-12">
                     <h3>@SelectedTask.Description</h3>
                 </div>
-               
+
                 <div class="col col-lg-6">
-                    
+
                     <table class="table table-striped">
 
                         <thead>
@@ -77,31 +77,35 @@
                     </table>
                 </div>
                 <div class="col col-lg-6">
-                   
+
 
                     <table class="table table-striped">
 
                         <thead>
                             <tr>
-                               
+
                                 <th scope="col">Rozpoczęcie</th>
                                 <th scope="col">Zakończenie</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                
+
                                 <td>@model.Start.ToShortDateString()</td>
                                 <td>@model.End.ToShortDateString()</td>
-                               
-                            </tr>                          
+
+                            </tr>
 
                         </tbody>
                     </table>
                 </div>
-               
-               
+                <div class="col col-lg-12">
+
+                    <BlazorCalendar />
+
+                </div>
+
             </div>
 
 
@@ -109,6 +113,7 @@
             }
         </div>
 
+       
     </div>
 </div>
 
