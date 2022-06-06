@@ -89,7 +89,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 122 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\PatientStatistics.razor"
+#line 124 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\PatientStatistics.razor"
        
         [Parameter]
         public string ApplicationUserId { get; set; }
