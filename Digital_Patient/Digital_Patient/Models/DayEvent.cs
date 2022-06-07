@@ -39,17 +39,17 @@ namespace Digital_Patient.Models
         public int DayEventId{get;set;}
         public string Note { get; set; }
 
-        public Color CheckColor(int done,int max)
+        public Color CheckColor(double done,double max)
         {
             //Color color;
 
             double x = done / max;
 
-            if(x==100)
+            if(x==1)
             {
                 color = Color.success;
             }
-            else if(x>=50)
+            else if(x>=0.5)
             {
                 color = Color.warning;
             }

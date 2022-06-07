@@ -1276,7 +1276,7 @@ namespace Digital_Patient.Models
                     if(datesofTask.Any(x=>x==i))
                     {
 
-                       int done=correctTimes.Count()* task.Measurements.SelectMany(x => x.MeasurementPairs).Where(x => x.TimeOfMeasurement.Date == i).Count();
+                       int done=task.Measurements.SelectMany(x => x.MeasurementPairs).Where(x => x.TimeOfMeasurement.Date == i).Count();
 
                         datesOfThisMonth.Add(new DayEvent(max, done, i.ToString("dd-MMM-yyyy"), i.ToString("ddd")));
                        

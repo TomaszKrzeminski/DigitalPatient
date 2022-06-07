@@ -104,7 +104,7 @@
 
                     <h1>@SelectedTask.TaskToDoId</h1>
 
-                    <BlazorCalendar TaskId="@SelectedTask.TaskToDoId" />
+                    <BlazorCalendar @ref="blazorCalendar" TaskId="@SelectedTask.TaskToDoId" />
 
                 </div>
 
@@ -122,16 +122,27 @@
 
 
 @code {
-        [Parameter]
-        public string ApplicationUserId { get; set; }
 
-public List<TaskToDo> PatientTasks { get; set; }
+
+    private BlazorCalendar blazorCalendar ;
+
+    [Parameter]
+    public string ApplicationUserId { get; set; }
+
+    public List<TaskToDo> PatientTasks { get; set; }
 
     private Repository repository;
 
     public StatisticsViewModel model = new StatisticsViewModel();
 
     public TaskToDo SelectedTask { get; set; } = new TaskToDo();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+    }
+
 
     protected override void OnParametersSet()
     {
@@ -152,9 +163,24 @@ public List<TaskToDo> PatientTasks { get; set; }
 
         SelectedTask = repository.GetTaskToDo(TaskId);
         model = repository.GetTaskToDoStatistics(TaskId);
+        RefreshChild();
 
 
     }
+
+
+
+
+    private void RefreshChild()
+    {
+        if(blazorCalendar!=null)
+        {
+            blazorCalendar.RefreshMe();
+        }
+
+
+    }
+
 
 
 

@@ -12,16 +12,9 @@
 
 @inject IDbContextFactory<ApplicationDbContext>  factory
 
-<h3>BlazorCalendar</h3>
+<h3>BlazorCalendar    @TaskId</h3>
 
-@*<select @onchange="LoadCalendar">
-    @foreach (string monthName in MonthNames)
-    {
-        <option>
-            @monthName
-        </option>
-    }
-</select>*@
+
 
 
 <select @onchange="LoadCalendar" >
@@ -55,7 +48,7 @@
                 var dIndex = dayIndex;
                 int background = (int)@weeks[wIndex].Dates[dayIndex].color;
 
-                if (background == 1)
+                if (background == 0)
                 {
                     <td class="bg-success">
 
@@ -65,7 +58,7 @@
 
                     </td>
                 }
-                else if (background == 2)
+                else if (background == 1)
                 {
                     <td class="bg-warning">
 
@@ -120,6 +113,29 @@
 
     DateTime StartDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime EndDate { get; set; } = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(1).AddDays(-1);
+
+
+
+    protected override void OnParametersSet()
+    {
+        int x = TaskId;
+        MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
+
+        SelectedMonth = MonthNames[DateTime.Now.Month];
+
+        GenerateCalendarHead();
+        GenerateCalendarBody();
+
+    }
+
+
+
+    public void RefreshMe()
+    {
+        StateHasChanged();
+        //OnParametersSet();
+    }
+
 
 
     protected override void OnInitialized()

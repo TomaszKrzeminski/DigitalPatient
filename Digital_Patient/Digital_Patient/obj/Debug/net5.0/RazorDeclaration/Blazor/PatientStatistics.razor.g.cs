@@ -91,16 +91,27 @@ using Microsoft.EntityFrameworkCore;
 #nullable restore
 #line 124 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\PatientStatistics.razor"
        
-        [Parameter]
-        public string ApplicationUserId { get; set; }
 
-public List<TaskToDo> PatientTasks { get; set; }
+
+    private BlazorCalendar blazorCalendar ;
+
+    [Parameter]
+    public string ApplicationUserId { get; set; }
+
+    public List<TaskToDo> PatientTasks { get; set; }
 
     private Repository repository;
 
     public StatisticsViewModel model = new StatisticsViewModel();
 
     public TaskToDo SelectedTask { get; set; } = new TaskToDo();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+    }
+
 
     protected override void OnParametersSet()
     {
@@ -121,9 +132,24 @@ public List<TaskToDo> PatientTasks { get; set; }
 
         SelectedTask = repository.GetTaskToDo(TaskId);
         model = repository.GetTaskToDoStatistics(TaskId);
+        RefreshChild();
 
 
     }
+
+
+
+
+    private void RefreshChild()
+    {
+        if(blazorCalendar!=null)
+        {
+            blazorCalendar.RefreshMe();
+        }
+
+
+    }
+
 
 
 

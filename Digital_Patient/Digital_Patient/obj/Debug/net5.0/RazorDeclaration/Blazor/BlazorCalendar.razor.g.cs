@@ -89,7 +89,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 109 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
+#line 102 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
        
 
 
@@ -104,6 +104,29 @@ using Microsoft.EntityFrameworkCore;
 
     DateTime StartDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime EndDate { get; set; } = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(1).AddDays(-1);
+
+
+
+    protected override void OnParametersSet()
+    {
+        int x = TaskId;
+        MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
+
+        SelectedMonth = MonthNames[DateTime.Now.Month];
+
+        GenerateCalendarHead();
+        GenerateCalendarBody();
+
+    }
+
+
+
+    public void RefreshMe()
+    {
+        StateHasChanged();
+        //OnParametersSet();
+    }
+
 
 
     protected override void OnInitialized()
