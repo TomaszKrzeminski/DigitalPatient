@@ -14,18 +14,22 @@
 
 @page "/MainPage"
 
+<style>
+    .selectTask:hover {
+        background-color: darkgoldenrod;
+    }
+</style>
 
 
-
-<div class="container-fluid alert-info">       
+<div class="container-fluid ">       
     
-    @*<h1>@CompleteTask</h1>*@
+    
     <div class="row">
         <div class="col-lg-6">
             <div class="row">
                 <h1 class="badge badge-dark text-left"> @AllTasks </h1>
             </div>
-           
+
 
             @foreach (var hour in Hours)
             {
@@ -35,46 +39,151 @@
                         <h2>@hour.HourTime : 00   </h2><p class="badge badge-warning"> @hour.HourTasks </p>
                     </div>
                 </div>
-                <div class="row">
 
-                    @{
+                @if (hour.HourTime == Now.Hour)
+                {
+                    <div class="row">
 
-                        int i = 0;
-                        foreach (var min in hour.minutes)
-                        {
+                        @{
 
-                            if (min.Tasks != null && min.Tasks.Count > 0)
+                            int i = 0;
+                            foreach (var min in hour.minutes)
                             {
-                               
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left">
-                                    <p class="badge badge-info"> @i </p>
-                                </div>
-
-
-
-
-
-
-                                @foreach (var task in min.Tasks)
+                                if (min.Tasks != null && min.Tasks.Count > 0)
                                 {
-                                    string clock = hour.HourTime + ":" + min.MinuteTime;
-                <div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
-                    @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
-                </div>                                   
+
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12  text-left">
+                                        <div class="row">
+                                            <div class="col col-lg-4"><p class="badge badge-light"> @hour.HourTime : @i </p></div>
+                                            <div class="col col-lg-4"></div>
+                                            <div class="col col-lg-4"></div>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+
+                                    @foreach (var task in min.Tasks)
+                                    {
+                                        string clock = hour.HourTime + ":" + min.MinuteTime;
+                                        @*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
+                                        @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
+                                    </div>*@
+
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
+
+                                            <div class="row">
+
+                                                <div class="col col-lg-4 alert-dark selectTask"> @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName</div>
+                                                <div class="col col-lg-4"></div>
+                                                <div class="col col-lg-4"></div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    }
+
                                 }
+
+
+                                i++;
 
                             }
 
+                        }
 
-                            i++;
+
+                    </div>
+                }
+                else
+                {
+        <div class="row">
+
+            @{
+
+                int i = 0;
+                foreach (var min in hour.minutes)
+                {
+
+                    if (min.Tasks != null && min.Tasks.Count > 0)
+                    {
+
+
+                        if (i < 10)
+                        {
+                        <div class="col-lg-12 col-md-12 col-sm-12  text-left">
+                            <div class="row">
+                                <div class="col col-lg-4"><p class="badge badge-light selectTask "> @hour.HourTime : 0 @i </p></div>
+                                <div class="col col-lg-4"></div>
+                                <div class="col col-lg-4"></div>
+                            </div>
+
+                        </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-12 col-md-12 col-sm-12  text-left">
+                                <div class="row">
+                                    <div class="col col-lg-4"><p class="badge badge-light "> @hour.HourTime : @i </p></div>
+                                    <div class="col col-lg-4"></div>
+                                    <div class="col col-lg-4"></div>
+                                </div>
+
+                            </div>
+                        }
+
+                        
+
+
+
+
+
+
+                        @foreach (var task in min.Tasks)
+                        {
+                            string clock = hour.HourTime + ":" + min.MinuteTime;
+                            @*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
+                            @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
+                        </div>*@
+
+
+                            <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
+
+                                <div class="row">
+
+                                    <div class="col col-lg-4 selectTask"> @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName</div>
+                                    <div class="col col-lg-4"></div>
+                                    <div class="col col-lg-4"></div>
+
+                                </div>
+
+
+                            </div>
 
                         }
 
                     }
 
 
-                </div>
+                    i++;
+
+                }
+
+            }
+
+
+        </div>
+                }
+
+
 
 
 
@@ -115,6 +224,7 @@
 
     public List<Hour> Hours { get; set; } = new List<Hour>();
 
+    public DateTime Now { get; set; }
 
     public void SetTaskId(int TaskId,string fullTime)
     {
@@ -152,14 +262,15 @@
     //}
 
 
-    
+
 
 
     protected async  override Task  OnParametersSetAsync()
     {
         string x = Check;
         string Id = ApplicationUserId;
-      await  GetHoursView(Id);
+        await  GetHoursView(Id);
+        Now = DateTime.Now;
 
     }
 

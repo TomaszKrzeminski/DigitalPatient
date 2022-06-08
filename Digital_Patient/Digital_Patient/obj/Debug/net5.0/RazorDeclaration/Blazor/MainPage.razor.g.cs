@@ -97,7 +97,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 96 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\MainPage.razor"
+#line 205 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\MainPage.razor"
        
 
 
@@ -120,6 +120,7 @@ using Microsoft.EntityFrameworkCore;
 
     public List<Hour> Hours { get; set; } = new List<Hour>();
 
+    public DateTime Now { get; set; }
 
     public void SetTaskId(int TaskId,string fullTime)
     {
@@ -157,14 +158,15 @@ using Microsoft.EntityFrameworkCore;
     //}
 
 
-    
+
 
 
     protected async  override Task  OnParametersSetAsync()
     {
         string x = Check;
         string Id = ApplicationUserId;
-      await  GetHoursView(Id);
+        await  GetHoursView(Id);
+        Now = DateTime.Now;
 
     }
 
