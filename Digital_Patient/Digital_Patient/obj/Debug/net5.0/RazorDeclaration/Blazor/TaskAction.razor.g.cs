@@ -143,13 +143,41 @@ using Microsoft.EntityFrameworkCore;
         return time;
     }
 
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        editContext = new EditContext(model);
+        messageStore = new ValidationMessageStore(editContext);
+        editContext.OnFieldChanged += OnFormUpdated;
+
+
+
+
+    }
+
+
+    public void Dispose()
+    {
+        editContext.OnFieldChanged -= OnFormUpdated;
+    }
+
+    private void OnFormUpdated(Object sender, FieldChangedEventArgs args)
+    {
+        CheckValidation();
+    }
+
+
+
     protected async override Task OnParametersSetAsync()
     {
 
         //set time here 
 
-        editContext = new EditContext(model);
-        messageStore = new ValidationMessageStore(editContext);
+        //editContext = new EditContext(model);
+        //messageStore = new ValidationMessageStore(editContext);
 
 
         //
@@ -318,61 +346,6 @@ using Microsoft.EntityFrameworkCore;
 
     private async Task HandleValidSubmit()
     {
-
-
-
-
-
-        //List<MeasurementPair> Pairs = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
-
-        //bool check = false;
-
-
-
-
-        //messageStore.Clear();
-
-        //List<Measurement> Measurements = model.taskToDo.Measurements.ToList();
-
-        //foreach (var item in Measurements)
-        //{
-
-        //    if(item.Note.Text==""||item.Note.Text==null)
-        //    {
-        //        messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
-        //    }
-
-
-        //}
-
-
-
-        //foreach (var pair in Pairs)
-        //{
-
-        //    if (pair.Text)
-        //    {
-        //        bool error = String.IsNullOrEmpty(pair.MeasurementText);
-        //        if (error)
-        //        {
-        //            messageStore.Add(() => pair.MeasurementText, "Uzupełnij dane w Texcie");
-        //            check = true; ;
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        bool error = pair.MeasurementNumber == 0;
-        //        if (error)
-        //        {
-        //            messageStore.Add(() => pair.MeasurementNumber, "Uzupełnij dane numeryczne");
-        //            check = true;
-        //        }
-        //    }
-
-
-
-        //}
 
 
 
