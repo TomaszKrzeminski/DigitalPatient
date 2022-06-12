@@ -148,6 +148,10 @@ namespace Digital_Patient.Models
     }
     public class TaskToDo
     {
+
+      
+
+
         public TaskToDo()
         {
             Measurements = new List<Measurement>();
@@ -170,7 +174,7 @@ namespace Digital_Patient.Models
         public virtual TaskToDoCategory TaskToDoCategory { get; set; }   
 
         public virtual IntervalData IntervalData { get; set; }
-       
+        [ValidateComplexType]
         public virtual List<Measurement> Measurements { get; set; }
 
     }
@@ -303,6 +307,10 @@ namespace Digital_Patient.Models
     public class Measurement
     {
 
+
+
+       
+
         public Measurement()
         {
             Time = DateTime.Now;
@@ -317,12 +325,13 @@ namespace Digital_Patient.Models
         public int? MeasurementCategoryId { get; set; }
         public MeasurementCategory MeasurementCategory { get; set; }
 
+        [ValidateComplexType]
         public List<MeasurementPair> MeasurementPairs { get; set; }
 
 
         public int? TaskToDoId { get; set; }
         public TaskToDo TaskToDo { get; set; }
-
+        [ValidateComplexType]
         public Note Note { get; set; }
 
     }
@@ -359,6 +368,8 @@ namespace Digital_Patient.Models
 
         public DateTime TimeOfMeasurement { get; set; }
 
+       
+
         public MeasurementPair()
         {
           
@@ -380,10 +391,10 @@ namespace Digital_Patient.Models
 
 
         public bool Text { get; set; }
-
-        public string MeasurementText { get; set; }
-
-        public double MeasurementNumber { get; set; }
+       
+        public string MeasurementText { get; set; } = "";
+       
+        public double MeasurementNumber { get; set; } = 0;
 
 
         public int? MeasurementId { get; set; }
@@ -393,6 +404,8 @@ namespace Digital_Patient.Models
     }
     public class Note
     {
+
+      
 
         public Note()
         {
@@ -407,7 +420,9 @@ namespace Digital_Patient.Models
         }
 
         public int NoteId { get; set; }
-        public string Text { get; set; }
+        //[Required(ErrorMessage ="Podanie notatki jest wymagane podaj choć status wykonano")]
+        //[MinLength(8 ,ErrorMessage ="Podaj czy wykonano pomiar czy nie min 8 znaków")]
+        public string Text { get; set; } = "";
         public bool Important { get; set; }
 
         public int? MeasurementId { get; set; }

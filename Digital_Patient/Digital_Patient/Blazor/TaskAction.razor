@@ -11,6 +11,7 @@
 
 @inject IDbContextFactory<ApplicationDbContext>  factory
 
+  
 
 <style>
     .HideInput {
@@ -18,6 +19,41 @@
         left: -200px;
         top: -200px;
     }
+
+
+    .validation-errors {
+        background-color: red;
+        color: white;
+        padding: 8px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    div.validation-message {
+        color: red;
+        font-weight: 500;
+    }
+
+    .modified.valid {
+        border: solid 3px rgb(40,167,69);
+    }
+
+    .modified.invalid {
+        border: solid 3px rgb(220,53,69);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 
 
@@ -32,13 +68,23 @@
                 <h2 class="form-control">   @tasktime.TimeOfDay  </h2>
 
             </div>
-            <EditForm Model="@model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+            <EditForm EditContext="editContext" OnSubmit="HandleValidSubmit">
+                <ObjectGraphDataAnnotationsValidator />
+                <InitialValidator />
+                <ValidationSummary></ValidationSummary>
+
+
+
+
+
                 <div class="form-group">
                     <h2 class="form-control"> Kategoria  @model.taskToDo.TaskToDoCategory.CategoryName</h2>
 
                 </div>
                 @if (model.taskToDo.Measurements != null)
                 {
+
+
 
 
                     foreach (var m in model.taskToDo.Measurements)
@@ -48,25 +94,29 @@
                             <h2 class="form-control ">Zbadaj @m.MeasurementCategory.CategoryName </h2>
                         </div>
                         <div class="form-group">
-                            
+
                             @foreach (var pair in m.MeasurementPairs)
                             {
 
-                            <div clss="row">
-                                <div class="col col-lg-12">
-                                    @pair.Name
+                                <div clss="row">
+                                    <div class="col col-lg-12">
+                                        @pair.Name
+                                    </div>
+                                    <div class="col col-lg-12">
+                                        @if (pair.Text)
+                                        {
+                                            <ValidationMessage For="@(() => pair.MeasurementText)" />
+                                            <InputText @bind-Value="pair.MeasurementText"   @onchange="@(() => CheckValidation())"         ></InputText>
+
+                                        }
+                                        else
+                                        {
+                                            <ValidationMessage For="@(() => pair.MeasurementNumber)" />
+                                            <InputNumber @bind-Value="pair.MeasurementNumber"     @onchange="@(() => CheckValidation())"       ></InputNumber>
+
+                                        }
+                                    </div>
                                 </div>
-                                <div class="col col-lg-12">
-                                    @if(pair.Text)
-                                    {
-                                        <InputText @bind-Value="pair.MeasurementText"></InputText>
-                                    }
-                                    else
-                                     {
-                                        <InputNumber @bind-Value="pair.MeasurementNumber"></InputNumber>
-                                     }
-                                </div>
-                            </div>
 
 
 
@@ -77,12 +127,13 @@
 
                         <div class="form-group">
                             <label>Dodaj Notatkę</label>
+                            <ValidationMessage For="@(() => m.Note.Text)" />
+                            @*<InputTextArea @bind-Value="@m.Note.Text"    ></InputTextArea>*@
 
-                            <InputTextArea @bind-Value="@m.Note.Text"></InputTextArea>
-                           
+                            <input   @bind-value:event="onchange" @oninput="CheckValidation"  @bind-value="m.Note.Text"           />
+                         
                         </div>
                     }
-
 
                 }
 
@@ -90,7 +141,7 @@
 
 
                 </div>
-              
+
                 <div class="form-group">
                     <h2 class="form-control">Czas @DateTime.Now.ToString("ddd, dd MMM yyy HH':'mm':'ss 'GMT'") </h2>
 
@@ -123,14 +174,22 @@
 @code
 {
 
-    public TaskToDoActionModel model { get; set; } = new TaskToDoActionModel();
+
+
+
+    ValidationMessageStore messageStore;
+    EditContext editContext;
+    EditForm editForm;
+
+    //public TaskToDoActionModel model { get; set; } = new TaskToDoActionModel();
+    public TaskToDoActionModel model { get;  set;  } = new TaskToDoActionModel();
 
     [Parameter]
     public string TaskTime { get; set; }
     public bool DataLogin = false;
     public TaskToDo EditTask { get; set; } = new TaskToDo();
     private Repository repository;
-
+    public bool Check {get;set;}
     [Parameter]
     public int TaskId { get; set; } = 0;
 
@@ -152,6 +211,11 @@
     }
 
 
+
+
+
+
+
     public DateTime GetTimeFromString(string Time)
     {
         int hour = Int32.Parse(Time.Split(":")[0]);
@@ -166,7 +230,8 @@
 
         //set time here 
 
-
+        editContext = new EditContext(model);
+        messageStore = new ValidationMessageStore(editContext);
 
 
         //
@@ -183,8 +248,45 @@
             tasktime = GetTimeFromString(TaskTime);
             model.taskToDo =  repository.GetTaskToDo2(TaskId,tasktime);
 
+            //
 
-           //check if measurement pair is in time               TaskTime//
+
+            List<Measurement> listMeasurement = model.taskToDo.Measurements;
+
+
+            foreach (var measurement in listMeasurement)
+            {
+
+
+                foreach (var mp in measurement.MeasurementPairs)
+                {
+
+                    if(mp.Text==true&&mp.MeasurementText=="")
+                    {
+                        mp.MeasurementText = null;
+                    }
+
+
+
+
+                }
+
+                if(  measurement.Note.Text=="")
+                {
+                    measurement.Note.Text = null;
+                }
+
+
+
+
+            }
+
+
+
+
+            //
+
+            //check if measurement pair is in time               TaskTime//
 
 
 
@@ -207,11 +309,11 @@
         try
         {
 
-            using (var repo = new Repository(factory.CreateDbContext()))
-            {
-                model.TaskCorrectTime = tasktime;
-                repo.ChangeMeasurmentsData(model);
-            }
+            //using (var repo = new Repository(factory.CreateDbContext()))
+            //{
+            //    model.TaskCorrectTime = tasktime;
+            //    repo.ChangeMeasurmentsData(model);
+            //}
 
         }
         catch (Exception ex)
@@ -228,11 +330,142 @@
 
 
 
-
-
-
-    public async Task HandleValidSubmit()
+    private void CheckValidation()
     {
+
+
+        List<MeasurementPair> Pairs = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
+
+        Check = false;
+
+
+
+
+        messageStore.Clear();
+
+        List<Measurement> Measurements = model.taskToDo.Measurements.ToList();
+
+        foreach (var item in Measurements)
+        {
+
+            if (item.Note.Text == "" || item.Note.Text == null)
+            {
+                messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
+                if (item.Note.Text.Count() < 8)
+                {
+                    messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
+                }
+            }
+
+
+
+
+
+        }
+
+
+
+        foreach (var pair in Pairs)
+        {
+
+            if (pair.Text)
+            {
+                bool error = String.IsNullOrEmpty(pair.MeasurementText);
+                if (error)
+                {
+                    messageStore.Add(() => pair.MeasurementText, "Uzupełnij dane w pomiarze");
+                    Check = true; ;
+                }
+
+            }
+            else
+            {
+                bool error = pair.MeasurementNumber == 0;
+                if (error)
+                {
+                    messageStore.Add(() => pair.MeasurementNumber, "Uzupełnij dane numeryczne");
+                    Check = true;
+                }
+            }
+
+
+
+        }
+
+        StateHasChanged();
+
+    }
+
+
+
+    private async Task HandleValidSubmit()
+    {
+
+
+
+
+
+        //List<MeasurementPair> Pairs = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
+
+        //bool check = false;
+
+
+
+
+        //messageStore.Clear();
+
+        //List<Measurement> Measurements = model.taskToDo.Measurements.ToList();
+
+        //foreach (var item in Measurements)
+        //{
+
+        //    if(item.Note.Text==""||item.Note.Text==null)
+        //    {
+        //        messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
+        //    }
+
+
+        //}
+
+
+
+        //foreach (var pair in Pairs)
+        //{
+
+        //    if (pair.Text)
+        //    {
+        //        bool error = String.IsNullOrEmpty(pair.MeasurementText);
+        //        if (error)
+        //        {
+        //            messageStore.Add(() => pair.MeasurementText, "Uzupełnij dane w Texcie");
+        //            check = true; ;
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        bool error = pair.MeasurementNumber == 0;
+        //        if (error)
+        //        {
+        //            messageStore.Add(() => pair.MeasurementNumber, "Uzupełnij dane numeryczne");
+        //            check = true;
+        //        }
+        //    }
+
+
+
+        //}
+
+
+
+        CheckValidation();
+
+
+        if(Check)
+        {
+            editContext.Validate();
+            return;
+        }
 
 
         if (DataLogin)
@@ -273,7 +506,91 @@
 
 
 
+
+
+
+
+
+
+
     }
+
+
+
+    //public async Task HandleValidSubmit()
+    //{
+
+
+    //    List<MeasurementPair> Pairs = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
+
+
+
+    //    foreach (var pair in Pairs)
+    //    {
+
+    //        if (pair.Text)
+    //        {
+    //            bool error = String.IsNullOrEmpty(pair.MeasurementText);
+    //            if(error)
+    //            {
+    //                messageStore.Add(() => pair.MeasurementText, "Uzupełnij dane");
+    //            }
+
+    //        }
+    //        else
+    //        {
+    //            bool  error = pair.MeasurementNumber == 0;
+    //            if (error)
+    //            {
+    //                messageStore.Add(() => pair.MeasurementNumber, "Uzupełnij dane");
+    //            }
+    //        }
+
+
+
+    //    }
+
+
+
+    //    if (DataLogin)
+    //    {
+    //        return;
+    //    }
+
+
+    //    try
+    //    {
+
+    //        using (var repo = new Repository(factory.CreateDbContext()))
+    //        {
+    //            model.TaskCorrectTime = tasktime;
+    //            repo.ChangeMeasurmentsData(model);
+
+
+
+    //        }
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+
+    //    }
+    //    finally
+    //    {
+    //        //model = new TaskToDoActionModel();
+    //        DataLogin = false;
+
+    //    }
+
+
+
+
+
+
+
+
+
+    //}
 
 
 
