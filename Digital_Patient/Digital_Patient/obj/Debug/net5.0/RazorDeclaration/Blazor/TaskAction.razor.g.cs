@@ -297,7 +297,7 @@ using Microsoft.EntityFrameworkCore;
             if (item.Note.Text == "" || item.Note.Text == null)
             {
                 messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
-                if (item.Note.Text.Count() < 8)
+                if (item.Note.Text!=null&&  item.Note.Text.Count() < 8)
                 {
                     messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
                 }
