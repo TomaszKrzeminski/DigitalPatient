@@ -1,0 +1,271 @@
+﻿@using Digital_Patient.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using Digital_Patient.Data
+@inject NavigationManager Navigation
+@using Microsoft.EntityFrameworkCore.Design
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Microsoft.EntityFrameworkCore
+
+
+@inject IDbContextFactory<ApplicationDbContext>  factory
+
+
+
+<select @onchange="LoadCalendar">
+
+    @foreach (string monthName in MonthNames)
+    {
+        <option selected="@(monthName==SelectedMonth)">
+            @monthName
+        </option>
+    }
+</select>
+
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            @for (int dayIndex = 0; dayIndex < Days.Count(); dayIndex++)
+            {
+                <th>@Days[dayIndex]</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (int weekIndex = 0; weekIndex < weeks.Count; weekIndex++)
+        {
+            <tr>
+
+                @for (int dayIndex = 0; dayIndex < (weeks[weekIndex].Dates.Count()); dayIndex++)
+                {
+                    var wIndex = weekIndex;
+                    var dIndex = dayIndex;
+                    int background = (int)@weeks[wIndex].Dates[dayIndex].color;
+
+                    if (background == 0)
+                    {
+                        <td class="bg-success">
+
+                            @weeks[wIndex].Dates[dayIndex].DateValue
+                            <br />
+                            <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
+
+                        </td>
+                    }
+                    else if (background == 1)
+                    {
+                        <td class="bg-warning">
+
+                            @weeks[wIndex].Dates[dayIndex].DateValue
+                            <br />
+                            <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
+
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="bg-danger">
+
+                            @weeks[wIndex].Dates[dayIndex].DateValue
+                            <br />
+                            <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
+
+                        </td>
+                    }
+
+
+
+
+                }
+
+
+
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+
+
+
+
+
+@code {
+
+
+    public string SelectedMonth { get; set; }
+
+    [Parameter]
+    public int TaskId { get; set; }
+
+    List<string> MonthNames { get; set; }
+    List<string> Days { get; set; }
+    List<Week> weeks { get; set; }
+
+    DateTime StartDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    DateTime EndDate { get; set; } = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(1).AddDays(-1);
+
+
+
+    protected override void OnParametersSet()
+    {
+        int x = TaskId;
+        MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
+
+        SelectedMonth = MonthNames[DateTime.Now.Month];
+
+        GenerateCalendarHead();
+        GenerateCalendarBody();
+
+    }
+
+
+
+    public void RefreshMe()
+    {
+        StateHasChanged();
+        //OnParametersSet();
+    }
+
+
+
+    protected override void OnInitialized()
+    {
+        MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
+
+        SelectedMonth = MonthNames[DateTime.Now.Month];
+
+        GenerateCalendarHead();
+        GenerateCalendarBody();
+    }
+
+
+    public void LoadCalendar(ChangeEventArgs e)
+    {
+        var month = e.Value.ToString();
+        int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
+        StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
+
+
+        EndDate = new DateTime(DateTime.Now.Year, monthIndex, 1).AddMonths(1).AddDays(-1);
+        GenerateCalendarHead();
+        GenerateCalendarBody();
+
+    }
+
+    private void GenerateCalendarHead()
+    {
+
+        var day1 = new List<string>();
+
+        for (var dt = StartDate; dt <= EndDate; dt = dt.AddDays(1))
+        {
+            day1.Add(dt.ToString("dddd"));
+        }
+
+        Days = day1.Distinct().ToList();
+
+    }
+
+
+
+
+    private void GenerateCalendarBody()
+    {
+        int x = TaskId;
+
+
+        ApplicationDbContext context = factory.CreateDbContext();
+        Repository repository = new Repository(context);
+
+        List<DayEvent> listOfDays = repository.TaskToDoDayStatistics(x, StartDate, EndDate);
+
+
+        weeks = new List<Week>();
+        int flag = 0;
+        Week week = new Week();
+        List<DayEvent> dates = new List<DayEvent>();
+        var totalDays = (int)(EndDate - StartDate).TotalDays;
+        int CountDays = 0;
+
+
+        for (var dt = StartDate; dt <= EndDate; dt = dt.AddDays(1))
+        {
+            flag++;
+            dates.Add(new DayEvent()
+            {
+                DateValue = dt.ToString("dd-MMM-yyyy"),
+                DayName = dt.ToString("ddd")
+
+            });
+
+            if (flag == 7)
+            {
+                week = new Week();
+                week.Dates = dates;
+                weeks.Add(week);
+                dates = new List<DayEvent>();
+                flag = 0;
+            }
+
+            if (CountDays == totalDays)
+            {
+                week = new Week();
+                week.Dates = dates;
+                weeks.Add(week);
+                dates = new List<DayEvent>();
+                flag = 0;
+                break;
+            }
+
+            CountDays++;
+
+        }
+
+
+        for (int i = 0; i < weeks.Count; i++)
+        {
+
+
+            for (int j = 0; j < weeks[i].Dates.Count; j++)
+            {
+
+
+                DayEvent day = weeks[i].Dates[j];
+
+                DayEvent day2 = listOfDays.Where(x => x.DateValue == day.DateValue).FirstOrDefault();
+
+                if (day2 != null)
+                {
+                    weeks[i].Dates[j] = day2;
+                }
+
+
+            }
+
+
+
+
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+}
+

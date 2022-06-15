@@ -89,7 +89,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 99 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
+#line 94 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
        
 
 
@@ -140,9 +140,9 @@ using Microsoft.EntityFrameworkCore;
     }
 
 
-    public void LoadCalendar(ChangeEventArgs e)
+    public void LoadCalendar(string month)
     {
-        var month = e.Value.ToString();
+       
         int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
         StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
 
@@ -152,6 +152,21 @@ using Microsoft.EntityFrameworkCore;
         GenerateCalendarBody();
 
     }
+
+
+
+    //public void LoadCalendar(ChangeEventArgs e)
+    //{
+    //    var month = e.Value.ToString();
+    //    int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
+    //    StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
+
+
+    //    EndDate = new DateTime(DateTime.Now.Year, monthIndex, 1).AddMonths(1).AddDays(-1);
+    //    GenerateCalendarHead();
+    //    GenerateCalendarBody();
+
+    //}
 
     private void GenerateCalendarHead()
     {

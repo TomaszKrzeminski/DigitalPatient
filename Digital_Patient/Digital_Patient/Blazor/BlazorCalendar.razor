@@ -14,14 +14,9 @@
 
 
 
-<select @onchange="LoadCalendar" >
-    @foreach (string monthName in MonthNames)
-    {
-        <option selected="@(monthName==SelectedMonth)">
-            @monthName
-        </option>
-    }
-</select>
+<BlazorCalendarSelect  CustomEvent="@LoadCalendar"  MonthNames="@MonthNames"  SelectedMonth="@SelectedMonth"     />
+
+
 
 
 
@@ -146,9 +141,9 @@
     }
 
 
-    public void LoadCalendar(ChangeEventArgs e)
+    public void LoadCalendar(string month)
     {
-        var month = e.Value.ToString();
+       
         int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
         StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
 
@@ -158,6 +153,21 @@
         GenerateCalendarBody();
 
     }
+
+
+
+    //public void LoadCalendar(ChangeEventArgs e)
+    //{
+    //    var month = e.Value.ToString();
+    //    int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
+    //    StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
+
+
+    //    EndDate = new DateTime(DateTime.Now.Year, monthIndex, 1).AddMonths(1).AddDays(-1);
+    //    GenerateCalendarHead();
+    //    GenerateCalendarBody();
+
+    //}
 
     private void GenerateCalendarHead()
     {

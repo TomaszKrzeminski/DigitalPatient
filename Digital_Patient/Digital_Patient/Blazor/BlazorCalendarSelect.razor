@@ -1,0 +1,36 @@
+﻿<select @onchange="SelectMonth">
+
+    @foreach (string monthName in MonthNames)
+    {
+        <option selected="@(monthName==SelectedMonth)">
+            @monthName
+        </option>
+    }
+</select>
+
+<h1>Modyfikacja</h1>
+
+
+@code
+{
+    [Parameter]
+    public  List<string> MonthNames { get; set; } = new List<string>();
+    [Parameter]
+    public string SelectedMonth { get; set; }
+
+    [Parameter]
+    public EventCallback<string> CustomEvent { get; set; }
+
+
+
+    public async Task SelectMonth(ChangeEventArgs e)
+    {
+        string month = e.Value.ToString();
+        await CustomEvent.InvokeAsync(month);
+
+    }
+
+
+
+
+}

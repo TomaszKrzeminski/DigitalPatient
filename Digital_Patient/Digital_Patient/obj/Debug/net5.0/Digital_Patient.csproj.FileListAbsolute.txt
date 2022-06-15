@@ -215,3 +215,7 @@ C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debu
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\ref\Digital_Patient.dll
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.pdb
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.genruntimeconfig.cache
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\BlazorCalendar2.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\BlazorCalendar2.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\BlazorCalendarSelect.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\BlazorCalendarSelect.razor.g.cs

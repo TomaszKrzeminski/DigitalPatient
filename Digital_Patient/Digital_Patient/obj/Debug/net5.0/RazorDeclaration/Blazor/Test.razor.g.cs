@@ -67,7 +67,6 @@ using Syncfusion.Blazor;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/event-handler-example-7")]
     public partial class Test : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -75,25 +74,6 @@ using Syncfusion.Blazor;
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 28 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\Test.razor"
-       
-    private bool stopPropagation = false;
-    private string? message;
-
-    private void OnSelectParentDiv() =>
-        message += $"The parent div was selected. {DateTime.Now}";
-
-    private void OnSelectChildDiv() =>
-        message += $"A child div was selected. {DateTime.Now}";
-
-    private void OnSelectChildDiv2() =>
-       message += $"A child 2 div was selected. {DateTime.Now}";
-
-
-#line default
-#line hidden
-#nullable disable
     }
 }
 #pragma warning restore 1591
