@@ -85,14 +85,18 @@ using Syncfusion.Blazor;
     [Parameter]
     public EventCallback<string> CustomEvent { get; set; }
 
-
-
+   
     public async Task SelectMonth(ChangeEventArgs e)
     {
-        string month = e.Value.ToString();
-        await CustomEvent.InvokeAsync(month);
+        SelectedMonth = e.Value.ToString();
+        await CustomEvent.InvokeAsync(SelectedMonth);
 
     }
+
+
+
+   
+
 
 
 

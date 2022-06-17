@@ -1192,6 +1192,7 @@ namespace Digital_Patient.Models
         public List<DayEvent>  TaskToDoDayStatistics(int TaskId,DateTime MonthStart,DateTime MonthEnd)
         {
             List <DayEvent> list = new List<DayEvent>();
+            DateTime NowX = DateTime.Now;
             try
             {
 
@@ -1278,17 +1279,16 @@ namespace Digital_Patient.Models
 
                        int done=task.Measurements.SelectMany(x => x.MeasurementPairs).Where(x => x.TimeOfMeasurement.Date == i).Count();
 
-                        datesOfThisMonth.Add(new DayEvent(max, done, i.ToString("dd-MMM-yyyy"), i.ToString("ddd")));
+                        datesOfThisMonth.Add(new DayEvent(max, done, i.ToString("dd-MMM-yyyy"), i.ToString("ddd"),i));
                        
                     }                  
 
 
 
-                }           
-                                       
-                               
+                }
 
 
+                
                 return datesOfThisMonth;
             }
             catch(Exception ex)

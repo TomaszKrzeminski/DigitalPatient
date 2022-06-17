@@ -89,9 +89,10 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 94 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
+#line 89 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
        
-
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
     public string SelectedMonth { get; set; }
 
@@ -105,14 +106,14 @@ using Microsoft.EntityFrameworkCore;
     DateTime StartDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime EndDate { get; set; } = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(1).AddDays(-1);
 
-
+    DateTime Now { get; set; } = DateTime.Now.Date;
 
     protected override void OnParametersSet()
     {
         int x = TaskId;
         MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
 
-        SelectedMonth = MonthNames[DateTime.Now.Month];
+        SelectedMonth = MonthNames[(DateTime.Now.Month)-1];
 
         GenerateCalendarHead();
         GenerateCalendarBody();
@@ -142,7 +143,7 @@ using Microsoft.EntityFrameworkCore;
 
     public void LoadCalendar(string month)
     {
-       
+
         int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
         StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
 
@@ -155,18 +156,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-    //public void LoadCalendar(ChangeEventArgs e)
-    //{
-    //    var month = e.Value.ToString();
-    //    int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
-    //    StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
 
-
-    //    EndDate = new DateTime(DateTime.Now.Year, monthIndex, 1).AddMonths(1).AddDays(-1);
-    //    GenerateCalendarHead();
-    //    GenerateCalendarBody();
-
-    //}
 
     private void GenerateCalendarHead()
     {

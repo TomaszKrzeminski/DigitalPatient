@@ -12,7 +12,9 @@
 
 @inject IDbContextFactory<ApplicationDbContext>  factory
 
-
+<div>
+    @ChildContent
+</div>
 
 <BlazorCalendarSelect  CustomEvent="@LoadCalendar"  MonthNames="@MonthNames"  SelectedMonth="@SelectedMonth"     />
 
@@ -39,40 +41,33 @@
                 var wIndex = weekIndex;
                 var dIndex = dayIndex;
                 int background = (int)@weeks[wIndex].Dates[dayIndex].color;
+                string backgroundText = @weeks[wIndex].Dates[dayIndex].color.ToString();
 
-                if (background == 0)
+                DateTime Date = @weeks[wIndex].Dates[dayIndex].EventDate.Date;
+
+                bool checkDay = DateTime.Now.Date == Date;
+
+
+                if (checkDay)
                 {
-                    <td class="bg-success">
+                    <td class="bg-@backgroundText" style="border: 3px solid #33ccff;">
 
-                        @weeks[wIndex].Dates[dayIndex].DateValue
+                        <label style="color: Highlight"> @weeks[wIndex].Dates[dayIndex].DateValue </label>
+
                         <br />
-                        <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
+                        <label style="color: Highlight"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
 
-                    </td>
-                }
-                else if (background == 1)
-                {
-                    <td class="bg-warning">
+                    </td>             
 
-                        @weeks[wIndex].Dates[dayIndex].DateValue
-                        <br />
-                        <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
-
-                    </td>
-                }
-                else
-                {
-                    <td class="bg-danger">
-
-                        @weeks[wIndex].Dates[dayIndex].DateValue
-                        <br />
-                        <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
-
-                    </td>
                 }
 
+                <td class="bg-@backgroundText">
 
+                    @weeks[wIndex].Dates[dayIndex].DateValue
+                    <br />
+                    <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
 
+                </td>           
 
             }
 
@@ -92,7 +87,8 @@
 
 
 @code {
-
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
     public string SelectedMonth { get; set; }
 
@@ -106,14 +102,14 @@
     DateTime StartDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime EndDate { get; set; } = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(1).AddDays(-1);
 
-
+    DateTime Now { get; set; } = DateTime.Now.Date;
 
     protected override void OnParametersSet()
     {
         int x = TaskId;
         MonthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames.ToList();
 
-        SelectedMonth = MonthNames[DateTime.Now.Month];
+        SelectedMonth = MonthNames[(DateTime.Now.Month)-1];
 
         GenerateCalendarHead();
         GenerateCalendarBody();
@@ -143,7 +139,7 @@
 
     public void LoadCalendar(string month)
     {
-       
+
         int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
         StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
 
@@ -156,18 +152,7 @@
 
 
 
-    //public void LoadCalendar(ChangeEventArgs e)
-    //{
-    //    var month = e.Value.ToString();
-    //    int monthIndex = DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL")).Month;
-    //    StartDate = new DateTime(DateTime.Now.Year, monthIndex, 1);
 
-
-    //    EndDate = new DateTime(DateTime.Now.Year, monthIndex, 1).AddMonths(1).AddDays(-1);
-    //    GenerateCalendarHead();
-    //    GenerateCalendarBody();
-
-    //}
 
     private void GenerateCalendarHead()
     {

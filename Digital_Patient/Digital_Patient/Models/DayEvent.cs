@@ -24,16 +24,29 @@ namespace Digital_Patient.Models
         }
 
 
-        public DayEvent(int Max ,int Done,string DateValue,string DateName)
+        public DayEvent(int Max ,int Done,string DateValue,string DateName,DateTime EventDate)
         {
             this.Max = Max;
             this.Done = Done;
             this.color = CheckColor(Done, Max);
             this.DateValue = DateValue;
             this.DayName = DateName;
-
+            this.EventDate = EventDate;
 
         }
+
+
+        public DayEvent(int Max, int Done, string DateValue, string DateName)
+        {
+            this.Max = Max;
+            this.Done = Done;
+            this.color = CheckColor(Done, Max);
+            this.DateValue = DateValue;
+            this.DayName = DateName;
+            this.EventDate = EventDate;
+
+        }
+
 
 
         public int DayEventId{get;set;}
@@ -59,6 +72,19 @@ namespace Digital_Patient.Models
             }
             return color;
         }
+
+        public void CheckIfToday()
+        {
+            DateTime now = DateTime.Now;
+
+            if(now.Date==EventDate.Date)
+            {
+                DayIsToday = true;
+            }
+
+        }
+
+        public bool DayIsToday { get; set; } = false;
 
         public DateTime EventDate { get; set; } = new DateTime(1900,1,1);
         public DateTime FromDate { get; set; } = new DateTime(1900, 1, 1);

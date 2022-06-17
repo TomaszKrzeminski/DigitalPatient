@@ -1,4 +1,4 @@
-﻿<select @onchange="SelectMonth">
+﻿<select @onchange="SelectMonth"    >
 
     @foreach (string monthName in MonthNames)
     {
@@ -8,7 +8,7 @@
     }
 </select>
 
-<h1>Modyfikacja</h1>
+
 
 
 @code
@@ -21,14 +21,18 @@
     [Parameter]
     public EventCallback<string> CustomEvent { get; set; }
 
-
-
+   
     public async Task SelectMonth(ChangeEventArgs e)
     {
-        string month = e.Value.ToString();
-        await CustomEvent.InvokeAsync(month);
+        SelectedMonth = e.Value.ToString();
+        await CustomEvent.InvokeAsync(SelectedMonth);
 
     }
+
+
+
+   
+
 
 
 

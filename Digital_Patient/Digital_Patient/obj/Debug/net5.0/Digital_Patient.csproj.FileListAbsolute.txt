@@ -219,3 +219,5 @@ C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debu
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\BlazorCalendar2.razor.g.cs
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\BlazorCalendarSelect.razor.g.cs
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\BlazorCalendarSelect.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\InnerComponent.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\InnerComponent.razor.g.cs
