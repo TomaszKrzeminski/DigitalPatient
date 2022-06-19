@@ -89,7 +89,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 89 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
+#line 96 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\BlazorCalendar.razor"
        
     [Parameter]
     public RenderFragment ChildContent { get; set; }

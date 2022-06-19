@@ -67,13 +67,25 @@ using Syncfusion.Blazor;
 #line default
 #line hidden
 #nullable disable
-    public partial class ErrorComp : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class ErrorComp<ErrorType> : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 22 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\ErrorComp.razor"
+       
+
+    public RenderFragment Header { get; set; }
+    public RenderFragment Body { get; set; }
+    public ErrorType error { get; set; }
+
+
+#line default
+#line hidden
+#nullable disable
     }
 }
 #pragma warning restore 1591

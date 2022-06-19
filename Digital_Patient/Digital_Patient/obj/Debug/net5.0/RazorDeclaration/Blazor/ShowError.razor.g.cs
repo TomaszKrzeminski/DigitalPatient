@@ -67,7 +67,7 @@ using Syncfusion.Blazor;
 #line default
 #line hidden
 #nullable disable
-    public partial class Test : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class ShowError : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)

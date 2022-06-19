@@ -57,17 +57,24 @@
                         <br />
                         <label style="color: Highlight"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
 
-                    </td>             
+                    </td>
+
+
+
+                }
+                else
+                {
+                    <td class="bg-@backgroundText">
+
+                        @weeks[wIndex].Dates[dayIndex].DateValue
+                        <br />
+                        <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
+
+                    </td>
 
                 }
 
-                <td class="bg-@backgroundText">
 
-                    @weeks[wIndex].Dates[dayIndex].DateValue
-                    <br />
-                    <label style="color:gray"> @weeks[wIndex].Dates[dayIndex].Done / @weeks[wIndex].Dates[dayIndex].Max</label>
-
-                </td>           
 
             }
 
