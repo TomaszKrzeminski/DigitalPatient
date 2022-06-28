@@ -89,10 +89,32 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 174 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskAction.razor"
+#line 177 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskAction.razor"
  
 
 
+    [Parameter] public Action<string> MessageSet { get; set; }
+
+    private void ChangeMessage()
+    {
+        MessageSet?.Invoke("Zmiana zadania zakończona sukcesem");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    [CascadingParameter(Name = "BackGroundColor1")]
+    public string BackGroundColor { get; set; }
+    [CascadingParameter(Name = "TextColor1")]
+    public string TextColor { get; set; }
 
 
     ValidationMessageStore messageStore;
@@ -128,12 +150,6 @@ using Microsoft.EntityFrameworkCore;
 
     }
 
-
-
-
-
-
-
     public DateTime GetTimeFromString(string Time)
     {
         int hour = Int32.Parse(Time.Split(":")[0]);
@@ -142,8 +158,6 @@ using Microsoft.EntityFrameworkCore;
         DateTime time = new DateTime(2100, 1, 1, hour, minute, 0);
         return time;
     }
-
-
 
     protected override void OnInitialized()
     {
@@ -158,7 +172,6 @@ using Microsoft.EntityFrameworkCore;
 
     }
 
-
     public void Dispose()
     {
         editContext.OnFieldChanged -= OnFormUpdated;
@@ -168,8 +181,6 @@ using Microsoft.EntityFrameworkCore;
     {
         CheckValidation();
     }
-
-
 
     protected async override Task OnParametersSetAsync()
     {
@@ -243,7 +254,6 @@ using Microsoft.EntityFrameworkCore;
 
     }
 
-
     public async Task HandleInvalidSubmit()
     {
         if (DataLogin)
@@ -274,9 +284,7 @@ using Microsoft.EntityFrameworkCore;
         }
     }
 
-
-
-    private void CheckValidation()
+    private bool CheckValidation()
     {
 
 
@@ -291,23 +299,50 @@ using Microsoft.EntityFrameworkCore;
 
         List<Measurement> Measurements = model.taskToDo.Measurements.ToList();
 
+
+
+
         foreach (var item in Measurements)
         {
 
-            if (item.Note.Text == "" || item.Note.Text == null)
+            if (item.Note.Text == "" || item.Note.Text == null )
             {
                 messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
-                if (item.Note.Text!=null&&  item.Note.Text.Count() < 8)
-                {
-                    messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
-                }
+                Check = true;
+
+            }
+            else if(item.Note.Text != null && item.Note.Text.Count() < 8)
+            {
+                messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
+                Check = true;
             }
 
 
 
-
-
         }
+
+
+
+
+
+
+        //foreach (var item in Measurements)
+        //{
+
+        //    if (item.Note.Text == "" || item.Note.Text == null||item.Note.Text.Count()<8)
+        //    {
+        //        messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
+        //        if (item.Note.Text!=null&&  item.Note.Text.Count() < 8)
+        //        {
+        //            messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
+        //        }
+        //    }
+
+
+
+
+
+        //}
 
 
 
@@ -338,11 +373,10 @@ using Microsoft.EntityFrameworkCore;
 
         }
 
+
         StateHasChanged();
-
+        return Check;
     }
-
-
 
     private async Task HandleValidSubmit()
     {
@@ -373,7 +407,7 @@ using Microsoft.EntityFrameworkCore;
                 model.TaskCorrectTime = tasktime;
                 repo.ChangeMeasurmentsData(model);
 
-
+                ChangeMessage();
 
             }
 
@@ -407,81 +441,6 @@ using Microsoft.EntityFrameworkCore;
     }
 
 
-
-    //public async Task HandleValidSubmit()
-    //{
-
-
-    //    List<MeasurementPair> Pairs = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
-
-
-
-    //    foreach (var pair in Pairs)
-    //    {
-
-    //        if (pair.Text)
-    //        {
-    //            bool error = String.IsNullOrEmpty(pair.MeasurementText);
-    //            if(error)
-    //            {
-    //                messageStore.Add(() => pair.MeasurementText, "Uzupełnij dane");
-    //            }
-
-    //        }
-    //        else
-    //        {
-    //            bool  error = pair.MeasurementNumber == 0;
-    //            if (error)
-    //            {
-    //                messageStore.Add(() => pair.MeasurementNumber, "Uzupełnij dane");
-    //            }
-    //        }
-
-
-
-    //    }
-
-
-
-    //    if (DataLogin)
-    //    {
-    //        return;
-    //    }
-
-
-    //    try
-    //    {
-
-    //        using (var repo = new Repository(factory.CreateDbContext()))
-    //        {
-    //            model.TaskCorrectTime = tasktime;
-    //            repo.ChangeMeasurmentsData(model);
-
-
-
-    //        }
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-
-    //    }
-    //    finally
-    //    {
-    //        //model = new TaskToDoActionModel();
-    //        DataLogin = false;
-
-    //    }
-
-
-
-
-
-
-
-
-
-    //}
 
 
 

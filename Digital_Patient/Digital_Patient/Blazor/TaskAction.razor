@@ -61,7 +61,7 @@
 
 @if (TaskId > 0)
 {
-    <div class="container">
+    <div class="container  @BackGroundColor @TextColor  ">
         <div class="col-lg-12">
 
             <div class="form-group">
@@ -106,13 +106,13 @@
                                         @if (pair.Text)
                                         {
                                             <ValidationMessage For="@(() => pair.MeasurementText)" />
-                                            <InputText @bind-Value="pair.MeasurementText" ></InputText>
+                                            <InputText @bind-Value="pair.MeasurementText"></InputText>
 
                                         }
                                         else
                                         {
                                             <ValidationMessage For="@(() => pair.MeasurementNumber)" />
-                                            <InputNumber @bind-Value="pair.MeasurementNumber" ></InputNumber>
+                                            <InputNumber @bind-Value="pair.MeasurementNumber"></InputNumber>
 
                                         }
                                     </div>
@@ -130,7 +130,7 @@
                             <ValidationMessage For="@(() => m.Note.Text)" />
                             @*<InputTextArea @bind-Value="@m.Note.Text"    ></InputTextArea>*@
 
-                            <InputText @bind-Value="m.Note.Text" ></InputText>
+                            <InputText @bind-Value="m.Note.Text"></InputText>
 
                         </div>
                     }
@@ -147,9 +147,12 @@
 
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-danger" type="submit">Zapisz</button>
+                    <button class="btn btn-danger" type="submit" >Zapisz</button>
                 </div>
 
+                @*<div class="form-group">
+                    <button class="btn btn-danger" type="submit" @onclick="ChangeMessage">Zapisz</button>
+                </div>*@
 
             </EditForm>
 
@@ -174,6 +177,28 @@
 {
 
 
+    [Parameter] public Action<string> MessageSet { get; set; }
+
+    private void ChangeMessage()
+    {
+        MessageSet?.Invoke("Zmiana zadania zakończona sukcesem");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    [CascadingParameter(Name = "BackGroundColor1")]
+    public string BackGroundColor { get; set; }
+    [CascadingParameter(Name = "TextColor1")]
+    public string TextColor { get; set; }
 
 
     ValidationMessageStore messageStore;
@@ -209,12 +234,6 @@
 
     }
 
-
-
-
-
-
-
     public DateTime GetTimeFromString(string Time)
     {
         int hour = Int32.Parse(Time.Split(":")[0]);
@@ -223,8 +242,6 @@
         DateTime time = new DateTime(2100, 1, 1, hour, minute, 0);
         return time;
     }
-
-
 
     protected override void OnInitialized()
     {
@@ -239,7 +256,6 @@
 
     }
 
-
     public void Dispose()
     {
         editContext.OnFieldChanged -= OnFormUpdated;
@@ -249,8 +265,6 @@
     {
         CheckValidation();
     }
-
-
 
     protected async override Task OnParametersSetAsync()
     {
@@ -324,7 +338,6 @@
 
     }
 
-
     public async Task HandleInvalidSubmit()
     {
         if (DataLogin)
@@ -355,9 +368,7 @@
         }
     }
 
-
-
-    private void CheckValidation()
+    private bool CheckValidation()
     {
 
 
@@ -372,23 +383,50 @@
 
         List<Measurement> Measurements = model.taskToDo.Measurements.ToList();
 
+
+
+
         foreach (var item in Measurements)
         {
 
-            if (item.Note.Text == "" || item.Note.Text == null)
+            if (item.Note.Text == "" || item.Note.Text == null )
             {
                 messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
-                if (item.Note.Text!=null&&  item.Note.Text.Count() < 8)
-                {
-                    messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
-                }
+                Check = true;
+
+            }
+            else if(item.Note.Text != null && item.Note.Text.Count() < 8)
+            {
+                messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
+                Check = true;
             }
 
 
 
-
-
         }
+
+
+
+
+
+
+        //foreach (var item in Measurements)
+        //{
+
+        //    if (item.Note.Text == "" || item.Note.Text == null||item.Note.Text.Count()<8)
+        //    {
+        //        messageStore.Add(() => item.Note.Text, "Uzupełnij dane w Notatce");
+        //        if (item.Note.Text!=null&&  item.Note.Text.Count() < 8)
+        //        {
+        //            messageStore.Add(() => item.Note.Text, "Notatka musi zawierać co najmniej 8 znaków text  \" wykonano \" lub \"nie wykonano\" ");
+        //        }
+        //    }
+
+
+
+
+
+        //}
 
 
 
@@ -419,11 +457,10 @@
 
         }
 
+
         StateHasChanged();
-
+        return Check;
     }
-
-
 
     private async Task HandleValidSubmit()
     {
@@ -454,7 +491,7 @@
                 model.TaskCorrectTime = tasktime;
                 repo.ChangeMeasurmentsData(model);
 
-
+                ChangeMessage();
 
             }
 
@@ -488,81 +525,6 @@
     }
 
 
-
-    //public async Task HandleValidSubmit()
-    //{
-
-
-    //    List<MeasurementPair> Pairs = model.taskToDo.Measurements.SelectMany(x => x.MeasurementPairs).ToList();
-
-
-
-    //    foreach (var pair in Pairs)
-    //    {
-
-    //        if (pair.Text)
-    //        {
-    //            bool error = String.IsNullOrEmpty(pair.MeasurementText);
-    //            if(error)
-    //            {
-    //                messageStore.Add(() => pair.MeasurementText, "Uzupełnij dane");
-    //            }
-
-    //        }
-    //        else
-    //        {
-    //            bool  error = pair.MeasurementNumber == 0;
-    //            if (error)
-    //            {
-    //                messageStore.Add(() => pair.MeasurementNumber, "Uzupełnij dane");
-    //            }
-    //        }
-
-
-
-    //    }
-
-
-
-    //    if (DataLogin)
-    //    {
-    //        return;
-    //    }
-
-
-    //    try
-    //    {
-
-    //        using (var repo = new Repository(factory.CreateDbContext()))
-    //        {
-    //            model.TaskCorrectTime = tasktime;
-    //            repo.ChangeMeasurmentsData(model);
-
-
-
-    //        }
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-
-    //    }
-    //    finally
-    //    {
-    //        //model = new TaskToDoActionModel();
-    //        DataLogin = false;
-
-    //    }
-
-
-
-
-
-
-
-
-
-    //}
 
 
 
