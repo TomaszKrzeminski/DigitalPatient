@@ -15,7 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.AspNetCore.ResponseCompression;
+using Digital_Patient.Hubs;
 
 namespace Digital_Patient
 {
@@ -106,21 +107,34 @@ namespace Digital_Patient
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            
+
+            //// signalR
+
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
 
 
 
 
-
-
-
-
+            ///
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ApplicationDbContext context)
         {
+
+            //// signalR
+
+
+            app.UseResponseCompression();
+
+
+            ////
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -147,6 +161,14 @@ namespace Digital_Patient
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
+
+                //signalR
+
+                endpoints.MapHub<TaskHub>("/taskhub");
+
+                //
+
+
             });
 
             SeedData data = new SeedData(context);

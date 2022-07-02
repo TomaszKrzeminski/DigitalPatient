@@ -1,0 +1,37 @@
+﻿@page "/taskhub"
+@inject NavigationManager navigationManager
+@using Microsoft.AspNetCore.SignalR.Client;
+
+
+<h1>Update Task   @Action</h1>
+
+
+
+@code {
+
+    private string TaskId { get; set; }
+    private string TaskDescriptionMessage { get; set; }
+    private HubConnection? hubConnection;
+    private bool Action { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
+            .Build();
+
+        hubConnection.On<int>("UpdateTask", (TaskId) =>
+        {
+            Action = true;
+            //// call  refresh tasks and view messages
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+
+
+
+}

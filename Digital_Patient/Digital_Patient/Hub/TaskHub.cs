@@ -14,7 +14,8 @@ namespace Digital_Patient.Hubs
         public async Task Update(string UserId, int TaskId)
         {
 
-            await Clients.User(UserId).SendAsync("UpdateTask", TaskId);
+            //await Clients.User(UserId).SendAsync("UpdateTask", TaskId);
+            await Clients.All.SendAsync("UpdateTask", TaskId);
 
         }
 

@@ -67,6 +67,14 @@ using Syncfusion.Blazor;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 3 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.SignalR.Client;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/taskhub")]
     public partial class UpdateTaskList : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -74,6 +82,52 @@ using Syncfusion.Blazor;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 10 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+       
+
+    private string UserId { get; set; }
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
+            .Build();
+
+        //hubConnection.On<int>("UpdateTask", (TaskId) =>
+        //{
+
+        //    //// call  refresh tasks and view messages
+
+        //    InvokeAsync(StateHasChanged);
+        //});
+
+        await hubConnection.StartAsync();
+    }
+
+    public async Task UpdateTask()
+    {
+
+        string UserId = "b391d91b-e56b-4215-8c23-682827809ff1";
+        int TaskId = 0;
+
+        try
+        {
+            await hubConnection.SendAsync("Update", UserId, TaskId);
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

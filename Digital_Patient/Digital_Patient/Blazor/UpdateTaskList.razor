@@ -1,4 +1,4 @@
-﻿@*@page "/taskupdate"
+﻿@page "/taskhub"
 @inject NavigationManager navigationManager
 @using Microsoft.AspNetCore.SignalR.Client;
 
@@ -15,7 +15,7 @@
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(navigationManager.ToAbsoluteUri("/taskupdate"))
+            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
             .Build();
 
         //hubConnection.On<int>("UpdateTask", (TaskId) =>
@@ -32,7 +32,7 @@
     public async Task UpdateTask()
     {
 
-        string UserId = "8848c101-8c06-4c51-9c91-5bc510e09ad3";
+        string UserId = "b391d91b-e56b-4215-8c23-682827809ff1";
         int TaskId = 0;
 
         try
@@ -46,4 +46,4 @@
     }
 
 
-}*@
+}

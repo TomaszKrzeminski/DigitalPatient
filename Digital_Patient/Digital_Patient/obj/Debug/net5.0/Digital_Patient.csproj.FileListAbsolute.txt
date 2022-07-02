@@ -357,3 +357,5 @@ C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debu
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.IO.Pipelines.dll
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.csproj.AssemblyReference.cache
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\UpdateTask.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\UpdateTask.razor.g.cs
