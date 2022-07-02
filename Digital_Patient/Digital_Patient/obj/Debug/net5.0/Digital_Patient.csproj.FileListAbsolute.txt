@@ -346,3 +346,14 @@ C:\Users\tomszek\Desktop\Nowy folder\DigitalPatient-main\Digital_Patient\Digital
 C:\Users\tomszek\Desktop\Nowy folder\DigitalPatient-main\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.genruntimeconfig.cache
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\RazorDeclaration\Blazor\UpdateTaskList.razor.g.cs
 C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Razor\Blazor\UpdateTaskList.razor.g.cs
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\bin\Debug\net5.0\System.IO.Pipelines.dll
+C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\obj\Debug\net5.0\Digital_Patient.csproj.AssemblyReference.cache
