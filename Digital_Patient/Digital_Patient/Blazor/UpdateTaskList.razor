@@ -1,0 +1,49 @@
+﻿@*@page "/taskupdate"
+@inject NavigationManager navigationManager
+@using Microsoft.AspNetCore.SignalR.Client;
+
+
+<button @onclick="UpdateTask">UpdateTask</button>
+
+
+
+@code {
+
+    private string UserId { get; set; }
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(navigationManager.ToAbsoluteUri("/taskupdate"))
+            .Build();
+
+        //hubConnection.On<int>("UpdateTask", (TaskId) =>
+        //{
+
+        //    //// call  refresh tasks and view messages
+
+        //    InvokeAsync(StateHasChanged);
+        //});
+
+        await hubConnection.StartAsync();
+    }
+
+    public async Task UpdateTask()
+    {
+
+        string UserId = "8848c101-8c06-4c51-9c91-5bc510e09ad3";
+        int TaskId = 0;
+
+        try
+        {
+            await hubConnection.SendAsync("Update", UserId, TaskId);
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+
+
+}*@
