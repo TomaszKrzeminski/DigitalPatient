@@ -3,13 +3,38 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 
 
-<button @onclick="UpdateTask">UpdateTask</button>
+@using Microsoft.AspNetCore.Components.Forms
+@using Digital_Patient.Models
+@using Digital_Patient.Data
+@inject NavigationManager Navigation
+@using Microsoft.EntityFrameworkCore.Design
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Microsoft.EntityFrameworkCore
+
+
+
+
+@inject IDbContextFactory<ApplicationDbContext>  factory
+
+
+<h3 @onchange="UpdateTask">@Message   @UserIdTaskChange </h3>
 
 
 
 @code {
 
-    private string UserId { get; set; }
+    [Parameter]
+    public string UserIdTaskChange { get; set; } = "";
+
+    public string Message { get; set; } = "";
+
+    public int TaskId { get; set; } = 0;
+
+    private Repository repository;
+
     private HubConnection? hubConnection;
 
     protected override async Task OnInitializedAsync()
@@ -18,31 +43,54 @@
             .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
             .Build();
 
-        //hubConnection.On<int>("UpdateTask", (TaskId) =>
-        //{
 
-        //    //// call  refresh tasks and view messages
-
-        //    InvokeAsync(StateHasChanged);
-        //});
 
         await hubConnection.StartAsync();
     }
 
+
+    protected override void OnParametersSet()
+    {
+
+        UpdateTask();
+
+
+    }
+
+
+
     public async Task UpdateTask()
     {
 
-        string UserId = "b391d91b-e56b-4215-8c23-682827809ff1";
-        int TaskId = 0;
 
-        try
+        if (UserIdTaskChange != null && UserIdTaskChange != "")
         {
-            await hubConnection.SendAsync("Update", UserId, TaskId);
-        }
-        catch (Exception e)
-        {
+            try
+            {
 
+
+
+                ApplicationDbContext context = factory.CreateDbContext();
+                repository = new Repository(context);
+
+                string UserId = repository.GetUserByEmail(UserIdTaskChange);
+
+                Message = "Zmiana u użytkownika";
+
+                TaskId = 0;
+                await hubConnection.SendAsync("Update", UserId, TaskId);
+
+                UserIdTaskChange = "";
+                Message = "";
+            }
+            catch (Exception e)
+            {
+
+            }
         }
+
+
+
     }
 
 

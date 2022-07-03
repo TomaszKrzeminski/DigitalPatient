@@ -25,764 +25,717 @@
 </style>
 
 
-
-
-<div class="row ">
-    <div class="col col-lg-12">
-        <h1 class="text-center">@Action</h1>
-    </div>
-    <div class="col col-lg-2">
-        <h3>Pacjenci</h3>
-        @foreach (var u in allpatients.OrderBy(x => x))
-        {        
-           
-
-
-            
-                <div class="row">
-                    
-
-                    <div class="col col-lg-10" @onclick="@(() => AddToMyPatients(u))">
-                        <label> @u</label>
-
-
-                        <button type="button" class="btn btn-info btn-sm" >
-                            Dodaj
-                        </button>
-
-
-                       
-
-                    </div>
-                   
-
-                   </div>
-
-
-
-            
+<CascadingValue Name="UserIdTaskChange" Value="@UserIdTaskChange">
 
 
 
 
+    <div class="row ">
+        <div class="col col-lg-12">
+            <h1 class="text-center">@Action</h1>
+        </div>
+        <div class="col col-lg-2">
+            <h3>Pacjenci</h3>
+            @foreach (var u in allpatients.OrderBy(x => x))
+            {
 
 
 
 
-        }
-    </div>
-    <div class="col col-lg-2">
-        <h3>Moi Pacjenci</h3>
+<div class="row">
 
 
-
-        @foreach (var u in patients.OrderBy(x => x.Email))
-        {
-            <div class="list-group">
-                <div class="row">
-                    <div class="col col-lg-8">
-                        <a class="list-group-item list-group-item-action" @onclick="@(() => ShowPatientTasks(u.Email))">@u.Email</a>
-                    </div>
-                    <div class="col col-lg-4">
-                        @*<span class="material-icons" @onclick="@(() => RemoveFromMyPatients(u.Id))">
-                            close
-                        </span>*@
-
-                        <button type="button" class="btn btn-danger btn-sm"  @onclick="@(() => RemoveFromMyPatients(u.Id))"   >
-                            Usuń
-                        </button>
+    <div class="col col-lg-10" @onclick="@(() => AddToMyPatients(u))">
+        <label> @u</label>
 
 
-                    </div>
-                </div>
-
-
-
-            </div>
-        }
-
-
-
-    </div>
-    <div class="col col-lg-2">
-        <h3>Zadania</h3>
-        @foreach (var tasktoDo in PatientTaskList)
-        {
-
-            <a class="list-group-item list-group-item-action" @onclick="@(() => SetEdit(tasktoDo.TaskToDoId))"> @tasktoDo.TaskToDoCategory.CategoryName    @tasktoDo.Description</a>
-
-
-        }
+        <button type="button" class="btn btn-info btn-sm">
+            Dodaj
+        </button>
 
 
 
 
     </div>
-    <div class="col col-lg-3">
 
 
-        @if (PatientEmail != null && PatientEmail != "" && AddEditTask)
-        {
-            <h3>Dodaj Nowe Zadanie</h3>
-
-
-            <EditForm Model="@model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
-                <div class="form-group">
-                    <label>Kategoria zadania</label>
-                    <select @onchange="ShowTaskDetails">
-
-                        @foreach (var taskcat in Enum.GetValues(typeof(TaskCat)))
-                        {
-                            <option value=@taskcat>@taskcat</option>
-                        }
-                    </select>
-                </div>
-
-
-
-
-                <div class="form-group">
-                    <label>
-                        Opis zadania
-                    </label>
-                    <InputText @bind-Value="model.Description" />
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Weekendy
-                    </label>
-                    <InputCheckbox @bind-Value="model.intervalData.Weekends" />
-                </div>
-                <div class="form-group">
-                    <label>
-                        Święta
-                    </label>
-                    <InputCheckbox @bind-Value="model.intervalData.Holidays" />
-                </div>
-                <div class="form-group">
-                    <label>
-                        Data Rozpoczęcia
-                    </label>
-                    <InputDate @bind-Value="model.intervalData.StartTime" />
-                </div>
-                <div class="form-group">
-                    <label>Data Zakończenia</label>
-                    <InputDate @bind-Value="model.intervalData.EndTime" />
-                </div>
-                <div class="form-group">
-                    <label>Godziny Zadania</label>
-                    <div>
-                        <input type="time" @bind="model.correctTimes[0]" />
-                    </div>
-
-
-                    @if (model.showTimes[0])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[1]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[1])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[2]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[2])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[3]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[3])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[4]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[4])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[5]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[5])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[6]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[6])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[7]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[7])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[8]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[8])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[9]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[9])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[10]" />
-                        </div>
-                    }
-
-                    @if (model.showTimes[10])
-                    {
-                        <div>
-                            <input type="time" @bind="model.correctTimes[11]" />
-                        </div>
-                    }
-
-                    @*@for (int i = 0; i < 12; i++)
-                            {
-                        <div>
-
-                            <input type="times" @bind="model.correctTimes[i]" />
-                        </div>
-                            }*@
-
-
-
-
-
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-light" @onclick="AddCorrectTime" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime" value="Mniej">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-danger" type="submit">Dodaj</button>
-                </div>
-
-            </EditForm>
-
-
-
-
-
-
-        }
-
-        @if (TaskIdToEdit > 0 && !AddEditTask)
-        {
-            <h3>Edytuj Zadanie</h3> ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    <EditForm Model="@modelEdit" OnValidSubmit="HandleValidSubmitEdit" OnInvalidSubmit="HandleInvalidSubmitEdit">
-        <div class="form-group">
-            <label>Kategoria zadania</label>
-            <h4>@modelEdit.TaskToDoCategory</h4>
+</div>}
         </div>
+        <div class="col col-lg-2">
+            <h3>Moi Pacjenci</h3>
 
 
 
-
-        <div class="form-group">
-            <label>
-                Opis zadania
-            </label>
-            <InputText @bind-Value="modelEdit.Description" />
+            @foreach (var u in patients.OrderBy(x => x.Email))
+            {
+<div class="list-group">
+    <div class="row">
+        <div class="col col-lg-8">
+            <a class="list-group-item list-group-item-action" @onclick="@(() => ShowPatientTasks(u.Email))">@u.Email</a>
         </div>
+        <div class="col col-lg-4">
+            @*<span class="material-icons" @onclick="@(() => RemoveFromMyPatients(u.Id))">
+                    close
+                </span>*@
 
-        <div class="form-group">
-            <label>
-                Weekendy
-            </label>
-            <InputCheckbox @bind-Value="modelEdit.intervalData.Weekends" />
-        </div>
-        <div class="form-group">
-            <label>
-                Święta
-            </label>
-            <InputCheckbox @bind-Value="modelEdit.intervalData.Holidays" />
-        </div>
-        <div class="form-group">
-            <label>
-                Data Rozpoczęcia
-            </label>
-            <InputDate @bind-Value="modelEdit.intervalData.StartTime" />
-        </div>
-        <div class="form-group">
-            <label>Data Zakończenia</label>
-            <InputDate @bind-Value="modelEdit.intervalData.EndTime" />
-        </div>
-        <div class="form-group">
-            <label>Godziny Zadania</label>
-
-            <div>
-                <input type="time" @bind="modelEdit.correctTimes[0]" />
-            </div>
-
-
-
-
-            @if (modelEdit.showTimes[0])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[1]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[1])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[2]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[2])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[3]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[3])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[4]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[4])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[5]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[5])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[6]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[6])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[7]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[7])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[8]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[8])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[9]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[9])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[10]" />
-                </div>
-            }
-
-            @if (modelEdit.showTimes[10])
-            {
-                <div>
-                    <input type="time" @bind="modelEdit.correctTimes[11]" />
-                </div>
-            }
-
-
-
-
-
+            <button type="button" class="btn btn-danger btn-sm" @onclick="@(() => RemoveFromMyPatients(u.Id))">
+                Usuń
+            </button>
 
 
         </div>
-        <div class="form-group">
-            <input class="btn btn-light" @onclick="AddCorrectTime2" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime2" value="Mniej">
-        </div>
-        <div class="form-group">
-            <button class="btn btn-warning" type="submit">Zmień</button>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-danger"   @onclick="(()=>RemovePatientTask())"     type="button">Usuń</button>
-        </div>
-
-    </EditForm>
-
-
-
-
-
-
-        }
-
     </div>
-    <div class="col col-lg-3">
-        <h3>Pomiary</h3>
-
-        @if (model.measurementList != null && model.measurementList.Count > 0)
-        {
 
 
-            foreach (var mcl in model.measurementList)
+
+</div>}
+
+
+
+        </div>
+        <div class="col col-lg-2">
+            <h3>Zadania</h3>
+            @foreach (var tasktoDo in PatientTaskList)
             {
 
-                <h5> @mcl.MeasurementCategory.CategoryName</h5>
+<a class="list-group-item list-group-item-action" @onclick="@(() => SetEdit(tasktoDo.TaskToDoId))"> @tasktoDo.TaskToDoCategory.CategoryName    @tasktoDo.Description</a>}
 
-                <ul class="list-group">
 
-                    @foreach (var item in mcl.MeasurementPairs)
-                    {
 
-                        @if (item.Text)
-                        {
-                            <li class="list-group-item list-group-item-secondary">
-                                @item.MeasurementText
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="list-group-item list-group-item-secondary">
-                                @item.Name
-                            </li>
-                        }
 
-                    }
+        </div>
+        <div class="col col-lg-3">
 
-                </ul>
-            }
 
-
-
-
-
-
-
-        }
-
-
-    </div>
-</div>
-
-
-
-<UpdateTaskList        />
-
-
-
-
-
-
-
-@code {
-
-
-    public bool AddEditTask { get; set; } = true;
-
-
-    public int TaskIdToEdit { get; set; }
-
-    public EditTaskToDoModel modelEdit { get; set; } = new EditTaskToDoModel();
-
-
-
-    public string Action { get; set; }
-
-    public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
-
-    [Parameter]
-    public string UserId { get; set; }
-
-    public string PatientEmail { get; set; }
-
-
-
-    private Repository repository;
-
-    List<ApplicationUser> patients = new List<ApplicationUser>();
-
-    List<string> allpatients = new List<string>();
-
-    List<TaskToDo> PatientTaskList = new List<TaskToDo>();
-    public void  RemoveFromMyPatients(string PatientId)
-    {
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        bool check=   repository.RemovePateintFromDoctor( UserId,  PatientId);
-
-        if (check)
-        {
-            Action = "Usunięto twojego Pacjenta ";
-
-            OnParametersSetAsync();
-        }
-
-
-        PatientTaskList = new List<TaskToDo>();
-
-        model.measurementList = null;
-        AddEditTask = false;
-
-
-
-    }
-
-    protected async override Task OnParametersSetAsync()
-    {
-
-
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        patients = repository.GetDoctorPatients(UserId);
-
-        List<string> listExcept = new List<string>();
-
-        if (patients != null && patients.Count > 0)
-        {
-            listExcept = patients.Select(x => x.Email).ToList();
-        }
-
-        allpatients = repository.GetAllPatients(listExcept);
-
-
-    }
-
-    public async Task RemovePatientTask( )
-    {
-
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        bool check = repository.RemoveTaskByDoctor(UserId, TaskIdToEdit);
-
-        if (check)
-        {
-            Action = "Usunięto jedno z zadań  Pacjenta ";
-
-            //OnParametersSetAsync();
-        }
-
-        ShowPatientTasks(PatientEmail);
-
-    }
-
-
-    public void AddToMyPatients(string Email)
-    {
-        bool check = repository.AddUserToDoctorPatients(Email, UserId);
-
-        if (check)
-        {
-            Action = "Dodano" + " " + Email + " do twoich Pacjentów";
-            ShowPatientTasks(Email);
-            OnParametersSetAsync();
-        }
-
-
-    }
-
-    public void ShowPatientTasks(string PatientEmail)
-    {
-
-
-
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        PatientTaskList = repository.GetUserTasksToDo2(PatientEmail);
-        this.PatientEmail = PatientEmail;
-        model.UserId = PatientEmail;
-
-
-        AddEditTask = true;
-
-
-
-
-
-        ShowTaskDetails(null);
-
-
-    }
-
-    public async Task HandleValidSubmit()
-    {
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-
-        Action = repository.AddTaskToUser2(model);
-        model = new AddTaskToUserModel();
-
-        ShowPatientTasks(PatientEmail);
-    }
-
-
-    public async Task HandleInvalidSubmit()
-    {
-
-    }
-
-
-    void ShowTaskDetails(ChangeEventArgs e)
-    {
-        string SelectedString = "Stolec";
-        if (e != null)
-        {
-            SelectedString = e.Value.ToString();
-            model.TaskToDoCategory = SelectedString;
-        }
-
-
-
-
-
-
-
-        TaskToDoCategory taskCategory = new TaskToDoCategory();
-        taskCategory.CategoryName = SelectedString;
-
-        model.measurementcaterogiesList = new List<MeasurementCategory>();
-        model.measurementList = new List<Measurement>();
-
-        model.measurementcaterogiesList = model.SetMeasurementCategories(SelectedString);
-        model.SetMeasurements();
-
-
-
-    }
-
-    public void AddCorrectTime()
-    {
-        for (int i = 0; i < model.showTimes.Count; i++)
-        {
-            if (model.showTimes[i] == false)
+            @if (PatientEmail != null && PatientEmail != "" && AddEditTask)
             {
+<h3>Dodaj Nowe Zadanie</h3>
 
 
-                DateTime now = DateTime.Now;
+                    <EditForm Model="@model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+                        <div class="form-group">
+                            <label>Kategoria zadania</label>
+                            <select @onchange="ShowTaskDetails">
 
-
-                model.showTimes[i] = true;
-                model.correctTimes[i + 1] = now;
-                break;
-
-
-
-            }
-        }
-
-    }
-
-    public void RemoveTime()
-    {
-
-        for (int i = 10; i >= 0; i--)
-        {
-            if (model.showTimes[i] == true)
-            {
-                model.showTimes[i] = false;
-                model.correctTimes[i + 1] = null;
-                break;
-            }
-        }
-
-
-
-    }
-
-    public void SetEdit(int TaskId)
-    {
-
-        TaskIdToEdit = TaskId;
-        AddEditTask = false;
-
-        modelEdit = repository.EditTaskToDo(TaskId);
-
-
-    }
-
-    public async Task HandleValidSubmitEdit()
-    {
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        modelEdit.TaskToDoId = TaskIdToEdit;
-        repository.ChangeTaskToDo(modelEdit);
-
-
-        ShowPatientTasks(PatientEmail);
-    }
-
-
-    public async Task HandleInvalidSubmitEdit()
-    {
-
-    }
-
-    public void AddCorrectTime2()
-    {
-        for (int i = 0; i < modelEdit.showTimes.Count; i++)
-        {
-            if (modelEdit.showTimes[i] == false)
-            {
-
-
-                DateTime now = DateTime.Now;
-
-
-                modelEdit.showTimes[i] = true;
-                modelEdit.correctTimes[i + 1] = now;
-                break;
-
-
-
-            }
-        }
-
-
-    }
-
-    public void RemoveTime2()
-    {
-
-        for (int i = 10; i >= 0; i--)
-        {
-            if (modelEdit.showTimes[i] == true)
-            {
-                modelEdit.showTimes[i] = false;
-                modelEdit.correctTimes[i + 1] = null;
-                break;
-            }
-        }
-
-        EditTaskToDoModel x = modelEdit;
-
-    }
-
+                                @foreach (var taskcat in Enum.GetValues(typeof(TaskCat)))
+                                {
+        <option value=@taskcat>@taskcat</option>
 }
+                            </select>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <label>
+                                Opis zadania
+                            </label>
+                            <InputText @bind-Value="model.Description" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Weekendy
+                            </label>
+                            <InputCheckbox @bind-Value="model.intervalData.Weekends" />
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Święta
+                            </label>
+                            <InputCheckbox @bind-Value="model.intervalData.Holidays" />
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Data Rozpoczęcia
+                            </label>
+                            <InputDate @bind-Value="model.intervalData.StartTime" />
+                        </div>
+                        <div class="form-group">
+                            <label>Data Zakończenia</label>
+                            <InputDate @bind-Value="model.intervalData.EndTime" />
+                        </div>
+                        <div class="form-group">
+                            <label>Godziny Zadania</label>
+                            <div>
+                                <input type="time" @bind="model.correctTimes[0]" />
+                            </div>
+
+
+                            @if (model.showTimes[0])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[1]" />
+    </div>}
+
+                            @if (model.showTimes[1])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[2]" />
+    </div>}
+
+                            @if (model.showTimes[2])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[3]" />
+    </div>}
+
+                            @if (model.showTimes[3])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[4]" />
+    </div>}
+
+                            @if (model.showTimes[4])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[5]" />
+    </div>}
+
+                            @if (model.showTimes[5])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[6]" />
+    </div>}
+
+                            @if (model.showTimes[6])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[7]" />
+    </div>}
+
+                            @if (model.showTimes[7])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[8]" />
+    </div>}
+
+                            @if (model.showTimes[8])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[9]" />
+    </div>}
+
+                            @if (model.showTimes[9])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[10]" />
+    </div>}
+
+                            @if (model.showTimes[10])
+                            {
+    <div>
+        <input type="time" @bind="model.correctTimes[11]" />
+    </div> } @*@for (int i = 0; i < 12; i++)
+        {
+    <div>
+
+        <input type="times" @bind="model.correctTimes[i]" />
+    </div>
+        }*@
+
+
+
+
+
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-light" @onclick="AddCorrectTime" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime" value="Mniej">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-danger" type="submit">Dodaj</button>
+                        </div>
+
+                    </EditForm>}
+
+            @if (TaskIdToEdit > 0 && !AddEditTask)
+            {
+<h3>Edytuj Zadanie</h3> ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+<EditForm Model="@modelEdit" OnValidSubmit="HandleValidSubmitEdit" OnInvalidSubmit="HandleInvalidSubmitEdit">
+    <div class="form-group">
+        <label>Kategoria zadania</label>
+        <h4>@modelEdit.TaskToDoCategory</h4>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <label>
+            Opis zadania
+        </label>
+        <InputText @bind-Value="modelEdit.Description" />
+    </div>
+
+    <div class="form-group">
+        <label>
+            Weekendy
+        </label>
+        <InputCheckbox @bind-Value="modelEdit.intervalData.Weekends" />
+    </div>
+    <div class="form-group">
+        <label>
+            Święta
+        </label>
+        <InputCheckbox @bind-Value="modelEdit.intervalData.Holidays" />
+    </div>
+    <div class="form-group">
+        <label>
+            Data Rozpoczęcia
+        </label>
+        <InputDate @bind-Value="modelEdit.intervalData.StartTime" />
+    </div>
+    <div class="form-group">
+        <label>Data Zakończenia</label>
+        <InputDate @bind-Value="modelEdit.intervalData.EndTime" />
+    </div>
+    <div class="form-group">
+        <label>Godziny Zadania</label>
+
+        <div>
+            <input type="time" @bind="modelEdit.correctTimes[0]" />
+        </div>
+
+
+
+
+        @if (modelEdit.showTimes[0])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[1]" />
+</div>}
+
+        @if (modelEdit.showTimes[1])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[2]" />
+</div>}
+
+        @if (modelEdit.showTimes[2])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[3]" />
+</div>}
+
+        @if (modelEdit.showTimes[3])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[4]" />
+</div>}
+
+        @if (modelEdit.showTimes[4])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[5]" />
+</div>}
+
+        @if (modelEdit.showTimes[5])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[6]" />
+</div>}
+
+        @if (modelEdit.showTimes[6])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[7]" />
+</div>}
+
+        @if (modelEdit.showTimes[7])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[8]" />
+</div>}
+
+        @if (modelEdit.showTimes[8])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[9]" />
+</div>}
+
+        @if (modelEdit.showTimes[9])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[10]" />
+</div>}
+
+        @if (modelEdit.showTimes[10])
+        {
+<div>
+    <input type="time" @bind="modelEdit.correctTimes[11]" />
+</div>}
+
+
+
+
+
+
+
+    </div>
+    <div class="form-group">
+        <input class="btn btn-light" @onclick="AddCorrectTime2" value="Wiecej"><input class="btn btn-dark" @onclick="RemoveTime2" value="Mniej">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-warning" type="submit">Zmień</button>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-danger" @onclick="(() => RemovePatientTask())" type="button">Usuń</button>
+    </div>
+
+</EditForm>}
+
+        </div>
+        <div class="col col-lg-3">
+            <h3>Pomiary</h3>
+
+            @if (model.measurementList != null && model.measurementList.Count > 0)
+            {
+
+
+                foreach (var mcl in model.measurementList)
+                {
+
+<h5> @mcl.MeasurementCategory.CategoryName</h5>
+
+                        <ul class="list-group">
+
+                            @foreach (var item in mcl.MeasurementPairs)
+                            {
+
+    @if (item.Text)
+    {
+<li class="list-group-item list-group-item-secondary">
+    @item.MeasurementText
+</li>
+ }
+else
+{
+<li class="list-group-item list-group-item-secondary">
+    @item.Name
+</li>
+}}
+
+                        </ul>}
+
+
+
+
+
+
+
+                }
+
+
+        </div>
+    </div>
+
+
+
+    <UpdateTaskList UserIdTAskChange="@UserIdTaskChange" />
+
+
+
+
+</CascadingValue>
+
+
+
+    @code { public string UserIdTaskChange { get; set; }
+        public int TaskIdChange { get; set; }
+
+        public bool AddEditTask { get; set; } = true;
+
+
+        public int TaskIdToEdit { get; set; }
+
+        public EditTaskToDoModel modelEdit { get; set; } = new EditTaskToDoModel();
+
+
+
+        public string Action { get; set; }
+
+        public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
+
+        [Parameter]
+        public string UserId { get; set; }
+
+        public string PatientEmail { get; set; }
+
+
+
+        private Repository repository;
+
+        List<ApplicationUser> patients = new List<ApplicationUser>();
+
+        List<string> allpatients = new List<string>();
+
+        List<TaskToDo> PatientTaskList = new List<TaskToDo>();
+        public void RemoveFromMyPatients(string PatientId)
+        {
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            bool check = repository.RemovePateintFromDoctor(UserId, PatientId);
+
+            if (check)
+            {
+                Action = "Usunięto twojego Pacjenta ";
+
+                OnParametersSetAsync();
+            }
+
+
+            PatientTaskList = new List<TaskToDo>();
+
+            model.measurementList = null;
+            AddEditTask = false;
+
+
+
+        }
+
+        protected async override Task OnParametersSetAsync()
+        {
+
+
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            patients = repository.GetDoctorPatients(UserId);
+
+            List<string> listExcept = new List<string>();
+
+            if (patients != null && patients.Count > 0)
+            {
+                listExcept = patients.Select(x => x.Email).ToList();
+            }
+
+            allpatients = repository.GetAllPatients(listExcept);
+
+
+        }
+
+        public async Task RemovePatientTask()
+        {
+
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            bool check = repository.RemoveTaskByDoctor(UserId, TaskIdToEdit);
+
+            if (check)
+            {
+                Action = "Usunięto jedno z zadań  Pacjenta ";
+
+                //OnParametersSetAsync();
+            }
+
+            ShowPatientTasks(PatientEmail);
+
+        }
+
+
+        public void AddToMyPatients(string Email)
+        {
+            bool check = repository.AddUserToDoctorPatients(Email, UserId);
+
+            if (check)
+            {
+                Action = "Dodano" + " " + Email + " do twoich Pacjentów";
+                ShowPatientTasks(Email);
+                OnParametersSetAsync();
+            }
+
+
+        }
+
+        public void ShowPatientTasks(string PatientEmail)
+        {
+
+
+
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            PatientTaskList = repository.GetUserTasksToDo2(PatientEmail);
+            this.PatientEmail = PatientEmail;
+            model.UserId = PatientEmail;
+
+
+            AddEditTask = true;
+
+
+
+
+
+            ShowTaskDetails(null);
+
+
+        }
+
+        public async Task HandleValidSubmit()
+        {
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+
+            Action = repository.AddTaskToUser2(model);
+
+
+
+
+
+
+
+            UserIdTaskChange = model.UserId;
+
+            model = new AddTaskToUserModel();
+
+            ShowPatientTasks(PatientEmail);
+        }
+
+
+        public async Task HandleInvalidSubmit()
+        {
+
+        }
+
+
+        void ShowTaskDetails(ChangeEventArgs e)
+        {
+            string SelectedString = "Stolec";
+            if (e != null)
+            {
+                SelectedString = e.Value.ToString();
+                model.TaskToDoCategory = SelectedString;
+            }
+
+
+
+
+
+
+
+            TaskToDoCategory taskCategory = new TaskToDoCategory();
+            taskCategory.CategoryName = SelectedString;
+
+            model.measurementcaterogiesList = new List<MeasurementCategory>();
+            model.measurementList = new List<Measurement>();
+
+            model.measurementcaterogiesList = model.SetMeasurementCategories(SelectedString);
+            model.SetMeasurements();
+
+
+
+        }
+
+        public void AddCorrectTime()
+        {
+            for (int i = 0; i < model.showTimes.Count; i++)
+            {
+                if (model.showTimes[i] == false)
+                {
+
+
+                    DateTime now = DateTime.Now;
+
+
+                    model.showTimes[i] = true;
+                    model.correctTimes[i + 1] = now;
+                    break;
+
+
+
+                }
+            }
+
+        }
+
+        public void RemoveTime()
+        {
+
+            for (int i = 10; i >= 0; i--)
+            {
+                if (model.showTimes[i] == true)
+                {
+                    model.showTimes[i] = false;
+                    model.correctTimes[i + 1] = null;
+                    break;
+                }
+            }
+
+
+
+        }
+
+        public void SetEdit(int TaskId)
+        {
+
+            TaskIdToEdit = TaskId;
+            AddEditTask = false;
+
+            modelEdit = repository.EditTaskToDo(TaskId);
+
+
+        }
+
+        public async Task HandleValidSubmitEdit()
+        {
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            modelEdit.TaskToDoId = TaskIdToEdit;
+            repository.ChangeTaskToDo(modelEdit);
+
+
+            ShowPatientTasks(PatientEmail);
+        }
+
+
+        public async Task HandleInvalidSubmitEdit()
+        {
+
+        }
+
+        public void AddCorrectTime2()
+        {
+            for (int i = 0; i < modelEdit.showTimes.Count; i++)
+            {
+                if (modelEdit.showTimes[i] == false)
+                {
+
+
+                    DateTime now = DateTime.Now;
+
+
+                    modelEdit.showTimes[i] = true;
+                    modelEdit.correctTimes[i + 1] = now;
+                    break;
+
+
+
+                }
+            }
+
+
+        }
+
+        public void RemoveTime2()
+        {
+
+            for (int i = 10; i >= 0; i--)
+            {
+                if (modelEdit.showTimes[i] == true)
+                {
+                    modelEdit.showTimes[i] = false;
+                    modelEdit.correctTimes[i + 1] = null;
+                    break;
+                }
+            }
+
+            EditTaskToDoModel x = modelEdit;
+
+        } }

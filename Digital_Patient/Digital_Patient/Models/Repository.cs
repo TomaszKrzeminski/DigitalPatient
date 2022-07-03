@@ -22,6 +22,21 @@ namespace Digital_Patient.Models
         }
 
 
+
+        public string GetUserByEmail(string Email)
+        {
+            try
+            {
+                string Id = ctx.Users.Where(x => x.Email == Email).FirstOrDefault().Id;
+                return Id;
+            }
+            catch (Exception)
+            {
+
+                return "";
+            }
+        }
+
         public bool RemoveTaskByDoctor(string DoctroId,int TaskId)
         {
             try

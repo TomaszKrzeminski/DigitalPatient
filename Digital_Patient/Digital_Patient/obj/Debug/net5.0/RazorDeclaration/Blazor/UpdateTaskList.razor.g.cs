@@ -12,55 +12,6 @@ namespace Digital_Patient.Blazor
     using System.Linq;
     using System.Threading.Tasks;
 #nullable restore
-#line 1 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Microsoft.AspNetCore.Components;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 2 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Microsoft.AspNetCore.Components.Forms;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Microsoft.AspNetCore.Components.Routing;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 4 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Microsoft.AspNetCore.Components.Web;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 5 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Microsoft.JSInterop;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 6 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Microsoft.EntityFrameworkCore;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 7 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
-using Digital_Patient.Models;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
 #line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
 using Syncfusion.Blazor;
 
@@ -74,6 +25,69 @@ using Microsoft.AspNetCore.SignalR.Client;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 6 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components.Forms;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 7 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Digital_Patient.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Digital_Patient.Data;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 10 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.EntityFrameworkCore.Design;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 11 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components.Routing;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components.Web;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.JSInterop;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.EntityFrameworkCore;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/taskhub")]
     public partial class UpdateTaskList : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -83,10 +97,18 @@ using Microsoft.AspNetCore.SignalR.Client;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 10 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+#line 27 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
        
 
-    private string UserId { get; set; }
+    [Parameter]
+    public string UserIdTaskChange { get; set; } = "";
+
+    public string Message { get; set; } = "";
+
+    public int TaskId { get; set; } = 0;
+
+    private Repository repository;
+
     private HubConnection? hubConnection;
 
     protected override async Task OnInitializedAsync()
@@ -95,31 +117,54 @@ using Microsoft.AspNetCore.SignalR.Client;
             .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
             .Build();
 
-        //hubConnection.On<int>("UpdateTask", (TaskId) =>
-        //{
 
-        //    //// call  refresh tasks and view messages
-
-        //    InvokeAsync(StateHasChanged);
-        //});
 
         await hubConnection.StartAsync();
     }
 
+
+    protected override void OnParametersSet()
+    {
+
+        UpdateTask();
+
+
+    }
+
+
+
     public async Task UpdateTask()
     {
 
-        string UserId = "b391d91b-e56b-4215-8c23-682827809ff1";
-        int TaskId = 0;
 
-        try
+        if (UserIdTaskChange != null && UserIdTaskChange != "")
         {
-            await hubConnection.SendAsync("Update", UserId, TaskId);
-        }
-        catch (Exception e)
-        {
+            try
+            {
 
+
+
+                ApplicationDbContext context = factory.CreateDbContext();
+                repository = new Repository(context);
+
+                string UserId = repository.GetUserByEmail(UserIdTaskChange);
+
+                Message = "Zmiana u użytkownika";
+
+                TaskId = 0;
+                await hubConnection.SendAsync("Update", UserId, TaskId);
+
+                UserIdTaskChange = "";
+                Message = "";
+            }
+            catch (Exception e)
+            {
+
+            }
         }
+
+
+
     }
 
 
@@ -127,6 +172,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDbContextFactory<ApplicationDbContext> factory { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager Navigation { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
     }
 }

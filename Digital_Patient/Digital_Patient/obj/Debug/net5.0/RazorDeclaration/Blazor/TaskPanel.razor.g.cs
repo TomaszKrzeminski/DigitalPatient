@@ -89,295 +89,303 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 500 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
-       
+#line 446 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+            public string UserIdTaskChange { get; set; }
+        public int TaskIdChange { get; set; }
+
+        public bool AddEditTask { get; set; } = true;
 
 
-    public bool AddEditTask { get; set; } = true;
+        public int TaskIdToEdit { get; set; }
 
-
-    public int TaskIdToEdit { get; set; }
-
-    public EditTaskToDoModel modelEdit { get; set; } = new EditTaskToDoModel();
-
-
-
-    public string Action { get; set; }
-
-    public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
-
-    [Parameter]
-    public string UserId { get; set; }
-
-    public string PatientEmail { get; set; }
+        public EditTaskToDoModel modelEdit { get; set; } = new EditTaskToDoModel();
 
 
 
-    private Repository repository;
+        public string Action { get; set; }
 
-    List<ApplicationUser> patients = new List<ApplicationUser>();
+        public AddTaskToUserModel model { get; set; } = new AddTaskToUserModel();
 
-    List<string> allpatients = new List<string>();
+        [Parameter]
+        public string UserId { get; set; }
 
-    List<TaskToDo> PatientTaskList = new List<TaskToDo>();
-    public void  RemoveFromMyPatients(string PatientId)
-    {
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
+        public string PatientEmail { get; set; }
 
-        bool check=   repository.RemovePateintFromDoctor( UserId,  PatientId);
 
-        if (check)
+
+        private Repository repository;
+
+        List<ApplicationUser> patients = new List<ApplicationUser>();
+
+        List<string> allpatients = new List<string>();
+
+        List<TaskToDo> PatientTaskList = new List<TaskToDo>();
+        public void RemoveFromMyPatients(string PatientId)
         {
-            Action = "Usunięto twojego Pacjenta ";
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
 
-            OnParametersSetAsync();
-        }
+            bool check = repository.RemovePateintFromDoctor(UserId, PatientId);
 
-
-        PatientTaskList = new List<TaskToDo>();
-
-        model.measurementList = null;
-        AddEditTask = false;
-
-
-
-    }
-
-    protected async override Task OnParametersSetAsync()
-    {
-
-
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        patients = repository.GetDoctorPatients(UserId);
-
-        List<string> listExcept = new List<string>();
-
-        if (patients != null && patients.Count > 0)
-        {
-            listExcept = patients.Select(x => x.Email).ToList();
-        }
-
-        allpatients = repository.GetAllPatients(listExcept);
-
-
-    }
-
-    public async Task RemovePatientTask( )
-    {
-
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        bool check = repository.RemoveTaskByDoctor(UserId, TaskIdToEdit);
-
-        if (check)
-        {
-            Action = "Usunięto jedno z zadań  Pacjenta ";
-
-            //OnParametersSetAsync();
-        }
-
-        ShowPatientTasks(PatientEmail);
-
-    }
-
-
-    public void AddToMyPatients(string Email)
-    {
-        bool check = repository.AddUserToDoctorPatients(Email, UserId);
-
-        if (check)
-        {
-            Action = "Dodano" + " " + Email + " do twoich Pacjentów";
-            ShowPatientTasks(Email);
-            OnParametersSetAsync();
-        }
-
-
-    }
-
-    public void ShowPatientTasks(string PatientEmail)
-    {
-
-
-
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        PatientTaskList = repository.GetUserTasksToDo2(PatientEmail);
-        this.PatientEmail = PatientEmail;
-        model.UserId = PatientEmail;
-
-
-        AddEditTask = true;
-
-
-
-
-
-        ShowTaskDetails(null);
-
-
-    }
-
-    public async Task HandleValidSubmit()
-    {
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-
-        Action = repository.AddTaskToUser2(model);
-        model = new AddTaskToUserModel();
-
-        ShowPatientTasks(PatientEmail);
-    }
-
-
-    public async Task HandleInvalidSubmit()
-    {
-
-    }
-
-
-    void ShowTaskDetails(ChangeEventArgs e)
-    {
-        string SelectedString = "Stolec";
-        if (e != null)
-        {
-            SelectedString = e.Value.ToString();
-            model.TaskToDoCategory = SelectedString;
-        }
-
-
-
-
-
-
-
-        TaskToDoCategory taskCategory = new TaskToDoCategory();
-        taskCategory.CategoryName = SelectedString;
-
-        model.measurementcaterogiesList = new List<MeasurementCategory>();
-        model.measurementList = new List<Measurement>();
-
-        model.measurementcaterogiesList = model.SetMeasurementCategories(SelectedString);
-        model.SetMeasurements();
-
-
-
-    }
-
-    public void AddCorrectTime()
-    {
-        for (int i = 0; i < model.showTimes.Count; i++)
-        {
-            if (model.showTimes[i] == false)
+            if (check)
             {
+                Action = "Usunięto twojego Pacjenta ";
 
-
-                DateTime now = DateTime.Now;
-
-
-                model.showTimes[i] = true;
-                model.correctTimes[i + 1] = now;
-                break;
-
-
-
+                OnParametersSetAsync();
             }
+
+
+            PatientTaskList = new List<TaskToDo>();
+
+            model.measurementList = null;
+            AddEditTask = false;
+
+
+
         }
 
-    }
-
-    public void RemoveTime()
-    {
-
-        for (int i = 10; i >= 0; i--)
+        protected async override Task OnParametersSetAsync()
         {
-            if (model.showTimes[i] == true)
+
+
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            patients = repository.GetDoctorPatients(UserId);
+
+            List<string> listExcept = new List<string>();
+
+            if (patients != null && patients.Count > 0)
             {
-                model.showTimes[i] = false;
-                model.correctTimes[i + 1] = null;
-                break;
+                listExcept = patients.Select(x => x.Email).ToList();
             }
+
+            allpatients = repository.GetAllPatients(listExcept);
+
+
         }
 
-
-
-    }
-
-    public void SetEdit(int TaskId)
-    {
-
-        TaskIdToEdit = TaskId;
-        AddEditTask = false;
-
-        modelEdit = repository.EditTaskToDo(TaskId);
-
-
-    }
-
-    public async Task HandleValidSubmitEdit()
-    {
-        ApplicationDbContext context = factory.CreateDbContext();
-        repository = new Repository(context);
-
-        modelEdit.TaskToDoId = TaskIdToEdit;
-        repository.ChangeTaskToDo(modelEdit);
-
-
-        ShowPatientTasks(PatientEmail);
-    }
-
-
-    public async Task HandleInvalidSubmitEdit()
-    {
-
-    }
-
-    public void AddCorrectTime2()
-    {
-        for (int i = 0; i < modelEdit.showTimes.Count; i++)
+        public async Task RemovePatientTask()
         {
-            if (modelEdit.showTimes[i] == false)
+
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            bool check = repository.RemoveTaskByDoctor(UserId, TaskIdToEdit);
+
+            if (check)
             {
+                Action = "Usunięto jedno z zadań  Pacjenta ";
 
-
-                DateTime now = DateTime.Now;
-
-
-                modelEdit.showTimes[i] = true;
-                modelEdit.correctTimes[i + 1] = now;
-                break;
-
-
-
+                //OnParametersSetAsync();
             }
+
+            ShowPatientTasks(PatientEmail);
+
         }
 
 
-    }
-
-    public void RemoveTime2()
-    {
-
-        for (int i = 10; i >= 0; i--)
+        public void AddToMyPatients(string Email)
         {
-            if (modelEdit.showTimes[i] == true)
+            bool check = repository.AddUserToDoctorPatients(Email, UserId);
+
+            if (check)
             {
-                modelEdit.showTimes[i] = false;
-                modelEdit.correctTimes[i + 1] = null;
-                break;
+                Action = "Dodano" + " " + Email + " do twoich Pacjentów";
+                ShowPatientTasks(Email);
+                OnParametersSetAsync();
             }
+
+
         }
 
-        EditTaskToDoModel x = modelEdit;
+        public void ShowPatientTasks(string PatientEmail)
+        {
 
-    }
 
+
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            PatientTaskList = repository.GetUserTasksToDo2(PatientEmail);
+            this.PatientEmail = PatientEmail;
+            model.UserId = PatientEmail;
+
+
+            AddEditTask = true;
+
+
+
+
+
+            ShowTaskDetails(null);
+
+
+        }
+
+        public async Task HandleValidSubmit()
+        {
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+
+            Action = repository.AddTaskToUser2(model);
+
+
+
+
+
+
+
+            UserIdTaskChange = model.UserId;
+
+            model = new AddTaskToUserModel();
+
+            ShowPatientTasks(PatientEmail);
+        }
+
+
+        public async Task HandleInvalidSubmit()
+        {
+
+        }
+
+
+        void ShowTaskDetails(ChangeEventArgs e)
+        {
+            string SelectedString = "Stolec";
+            if (e != null)
+            {
+                SelectedString = e.Value.ToString();
+                model.TaskToDoCategory = SelectedString;
+            }
+
+
+
+
+
+
+
+            TaskToDoCategory taskCategory = new TaskToDoCategory();
+            taskCategory.CategoryName = SelectedString;
+
+            model.measurementcaterogiesList = new List<MeasurementCategory>();
+            model.measurementList = new List<Measurement>();
+
+            model.measurementcaterogiesList = model.SetMeasurementCategories(SelectedString);
+            model.SetMeasurements();
+
+
+
+        }
+
+        public void AddCorrectTime()
+        {
+            for (int i = 0; i < model.showTimes.Count; i++)
+            {
+                if (model.showTimes[i] == false)
+                {
+
+
+                    DateTime now = DateTime.Now;
+
+
+                    model.showTimes[i] = true;
+                    model.correctTimes[i + 1] = now;
+                    break;
+
+
+
+                }
+            }
+
+        }
+
+        public void RemoveTime()
+        {
+
+            for (int i = 10; i >= 0; i--)
+            {
+                if (model.showTimes[i] == true)
+                {
+                    model.showTimes[i] = false;
+                    model.correctTimes[i + 1] = null;
+                    break;
+                }
+            }
+
+
+
+        }
+
+        public void SetEdit(int TaskId)
+        {
+
+            TaskIdToEdit = TaskId;
+            AddEditTask = false;
+
+            modelEdit = repository.EditTaskToDo(TaskId);
+
+
+        }
+
+        public async Task HandleValidSubmitEdit()
+        {
+            ApplicationDbContext context = factory.CreateDbContext();
+            repository = new Repository(context);
+
+            modelEdit.TaskToDoId = TaskIdToEdit;
+            repository.ChangeTaskToDo(modelEdit);
+
+
+            ShowPatientTasks(PatientEmail);
+        }
+
+
+        public async Task HandleInvalidSubmitEdit()
+        {
+
+        }
+
+        public void AddCorrectTime2()
+        {
+            for (int i = 0; i < modelEdit.showTimes.Count; i++)
+            {
+                if (modelEdit.showTimes[i] == false)
+                {
+
+
+                    DateTime now = DateTime.Now;
+
+
+                    modelEdit.showTimes[i] = true;
+                    modelEdit.correctTimes[i + 1] = now;
+                    break;
+
+
+
+                }
+            }
+
+
+        }
+
+        public void RemoveTime2()
+        {
+
+            for (int i = 10; i >= 0; i--)
+            {
+                if (modelEdit.showTimes[i] == true)
+                {
+                    modelEdit.showTimes[i] = false;
+                    modelEdit.correctTimes[i + 1] = null;
+                    break;
+                }
+            }
+
+            EditTaskToDoModel x = modelEdit;
+
+        } 
 
 #line default
 #line hidden
