@@ -1,11 +1,19 @@
-﻿<div>
+﻿@using System.Web;
+
+
+@{ @*var cookiex = HttpContext.Request.Cookies[".AspNetCore.Identity.Application"];*@
+                var cookie =
+                     Context.Request.Cookies[".AspNetCore.Identity.Application"]; }
+
+
+<div>
 
 
 
 
-    <component type="typeof(Digital_Patient.Blazor.TaskPanel)" param-UserId="@Model.UserId" render-mode="Server" />
+    <component type="typeof(Digital_Patient.Blazor.TaskPanel)" param-UserId="@Model.UserId"      param-Cookie1="@Model.Cookie1"   param-Cookie2="cookie"                  render-mode="Server" />
 
-   
+
 
 
 

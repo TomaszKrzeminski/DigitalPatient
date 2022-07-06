@@ -12,7 +12,16 @@ namespace Digital_Patient.Models
         {
             this.UserId = UserId;
         }
-       public string UserId { get; set; }
+
+
+        public DoctorTaskPanelViewModel(string UserId,string Cookie1)
+        {
+            this.UserId = UserId;
+            this.Cookie1 = Cookie1;
+        }
+
+        public string UserId { get; set; }
+        public string Cookie1 { get; set; }
 
     }
 }

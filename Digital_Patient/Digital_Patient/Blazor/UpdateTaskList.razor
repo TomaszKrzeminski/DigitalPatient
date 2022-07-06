@@ -1,6 +1,39 @@
-﻿@page "/taskhub"
+﻿@page "/taskupdatetasklist"
+
+
+
+
+
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Authorization
+
+
+@using Microsoft.Owin.Security.OAuth
+
+@using Microsoft.AspNetCore.SignalR
+
+@attribute [Authorize]
+
+@inject NavigationManager NavigationManager
+
+
+
+@attribute [Authorize]
+
+@using System.Net.Http
+@using System.Net.Http.Json
+
+@using System;
+
+@using System.Net.Http.Headers;
+@using System.Threading.Tasks;
+@using Microsoft.AspNetCore.Http.Connections;
+@using System.Net
+
+
+
 @inject NavigationManager navigationManager
-@using Microsoft.AspNetCore.SignalR.Client;
+
 
 
 @using Microsoft.AspNetCore.Components.Forms
@@ -29,6 +62,20 @@
     [Parameter]
     public string UserIdTaskChange { get; set; } = "";
 
+
+
+
+
+    [Parameter]
+    public string Cookie1 { get; set; }
+
+    [Parameter]
+    public string Cookie2 { get; set; }
+
+    //[Inject]
+    //public CookiesProvider CookiesProvider { get; set; }
+
+
     public string Message { get; set; } = "";
 
     public int TaskId { get; set; } = 0;
@@ -39,9 +86,81 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+
+        string x = Cookie1;
+        string x1 = Cookie2;
+
+
+        var container = new CookieContainer();
+        var cookie = new Cookie()
+        {
+            Name = ".AspNetCore.Identity.Application",
+            Domain = "localhost",
+            Value = Cookie1
+        };
+
+        container.Add(cookie);
+
+
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
-            .Build();
+       .WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
+       {
+           options.Cookies = container;
+       }).Build();
+
+        //hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        //{
+        //    var encodedMsg = $"{user}: {message}";
+        //    messages.Add(encodedMsg);
+        //    InvokeAsync(() => StateHasChanged());
+        //});
+
+        //hubConnection.On<string>("ReceiveUserName", (name) =>
+        //{
+        //    userName = name;
+
+        //    InvokeAsync(() => StateHasChanged());
+        //});
+
+
+
+
+
+        //        hubConnection = new HubConnectionBuilder()
+        //            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
+        //            .Build();
+
+
+        //        var container = new CookieContainer();
+        //        var cookie = new Cookie()
+        //        {
+        //            Name = ".AspNetCore.Identity.Application",
+        //            Domain = "localhost",
+        //            Value = CookiesProvider.Cookie
+        //        };
+
+        //        container.Add(cookie);
+
+
+
+
+
+
+
+
+
+
+
+        //        hubConnection = new HubConnectionBuilder()
+        //.WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
+        //{
+        //    // Pass the security cookie to the Hub. This is the way to do
+        //    // that in your case. In other cases, you may need to pass
+        //    // an access token, but not here......
+        //    options.Cookies = container;
+        //}).Build();
+
 
 
 

@@ -17,6 +17,10 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Digital_Patient.Hubs;
+using Digital_Patient.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
+
 
 namespace Digital_Patient
 {
@@ -31,31 +35,13 @@ namespace Digital_Patient
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {          
-
-  //          services.AddDbContext<ApplicationDbContext>(options =>
-  //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
-  //contextLifetime: ServiceLifetime.Transient,
-  //optionsLifetime: ServiceLifetime.Singleton);          
-
-
-  //          services.AddDbContextFactory<ApplicationDbContext>(options =>
-  //            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-  //          services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-  //              .AddEntityFrameworkStores<ApplicationDbContext>();
-  //          services.AddControllersWithViews();
-
-           
-
-
-            ////////////////////////////////////////////////////////////
+        {
 
 
             services.AddRazorPages();
 
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
-           
+
 
 
 
@@ -108,18 +94,15 @@ namespace Digital_Patient
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
-            //// signalR
+            services.AddScoped<CookiesProvider>();
 
-            services.AddResponseCompression(opts =>
-            {
-                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { "application/octet-stream" });
-            });
+            services.AddSignalR();
 
 
 
 
-            ///
+
+
 
         }
 
@@ -127,13 +110,8 @@ namespace Digital_Patient
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ApplicationDbContext context)
         {
 
-            //// signalR
 
 
-            app.UseResponseCompression();
-
-
-            ////
 
             if (env.IsDevelopment())
             {
@@ -161,15 +139,14 @@ namespace Digital_Patient
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
-
-                //signalR
-
                 endpoints.MapHub<TaskHub>("/taskhub");
-
-                //
-
-
             });
+
+
+            
+
+
+
 
             SeedData data = new SeedData(context);
             data.EnsurePopulated();

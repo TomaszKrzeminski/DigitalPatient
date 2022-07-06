@@ -7,10 +7,8 @@
 namespace Digital_Patient.Blazor
 {
     #line hidden
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 #nullable restore
 #line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
 using Syncfusion.Blazor;
@@ -19,76 +17,167 @@ using Syncfusion.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Microsoft.AspNetCore.SignalR.Client;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 6 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Microsoft.AspNetCore.Components.Forms;
+#line 10 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\_Imports.razor"
+using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 7 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Digital_Patient.Models;
+using Microsoft.AspNetCore.SignalR.Client;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 8 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Digital_Patient.Data;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 10 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 11 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Microsoft.AspNetCore.Components;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 12 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
-using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.Owin.Security.OAuth;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 13 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.SignalR;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 23 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using System.Net.Http;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 24 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using System.Net.Http.Json;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 26 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using System;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 28 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using System.Net.Http.Headers;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 29 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using System.Threading.Tasks;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 30 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Http.Connections;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 31 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using System.Net;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 39 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components.Forms;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 40 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Digital_Patient.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 41 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Digital_Patient.Data;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 43 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.EntityFrameworkCore.Design;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 44 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 45 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+using Microsoft.AspNetCore.Components.Routing;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 46 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 14 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+#line 47 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 15 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+#line 48 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
 using Microsoft.EntityFrameworkCore;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/taskhub")]
+#nullable restore
+#line 15 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+           [Authorize]
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 21 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+           [Authorize]
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/taskupdatetasklist")]
     public partial class UpdateTaskList : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -97,11 +186,25 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 27 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
+#line 60 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTaskList.razor"
        
 
     [Parameter]
     public string UserIdTaskChange { get; set; } = "";
+
+
+
+
+
+    [Parameter]
+    public string Cookie1 { get; set; }
+
+    [Parameter]
+    public string Cookie2 { get; set; }
+
+    //[Inject]
+    //public CookiesProvider CookiesProvider { get; set; }
+
 
     public string Message { get; set; } = "";
 
@@ -113,9 +216,81 @@ using Microsoft.EntityFrameworkCore;
 
     protected override async Task OnInitializedAsync()
     {
+
+
+        string x = Cookie1;
+        string x1 = Cookie2;
+
+
+        var container = new CookieContainer();
+        var cookie = new Cookie()
+        {
+            Name = ".AspNetCore.Identity.Application",
+            Domain = "localhost",
+            Value = Cookie1
+        };
+
+        container.Add(cookie);
+
+
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
-            .Build();
+       .WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
+       {
+           options.Cookies = container;
+       }).Build();
+
+        //hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        //{
+        //    var encodedMsg = $"{user}: {message}";
+        //    messages.Add(encodedMsg);
+        //    InvokeAsync(() => StateHasChanged());
+        //});
+
+        //hubConnection.On<string>("ReceiveUserName", (name) =>
+        //{
+        //    userName = name;
+
+        //    InvokeAsync(() => StateHasChanged());
+        //});
+
+
+
+
+
+        //        hubConnection = new HubConnectionBuilder()
+        //            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
+        //            .Build();
+
+
+        //        var container = new CookieContainer();
+        //        var cookie = new Cookie()
+        //        {
+        //            Name = ".AspNetCore.Identity.Application",
+        //            Domain = "localhost",
+        //            Value = CookiesProvider.Cookie
+        //        };
+
+        //        container.Add(cookie);
+
+
+
+
+
+
+
+
+
+
+
+        //        hubConnection = new HubConnectionBuilder()
+        //.WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
+        //{
+        //    // Pass the security cookie to the Hub. This is the way to do
+        //    // that in your case. In other cases, you may need to pass
+        //    // an access token, but not here......
+        //    options.Cookies = container;
+        //}).Build();
+
 
 
 
@@ -175,6 +350,7 @@ using Microsoft.EntityFrameworkCore;
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDbContextFactory<ApplicationDbContext> factory { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager Navigation { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

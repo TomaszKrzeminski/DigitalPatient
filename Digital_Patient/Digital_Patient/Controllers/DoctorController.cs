@@ -19,11 +19,13 @@ namespace Digital_Patient.Controllers
             _userManager = userManager;
         }
 
-
+        [Authorize]
         public async Task<ActionResult> TaskPanelAsync()
         {
+          var cookie1=   HttpContext.Request.Cookies[".AspNetCore.Identity.Application"];
+
             IdentityUser user = await _userManager.GetUserAsync(HttpContext.User);
-            return View(new DoctorTaskPanelViewModel(user.Id));
+            return View(new DoctorTaskPanelViewModel(user.Id,cookie1));
         }
 
     }
