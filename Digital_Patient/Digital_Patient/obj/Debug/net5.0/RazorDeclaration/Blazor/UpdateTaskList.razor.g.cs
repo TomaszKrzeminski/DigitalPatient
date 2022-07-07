@@ -239,59 +239,6 @@ using Microsoft.EntityFrameworkCore;
            options.Cookies = container;
        }).Build();
 
-        //hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-        //{
-        //    var encodedMsg = $"{user}: {message}";
-        //    messages.Add(encodedMsg);
-        //    InvokeAsync(() => StateHasChanged());
-        //});
-
-        //hubConnection.On<string>("ReceiveUserName", (name) =>
-        //{
-        //    userName = name;
-
-        //    InvokeAsync(() => StateHasChanged());
-        //});
-
-
-
-
-
-        //        hubConnection = new HubConnectionBuilder()
-        //            .WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
-        //            .Build();
-
-
-        //        var container = new CookieContainer();
-        //        var cookie = new Cookie()
-        //        {
-        //            Name = ".AspNetCore.Identity.Application",
-        //            Domain = "localhost",
-        //            Value = CookiesProvider.Cookie
-        //        };
-
-        //        container.Add(cookie);
-
-
-
-
-
-
-
-
-
-
-
-        //        hubConnection = new HubConnectionBuilder()
-        //.WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
-        //{
-        //    // Pass the security cookie to the Hub. This is the way to do
-        //    // that in your case. In other cases, you may need to pass
-        //    // an access token, but not here......
-        //    options.Cookies = container;
-        //}).Build();
-
-
 
 
         await hubConnection.StartAsync();
@@ -302,9 +249,34 @@ using Microsoft.EntityFrameworkCore;
     {
 
         UpdateTask();
+        
 
 
     }
+
+
+
+
+    public async Task UpdateTask2()
+    {
+
+        if (UserIdTaskChange != null && UserIdTaskChange != "")
+        {
+            await hubConnection.SendAsync("Update2", UserIdTaskChange, TaskId);
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+
 
 
 
@@ -327,7 +299,7 @@ using Microsoft.EntityFrameworkCore;
                 Message = "Zmiana u użytkownika";
 
                 TaskId = 0;
-                await hubConnection.SendAsync("Update", UserId, TaskId);
+                await hubConnection.SendAsync("Update", UserIdTaskChange, TaskId);
 
                 UserIdTaskChange = "";
                 Message = "";

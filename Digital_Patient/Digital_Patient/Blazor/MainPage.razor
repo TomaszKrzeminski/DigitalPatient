@@ -9,6 +9,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 @using Microsoft.EntityFrameworkCore
+@attribute [Authorize]
 
 @inject IDbContextFactory<ApplicationDbContext>  factory
 
@@ -20,12 +21,16 @@
     }
 </style>
 
+
+
+
+
 <CascadingValue Name="BackGroundColor1" Value="BackGroundColor">
     <CascadingValue Name="TextColor1" Value="TextColor">
         <div class="container-fluid @BackGroundColor @TextColor ">
             <div class="row">
                 <div class="col col-lg-12">
-                    <h1> @ActionMessage</h1>   
+                    <h1> @ActionMessage</h1>
                 </div>
             </div>
 
@@ -39,161 +44,132 @@
                     @foreach (var hour in Hours)
                     {
 
-                        <div class="row">
-                            <div class="col-lg-12 text-left  @BackGroundColor">
-                                <h2>@hour.HourTime : 00   </h2><p class="badge badge-warning"> @hour.HourTasks </p>
-                            </div>
-                        </div>
+<div class="row">
+    <div class="col-lg-12 text-left  @BackGroundColor">
+        <h2>@hour.HourTime : 00   </h2><p class="badge badge-warning"> @hour.HourTasks </p>
+    </div>
+</div>
 
                         @if (hour.HourTime == Now.Hour)
                         {
-                            <div class="row">
+<div class="row">
 
-                                @{
+    @{ int i = 0;
+        foreach (var min in hour.minutes)
+        {
 
-                                    int i = 0;
-                                    foreach (var min in hour.minutes)
+            if (min.Tasks != null && min.Tasks.Count > 0)
+            {
+
+
+<div class="col-lg-12 col-md-12 col-sm-12  text-left @BackGroundColor">
+    <div class="row">
+        <div class="col col-lg-4"><p class="badge badge-light"> @hour.HourTime : @i </p></div>
+        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4"></div>
+    </div>
+
+</div>
+
+
+
+
+
+
+                                    @foreach (var task in min.Tasks)
                                     {
+                                        string clock = hour.HourTime + ":" + min.MinuteTime;@*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
+                                                @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
+                                            </div>*@
 
-                                        if (min.Tasks != null && min.Tasks.Count > 0)
-                                        {
+
+                                                                                <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
+
+                                                                                    <div class="row">
+
+                                                                                        <div class="col col-lg-4 alert-dark selectTask "> @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName</div>
+                                                                                        <div class="col col-lg-4"></div>
+                                                                                        <div class="col col-lg-4"></div>
+
+                                                                                    </div>
 
 
-                                            <div class="col-lg-12 col-md-12 col-sm-12  text-left @BackGroundColor">
+                                                                                </div>} }
+
+
+                                i++;
+
+                            } }
+
+
+</div> }
+else
+{
+<div class="row">
+
+    @{ int i = 0;
+        foreach (var min in hour.minutes)
+        {
+
+            if (min.Tasks != null && min.Tasks.Count > 0)
+            {
+
+
+                if (i < 10)
+                {
+<div class="col-lg-12 col-md-12 col-sm-12  text-left">
+    <div class="row">
+        <div class="col col-lg-4"><p class="badge badge-light selectTask "> @hour.HourTime : 0 @i </p></div>
+        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4"></div>
+    </div>
+
+</div> }
+else
+{
+<div class="col-lg-12 col-md-12 col-sm-12  text-left">
+    <div class="row">
+        <div class="col col-lg-4"><p class="badge badge-light "> @hour.HourTime : @i </p></div>
+        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4"></div>
+    </div>
+
+</div> }
+
+
+
+
+
+
+
+
+@foreach (var task in min.Tasks)
+{
+    string clock = hour.HourTime + ":" + min.MinuteTime;@*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
+            @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
+        </div>*@
+
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
+
                                                 <div class="row">
-                                                    <div class="col col-lg-4"><p class="badge badge-light"> @hour.HourTime : @i </p></div>
+
+                                                    <div class="col col-lg-4 selectTask  "> @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName</div>
                                                     <div class="col col-lg-4"></div>
                                                     <div class="col col-lg-4"></div>
-                                                </div>
-
-                                            </div>
-
-
-
-
-
-
-                                            @foreach (var task in min.Tasks)
-                                            {
-                                                string clock = hour.HourTime + ":" + min.MinuteTime;
-                                                @*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
-                                                        @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
-                                                    </div>*@
-
-
-                                                <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
-
-                                                    <div class="row">
-
-                                                        <div class="col col-lg-4 alert-dark selectTask "> @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName</div>
-                                                        <div class="col col-lg-4"></div>
-                                                        <div class="col col-lg-4"></div>
-
-                                                    </div>
-
 
                                                 </div>
 
-                                            }
 
-                                        }
-
-
-                                        i++;
-
-                                    }
-
-                                }
+                                            </div>} }
 
 
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="row">
+i++;
 
-                                @{
-
-                                    int i = 0;
-                                    foreach (var min in hour.minutes)
-                                    {
-
-                                        if (min.Tasks != null && min.Tasks.Count > 0)
-                                        {
+} }
 
 
-                                            if (i < 10)
-                                            {
-                                                <div class="col-lg-12 col-md-12 col-sm-12  text-left">
-                                                    <div class="row">
-                                                        <div class="col col-lg-4"><p class="badge badge-light selectTask "> @hour.HourTime : 0 @i </p></div>
-                                                        <div class="col col-lg-4"></div>
-                                                        <div class="col col-lg-4"></div>
-                                                    </div>
-
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-lg-12 col-md-12 col-sm-12  text-left">
-                                                    <div class="row">
-                                                        <div class="col col-lg-4"><p class="badge badge-light "> @hour.HourTime : @i </p></div>
-                                                        <div class="col col-lg-4"></div>
-                                                        <div class="col col-lg-4"></div>
-                                                    </div>
-
-                                                </div>
-                                            }
-
-
-
-
-
-
-
-
-                                            @foreach (var task in min.Tasks)
-                                            {
-                                                string clock = hour.HourTime + ":" + min.MinuteTime;
-                                                @*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
-                                                        @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
-                                                    </div>*@
-
-
-                                                <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
-
-                                                    <div class="row">
-
-                                                        <div class="col col-lg-4 selectTask  "> @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName</div>
-                                                        <div class="col col-lg-4"></div>
-                                                        <div class="col col-lg-4"></div>
-
-                                                    </div>
-
-
-                                                </div>
-
-                                            }
-
-                                        }
-
-
-                                        i++;
-
-                                    }
-
-                                }
-
-
-                            </div>
-                        }
-
-
-
-
-
-
-                    }
+</div>                  }}
 
 
                 </div>
@@ -202,148 +178,137 @@
 
                         @if (BackGroundColor == "bg-dark")
                         {
-                            <div class="col col-lg-12">
-                                <button class="btn btn-light"  @onclick="@(ChangeColor)"   >Tło</button>
-                            </div>
-                        }
-                        else
-                    {
-                    <div class="col col-lg-12">
-                        <button class="btn btn-dark" @onclick="@(ChangeColor)">Tło</button>
-                    </div>
-                    }
+    <div class="col col-lg-12">
+        <button class="btn btn-light" @onclick="@(ChangeColor)">Tło</button>
+    </div> }
+else
+{
+<div class="col col-lg-12">
+    <button class="btn btn-dark" @onclick="@(ChangeColor)">Tło</button>
+</div>          }
 
-                        
+
                     </div>
-                    <TaskAction TaskId="@SelectedTaskId" CustomEvent="@HandleTask" TaskTime="@FullTime"        MessageSet="@ShowMessage" />
+                    <TaskAction TaskId="@SelectedTaskId" CustomEvent="@HandleTask" TaskTime="@FullTime" MessageSet="@ShowMessage" />
 
                 </div>
             </div>
 
         </div>
-        <UpdateTask/>
+        <UpdateTask Cookie1="@Cookie1" />
     </CascadingValue>
-    </CascadingValue>
+</CascadingValue>
 
 
-    @code {
-
-
-
-        public void CleanMessage()
-        {
-            ActionMessage = "";
-            //StateHasChanged();
-        }
-
-
-        public void ShowMessage(string message)
-        {
-            ActionMessage = message;
-            //StateHasChanged();
-        }
-
-        public string ActionMessage { get; set; }
-
-        [CascadingParameter(Name = "BackGroundColor1")]
-        public string BackGroundColor { get; set; } = "bg-dark";
-        [CascadingParameter(Name = "TextColor1")]
-        public string TextColor { get; set; } = "text-light";
+@code { [Parameter]
+            public string Cookie1 { get; set; }
 
 
 
-        public void ChangeColor()
-        {
-            if(BackGroundColor=="bg-dark")
+            public void CleanMessage()
             {
-                BackGroundColor = "bg-light";
-                TextColor = "text-dark";
+                ActionMessage = "";
+                //StateHasChanged();
             }
-            else
+
+
+            public void ShowMessage(string message)
             {
-                BackGroundColor = "bg-dark";
-                TextColor = "text-light";
+                ActionMessage = message;
+                //StateHasChanged();
             }
-        }
 
+            public string ActionMessage { get; set; }
 
-        [Parameter]
-        public string UserRole { get; set; }
-        int SelectedTaskId { get; set; } = 0;
-        string FullTime { get; set; }
-
-        bool CompleteTask { get; set; }
-
-        private Repository repository;
-
-        int AllTasks { get; set; }
-
-        [Parameter]
-        public string Check { get; set; }
-
-        [Parameter]
-        public string ApplicationUserId { get; set; }
-
-        public List<Hour> Hours { get; set; } = new List<Hour>();
-
-        public DateTime Now { get; set; }
-
-        public void SetTaskId(int TaskId, string fullTime)
-        {
-            SelectedTaskId = TaskId;
-            FullTime = fullTime;
-
-            CleanMessage();
-        }
-
-
-        public void HandleTask(bool Done)
-        {
-            CompleteTask = Done;
-        }
-
-
-        async Task GetHoursView(string Id)
-        {
-            ApplicationDbContext context = factory.CreateDbContext();
-            repository = new Repository(context);
-
-            //Hours = await repository.GetHoursData(ApplicationUserId);
-
-            FullHours hours = await repository.GetHoursData2(ApplicationUserId);
-            Hours = hours.Hours;
-            AllTasks = hours.HourTasks;
-        }
+            [CascadingParameter(Name = "BackGroundColor1")]
+            public string BackGroundColor { get; set; } = "bg-dark";
+            [CascadingParameter(Name = "TextColor1")]
+            public string TextColor { get; set; } = "text-light";
 
 
 
-
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    string Id = ApplicationUserId;
-        //    await   GetHoursView(Id);
-
-        //}
-
-
-
-
-
-        protected async override Task OnParametersSetAsync()
-        {
-            string x = Check;
-            string Id = ApplicationUserId;
-            await GetHoursView(Id);
-            Now = DateTime.Now;
-
-        }
+            public void ChangeColor()
+            {
+                if (BackGroundColor == "bg-dark")
+                {
+                    BackGroundColor = "bg-light";
+                    TextColor = "text-dark";
+                }
+                else
+                {
+                    BackGroundColor = "bg-dark";
+                    TextColor = "text-light";
+                }
+            }
 
 
+            [Parameter]
+            public string UserRole { get; set; }
+            int SelectedTaskId { get; set; } = 0;
+            string FullTime { get; set; }
+
+            bool CompleteTask { get; set; }
+
+            private Repository repository;
+
+            int AllTasks { get; set; }
+
+            [Parameter]
+            public string Check { get; set; }
+
+            [Parameter]
+            public string ApplicationUserId { get; set; }
+
+            public List<Hour> Hours { get; set; } = new List<Hour>();
+
+            public DateTime Now { get; set; }
+
+            public void SetTaskId(int TaskId, string fullTime)
+            {
+                SelectedTaskId = TaskId;
+                FullTime = fullTime;
+
+                CleanMessage();
+            }
+
+
+            public void HandleTask(bool Done)
+            {
+                CompleteTask = Done;
+            }
+
+
+            async Task GetHoursView(string Id)
+            {
+                ApplicationDbContext context = factory.CreateDbContext();
+                repository = new Repository(context);
+
+                //Hours = await repository.GetHoursData(ApplicationUserId);
+
+                FullHours hours = await repository.GetHoursData2(ApplicationUserId);
+                Hours = hours.Hours;
+                AllTasks = hours.HourTasks;
+            }
 
 
 
 
+            //protected override async Task OnInitializedAsync()
+            //{
+            //    string Id = ApplicationUserId;
+            //    await   GetHoursView(Id);
+
+            //}
 
 
 
-    }
+
+
+            protected async override Task OnParametersSetAsync()
+            {
+                string x = Check;
+                string Id = ApplicationUserId;
+                await GetHoursView(Id);
+                Now = DateTime.Now;
+
+            } }

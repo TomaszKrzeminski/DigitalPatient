@@ -1,9 +1,9 @@
-﻿@page "/taskhub"
+﻿@page "/taskupdate"
 @inject NavigationManager navigationManager
 @using Microsoft.AspNetCore.SignalR.Client;
 
 
-
+@attribute [Authorize]
 
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.SignalR
@@ -53,10 +53,17 @@
 
 
 <h1>Update Task   @Action</h1>
+<h2>@Message</h2>
 
 
 
 @code {
+
+
+    [Parameter]
+    public string Cookie1 { get; set; }
+
+    public string Message { get; set; } = "";
 
     private string TaskId { get; set; }
     private string TaskDescriptionMessage { get; set; }
@@ -68,45 +75,44 @@
     {
 
 
-        //var container = new CookieContainer();
-        //var cookie = new Cookie()
-        //{
-        //    Name = ".AspNetCore.Identity.Application",
-        //    Domain = "localhost",
-        //    Value = CookiesProvider.Cookie
-        //};
 
-        //container.Add(cookie);
+        var container = new CookieContainer();
+        var cookie = new Cookie()
+        {
+            Name = ".AspNetCore.Identity.Application",
+            Domain = "localhost",
+            Value = Cookie1
+        };
 
-
-
+        container.Add(cookie);
 
 
+        hubConnection = new HubConnectionBuilder()
+       .WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
+       {
+           options.Cookies = container;
+       }).Build();
 
 
-        //      hubConnection = new HubConnectionBuilder()
-        //.WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
-        //{
-        //        // Pass the security cookie to the Hub. This is the way to do
-        //        // that in your case. In other cases, you may need to pass
-        //        // an access token, but not here......
-        //        options.Cookies = container;
-        //}).Build();
+
+        await hubConnection.StartAsync();
 
 
 
 
 
+        hubConnection.On<int>("UpdateTask", (TaskId) =>
+        {
+            Action = true;
+            Message = "Dodano nowe zadanie";
+            //// call  refresh tasks and view messages
+
+            InvokeAsync(StateHasChanged);
+        });
 
 
 
-
-
-        //hubConnection = new HubConnectionBuilder()
-        //.WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
-        //.Build();
-
-        //hubConnection.On<int>("UpdateTask", (TaskId) =>
+        //hubConnection.On<int>("UpdateTask2", (TaskId) =>
         //{
         //    Action = true;
         //    //// call  refresh tasks and view messages
@@ -114,7 +120,10 @@
         //    InvokeAsync(StateHasChanged);
         //});
 
-        //await hubConnection.StartAsync();
+
+
+
+
     }
 
 

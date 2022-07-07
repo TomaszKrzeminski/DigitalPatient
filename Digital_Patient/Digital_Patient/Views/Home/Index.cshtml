@@ -1,19 +1,15 @@
 ﻿@model MainPageViewModel
-@{
-    ViewData["Title"] = "Home Page";
-}
+@{ ViewData["Title"] = "Home Page"; }
+
+@{  var cookie =
+                 Context.Request.Cookies[".AspNetCore.Identity.Application"]; }
 
 
 <div class="text-center">
 
     @if (Model.Role == "Patient")
     {
-        <component type="typeof(Digital_Patient.Blazor.MainPage)" param-ApplicationUserId="@Model.UserId" param-UserRole="@Model.Role" render-mode="Server" />
-    }
-
-
-
-    @*<MainPage ApplicationUserId="@Model.UserId" Check="xxx" render-mode="Server"></MainPage>*@
+<component type="typeof(Digital_Patient.Blazor.MainPage)" param-ApplicationUserId="@Model.UserId" param-UserRole="@Model.Role" param-Cookie1="cookie"       render-mode="Server" /> } @*<MainPage ApplicationUserId="@Model.UserId" Check="xxx" render-mode="Server"></MainPage>*@
 
 
 

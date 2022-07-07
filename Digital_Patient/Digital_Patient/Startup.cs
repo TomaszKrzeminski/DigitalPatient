@@ -94,6 +94,8 @@ namespace Digital_Patient
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+
             services.AddScoped<CookiesProvider>();
 
             services.AddSignalR();

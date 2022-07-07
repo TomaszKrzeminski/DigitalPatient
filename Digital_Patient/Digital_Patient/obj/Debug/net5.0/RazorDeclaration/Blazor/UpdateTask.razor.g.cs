@@ -163,7 +163,14 @@ using Microsoft.EntityFrameworkCore;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/taskhub")]
+#nullable restore
+#line 6 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTask.razor"
+           [Authorize]
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/taskupdate")]
     public partial class UpdateTask : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -172,8 +179,14 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 59 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTask.razor"
+#line 60 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\UpdateTask.razor"
        
+
+
+    [Parameter]
+    public string Cookie1 { get; set; }
+
+    public string Message { get; set; } = "";
 
     private string TaskId { get; set; }
     private string TaskDescriptionMessage { get; set; }
@@ -185,45 +198,44 @@ using Microsoft.EntityFrameworkCore;
     {
 
 
-        //var container = new CookieContainer();
-        //var cookie = new Cookie()
-        //{
-        //    Name = ".AspNetCore.Identity.Application",
-        //    Domain = "localhost",
-        //    Value = CookiesProvider.Cookie
-        //};
 
-        //container.Add(cookie);
+        var container = new CookieContainer();
+        var cookie = new Cookie()
+        {
+            Name = ".AspNetCore.Identity.Application",
+            Domain = "localhost",
+            Value = Cookie1
+        };
 
-
-
+        container.Add(cookie);
 
 
+        hubConnection = new HubConnectionBuilder()
+       .WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
+       {
+           options.Cookies = container;
+       }).Build();
 
 
-        //      hubConnection = new HubConnectionBuilder()
-        //.WithUrl(NavigationManager.ToAbsoluteUri("/taskhub"), options =>
-        //{
-        //        // Pass the security cookie to the Hub. This is the way to do
-        //        // that in your case. In other cases, you may need to pass
-        //        // an access token, but not here......
-        //        options.Cookies = container;
-        //}).Build();
+
+        await hubConnection.StartAsync();
 
 
 
 
 
+        hubConnection.On<int>("UpdateTask", (TaskId) =>
+        {
+            Action = true;
+            Message = "Dodano nowe zadanie";
+            //// call  refresh tasks and view messages
+
+            InvokeAsync(StateHasChanged);
+        });
 
 
 
-
-
-        //hubConnection = new HubConnectionBuilder()
-        //.WithUrl(navigationManager.ToAbsoluteUri("/taskhub"))
-        //.Build();
-
-        //hubConnection.On<int>("UpdateTask", (TaskId) =>
+        //hubConnection.On<int>("UpdateTask2", (TaskId) =>
         //{
         //    Action = true;
         //    //// call  refresh tasks and view messages
@@ -231,7 +243,10 @@ using Microsoft.EntityFrameworkCore;
         //    InvokeAsync(StateHasChanged);
         //});
 
-        //await hubConnection.StartAsync();
+
+
+
+
     }
 
 

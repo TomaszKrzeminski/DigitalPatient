@@ -37,61 +37,50 @@ namespace Digital_Patient.Hubs
         {
             var list = _connections.GetUsers();
 
-            await Clients.All.SendAsync("ReceiveInitializeUserList", list);
+            //await Clients.All.SendAsync("ReceiveInitializeUserList", list);
         }
 
 
 
 
-        public async Task Update(string UserId, int TaskId)
+        public async Task Update(string UserEmail, int TaskId)
         {
 
 
 
             string name = Context.User.Identity.Name;
 
-            if (string.IsNullOrEmpty(UserId)) // If All selected
+            if (!string.IsNullOrEmpty(UserEmail)) // If All selected
             {
-                var users = _connections.GetUsers();
+                string ConnectionId = _connections.GetConnections(UserEmail).FirstOrDefault();
 
-                foreach (var user in users)
+                if(ConnectionId!=null)
                 {
-                    foreach (var connectionId in _connections.GetConnections(user))
-                    {
-                        await Clients.User(connectionId).SendAsync("UpdateTask", TaskId);
-                    }
+               await Clients.User(ConnectionId).SendAsync("UpdateTask", TaskId);
                 }
+              
             }
-            else
-            {
-                foreach (var connectionId in _connections.GetConnections(UserId))
-                {
-                    await Clients.User(connectionId).SendAsync("UpdateTask", TaskId);
-                }
-            }
-
-
-
-
-
-
-
-
-
-
-
-            //var userIdentifier = (from _connectedUser in connectedUsers
-            //                      where _connectedUser.Name == UserId
-            //                      select _connectedUser.UserIdentifier).FirstOrDefault();
-
-
-
-            //await Clients.User(userIdentifier).SendAsync("UpdateTask", TaskId);
-            //await Clients.User(UserId.ToString().ToUpper()).SendAsync("UpdateTask", TaskId.ToString().ToUpper());
-            //await Clients.User("PATIENT1@GMAIL.COM").SendAsync("UpdateTask",1 );
-            //await Clients.All.SendAsync("UpdateTask", TaskId);
+               
 
         }
+
+
+
+        //public async Task Update2(string UserEmail, int TaskId)
+        //{
+
+
+
+        
+               
+        //            await Clients.All.SendAsync("UpdateTask2", TaskId);
+               
+
+            
+
+
+        //}
+
 
 
 
@@ -102,15 +91,13 @@ namespace Digital_Patient.Hubs
            
 
             string name = Context.User.Identity.Name;
+            
 
             _connections.Remove(name, Context.ConnectionId);
 
             var list = _connections.GetUsers();
 
-            await Clients.All.SendAsync("ReceiveInitializeUserList", list);
-
-            await Clients.All.SendAsync("MessageBoard",
-                        $"{Context.User.Identity.Name}  has left");
+           
 
         }
 
@@ -127,11 +114,13 @@ namespace Digital_Patient.Hubs
         {              
             string name = Context.User.Identity.Name;
 
-            _connections.Add(name, Context.ConnectionId);
+            string x = Context.UserIdentifier;
 
-            await Clients.All.SendAsync("MessageBoard", $"{Context.User.Identity.Name}  has joined");
+            string y = Context.ConnectionId;
 
-            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveUserName", Context.User.Identity.Name);
+            //_connections.Add(name, Context.ConnectionId);
+
+            _connections.Add(name, x);
 
             await Task.CompletedTask;
 
