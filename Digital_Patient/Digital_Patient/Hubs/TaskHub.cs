@@ -43,7 +43,7 @@ namespace Digital_Patient.Hubs
 
 
 
-        public async Task Update(string UserEmail, int TaskId)
+        public async Task Update(string UserEmail, string Message)
         {
 
 
@@ -56,7 +56,7 @@ namespace Digital_Patient.Hubs
 
                 if(ConnectionId!=null)
                 {
-               await Clients.User(ConnectionId).SendAsync("UpdateTask", TaskId);
+               await Clients.User(ConnectionId).SendAsync("UpdateTask", Message+" "+name);
                 }
               
             }

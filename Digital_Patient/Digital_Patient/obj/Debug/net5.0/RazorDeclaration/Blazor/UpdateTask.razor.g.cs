@@ -183,6 +183,23 @@ using Microsoft.EntityFrameworkCore;
        
 
 
+
+    [Parameter]
+    public EventCallback<bool> UpdateEvent { get; set; }
+
+    public string Tekst { get; set; } = "Brak";
+
+    public async Task UpdateTaskEvent()
+    {
+
+
+        await UpdateEvent.InvokeAsync(true);
+
+    }
+
+
+
+
     [Parameter]
     public string Cookie1 { get; set; }
 
@@ -191,7 +208,7 @@ using Microsoft.EntityFrameworkCore;
     private string TaskId { get; set; }
     private string TaskDescriptionMessage { get; set; }
     private HubConnection? hubConnection;
-    private bool Action { get; set; } = false;
+    public bool Action { get; set; }
     //[Inject]
     //public CookiesProvider CookiesProvider { get; set; }
     protected override async Task OnInitializedAsync()
@@ -224,11 +241,11 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-        hubConnection.On<int>("UpdateTask", (TaskId) =>
+        hubConnection.On<string>("UpdateTask", (message) =>
         {
-            Action = true;
-            Message = "Dodano nowe zadanie";
-            //// call  refresh tasks and view messages
+
+            Message = message;
+            UpdateTaskEvent();
 
             InvokeAsync(StateHasChanged);
         });

@@ -36,6 +36,10 @@
     <div class="row ">
         <div class="col col-lg-12">
             <h1 class="text-center">@Action</h1>
+
+
+            <UpdateTaskList UserIdTAskChange="@UserIdTaskChange" Cookie1="@Cookie1" Cookie2="@Cookie2"         CustomEvent="@HandleTask"                />
+
         </div>
         <div class="col col-lg-2">
             <h3>Pacjenci</h3>
@@ -437,7 +441,7 @@ else
 
 
 
-    <UpdateTaskList UserIdTAskChange="@UserIdTaskChange" Cookie1="@Cookie1"   Cookie2="@Cookie2" />
+    @*<UpdateTaskList UserIdTAskChange="@UserIdTaskChange" Cookie1="@Cookie1"   Cookie2="@Cookie2" />*@
 
 
 
@@ -447,6 +451,22 @@ else
 
 
 @code { 
+
+
+    public void HandleTask(bool Done)
+    {
+
+        if(true)
+        {
+            UserIdTaskChange = "";
+        }
+
+
+    }
+
+
+
+
     [Parameter]
     public string Cookie1 { get; set; }
 
@@ -608,6 +628,10 @@ else
         model = new AddTaskToUserModel();
 
         ShowPatientTasks(PatientEmail);
+
+
+
+
     }
 
 

@@ -193,7 +193,8 @@ using Microsoft.EntityFrameworkCore;
     public string UserIdTaskChange { get; set; } = "";
 
 
-
+    [Parameter]
+    public EventCallback<bool> CustomEvent { get; set; }
 
 
     [Parameter]
@@ -249,28 +250,15 @@ using Microsoft.EntityFrameworkCore;
     {
 
         UpdateTask();
-        
-
-
-    }
-
-
-
-
-    public async Task UpdateTask2()
-    {
-
-        if (UserIdTaskChange != null && UserIdTaskChange != "")
-        {
-            await hubConnection.SendAsync("Update2", UserIdTaskChange, TaskId);
-        }
-
-
-
 
 
 
     }
+
+
+
+
+
 
 
 
@@ -299,7 +287,12 @@ using Microsoft.EntityFrameworkCore;
                 Message = "Zmiana u użytkownika";
 
                 TaskId = 0;
-                await hubConnection.SendAsync("Update", UserIdTaskChange, TaskId);
+                await hubConnection.SendAsync("Update", UserIdTaskChange, "Dodano nowe zadanie "+DateTime.Now.ToShortTimeString());
+
+
+
+                await CustomEvent.InvokeAsync(true);
+
 
                 UserIdTaskChange = "";
                 Message = "";

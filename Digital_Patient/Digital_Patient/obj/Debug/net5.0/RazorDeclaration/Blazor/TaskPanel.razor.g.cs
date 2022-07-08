@@ -103,8 +103,24 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 449 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
+#line 453 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\TaskPanel.razor"
         
+
+
+    public void HandleTask(bool Done)
+    {
+
+        if(true)
+        {
+            UserIdTaskChange = "";
+        }
+
+
+    }
+
+
+
+
     [Parameter]
     public string Cookie1 { get; set; }
 
@@ -266,6 +282,10 @@ using Microsoft.EntityFrameworkCore;
         model = new AddTaskToUserModel();
 
         ShowPatientTasks(PatientEmail);
+
+
+
+
     }
 
 

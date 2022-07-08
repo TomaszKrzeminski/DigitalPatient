@@ -63,7 +63,8 @@
     public string UserIdTaskChange { get; set; } = "";
 
 
-
+    [Parameter]
+    public EventCallback<bool> CustomEvent { get; set; }
 
 
     [Parameter]
@@ -119,28 +120,15 @@
     {
 
         UpdateTask();
-        
-
-
-    }
-
-
-
-
-    public async Task UpdateTask2()
-    {
-
-        if (UserIdTaskChange != null && UserIdTaskChange != "")
-        {
-            await hubConnection.SendAsync("Update2", UserIdTaskChange, TaskId);
-        }
-
-
-
 
 
 
     }
+
+
+
+
+
 
 
 
@@ -169,7 +157,12 @@
                 Message = "Zmiana u użytkownika";
 
                 TaskId = 0;
-                await hubConnection.SendAsync("Update", UserIdTaskChange, TaskId);
+                await hubConnection.SendAsync("Update", UserIdTaskChange, "Dodano nowe zadanie "+DateTime.Now.ToShortTimeString());
+
+
+
+                await CustomEvent.InvokeAsync(true);
+
 
                 UserIdTaskChange = "";
                 Message = "";

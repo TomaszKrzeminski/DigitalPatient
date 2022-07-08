@@ -118,119 +118,129 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 203 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\MainPage.razor"
+#line 204 "C:\Users\tomszek\Desktop\DigitalPatient\Digital_Patient\Digital_Patient\Blazor\MainPage.razor"
         [Parameter]
-            public string Cookie1 { get; set; }
+    public string Cookie1 { get; set; }
 
 
 
-            public void CleanMessage()
-            {
-                ActionMessage = "";
-                //StateHasChanged();
-            }
+    public void CleanMessage()
+    {
+        ActionMessage = "";
+        //StateHasChanged();
+    }
 
 
-            public void ShowMessage(string message)
-            {
-                ActionMessage = message;
-                //StateHasChanged();
-            }
+    public void ShowMessage(string message)
+    {
+        ActionMessage = message;
+        //StateHasChanged();
+    }
 
-            public string ActionMessage { get; set; }
+    public string ActionMessage { get; set; }
 
-            [CascadingParameter(Name = "BackGroundColor1")]
-            public string BackGroundColor { get; set; } = "bg-dark";
-            [CascadingParameter(Name = "TextColor1")]
-            public string TextColor { get; set; } = "text-light";
-
-
-
-            public void ChangeColor()
-            {
-                if (BackGroundColor == "bg-dark")
-                {
-                    BackGroundColor = "bg-light";
-                    TextColor = "text-dark";
-                }
-                else
-                {
-                    BackGroundColor = "bg-dark";
-                    TextColor = "text-light";
-                }
-            }
-
-
-            [Parameter]
-            public string UserRole { get; set; }
-            int SelectedTaskId { get; set; } = 0;
-            string FullTime { get; set; }
-
-            bool CompleteTask { get; set; }
-
-            private Repository repository;
-
-            int AllTasks { get; set; }
-
-            [Parameter]
-            public string Check { get; set; }
-
-            [Parameter]
-            public string ApplicationUserId { get; set; }
-
-            public List<Hour> Hours { get; set; } = new List<Hour>();
-
-            public DateTime Now { get; set; }
-
-            public void SetTaskId(int TaskId, string fullTime)
-            {
-                SelectedTaskId = TaskId;
-                FullTime = fullTime;
-
-                CleanMessage();
-            }
-
-
-            public void HandleTask(bool Done)
-            {
-                CompleteTask = Done;
-            }
-
-
-            async Task GetHoursView(string Id)
-            {
-                ApplicationDbContext context = factory.CreateDbContext();
-                repository = new Repository(context);
-
-                //Hours = await repository.GetHoursData(ApplicationUserId);
-
-                FullHours hours = await repository.GetHoursData2(ApplicationUserId);
-                Hours = hours.Hours;
-                AllTasks = hours.HourTasks;
-            }
+    [CascadingParameter(Name = "BackGroundColor1")]
+    public string BackGroundColor { get; set; } = "bg-dark";
+    [CascadingParameter(Name = "TextColor1")]
+    public string TextColor { get; set; } = "text-light";
 
 
 
+    public void ChangeColor()
+    {
+        if (BackGroundColor == "bg-dark")
+        {
+            BackGroundColor = "bg-light";
+            TextColor = "text-dark";
+        }
+        else
+        {
+            BackGroundColor = "bg-dark";
+            TextColor = "text-light";
+        }
+    }
 
-            //protected override async Task OnInitializedAsync()
-            //{
-            //    string Id = ApplicationUserId;
-            //    await   GetHoursView(Id);
 
-            //}
+    [Parameter]
+    public string UserRole { get; set; }
+    int SelectedTaskId { get; set; } = 0;
+    string FullTime { get; set; }
+
+    bool CompleteTask { get; set; }
+
+    private Repository repository;
+
+    int AllTasks { get; set; }
+
+    [Parameter]
+    public string Check { get; set; }
+
+    [Parameter]
+    public string ApplicationUserId { get; set; }
+
+    public List<Hour> Hours { get; set; } = new List<Hour>();
+
+    public DateTime Now { get; set; }
+
+    public void SetTaskId(int TaskId, string fullTime)
+    {
+        SelectedTaskId = TaskId;
+        FullTime = fullTime;
+
+        CleanMessage();
+    }
+
+
+    public void HandleTask(bool Done)
+    {
+        CompleteTask = Done;
+    }
+
+
+    public void UpdateTaskList()
+    {
+
+        GetHoursView(ApplicationUserId);
+
+
+        //StateHasChanged();
+    }
+
+
+    async Task GetHoursView(string Id)
+    {
+        ApplicationDbContext context = factory.CreateDbContext();
+        repository = new Repository(context);
+
+        //Hours = await repository.GetHoursData(ApplicationUserId);
+
+        FullHours hours = await repository.GetHoursData2(ApplicationUserId);
+        Hours = hours.Hours;
+        AllTasks = hours.HourTasks;
+    }
+
+
+
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    string Id = ApplicationUserId;
+    //    await   GetHoursView(Id);
+
+    //}
 
 
 
 
 
-            protected async override Task OnParametersSetAsync()
-            {
-                string x = Check;
-                string Id = ApplicationUserId;
-                await GetHoursView(Id);
-                Now = DateTime.Now;
+    protected async override Task OnParametersSetAsync()
+    {
+        string x = Check;
+        string Id = ApplicationUserId;
+        await GetHoursView(Id);
+        Now = DateTime.Now;
 
-            } 
+    } 
 
 #line default
 #line hidden
