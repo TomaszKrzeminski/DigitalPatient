@@ -146,9 +146,7 @@ else
 
 @foreach (var task in min.Tasks)
 {
-    string clock = hour.HourTime + ":" + min.MinuteTime;@*<div class="col-lg-12 col-md-12 col-sm-12 alert-dark text-left"  @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))"  >
-            @task.TaskToDoId @task.Description @task.TaskToDoCategory.CategoryName @task.Measurements.FirstOrDefault().MeasurementCategory.CategoryName
-        </div>*@
+    string clock = hour.HourTime + ":" + min.MinuteTime;
 
 
                                             <div class="col-lg-12 col-md-12 col-sm-12  text-left" @onclick="@(()=>SetTaskId(@task.TaskToDoId,clock))">
@@ -196,7 +194,7 @@ else
             </div>
 
         </div>
-        @*<UpdateTask Cookie1="@Cookie1" />*@
+       
     </CascadingValue>
 </CascadingValue>
 
@@ -304,12 +302,7 @@ else
 
 
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    string Id = ApplicationUserId;
-    //    await   GetHoursView(Id);
-
-    //}
+   
 
 
 

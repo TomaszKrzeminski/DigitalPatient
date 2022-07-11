@@ -43,7 +43,7 @@
                 }
                 else
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Statistics" asp-action="DoctorStatistics">Statistics</a>
+                    @*<a class="navbar-brand" asp-area="" asp-controller="Statistics" asp-action="DoctorStatistics">Statistics</a>*@
                 }
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -67,10 +67,9 @@
             </div>
         </nav>
     </header>
-    <div @*class="container"*@>
-        @*<main role="main" class="pb-3">*@
+    <div> 
         @RenderBody()
-        @*</main>*@
+       
     </div>
     <script src="_framework/blazor.server.js"></script>
     <footer class="border-top footer text-muted">

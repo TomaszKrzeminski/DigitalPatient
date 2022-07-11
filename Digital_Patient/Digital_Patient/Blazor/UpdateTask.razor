@@ -3,6 +3,11 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 
 
+
+
+
+
+
 @attribute [Authorize]
 
 @using Microsoft.AspNetCore.SignalR.Client
@@ -53,11 +58,29 @@
 
 
 
-<h2>@Message</h2>
+@*<h2 @ref="UpdateMessageElem"  >@Message</h2>*@
+
+<h1 @ref="UpdateMessageElem">@Message</h1>
 
 
 
 @code {
+
+
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; }
+
+    public ElementReference UpdateMessageElem { get; set; }
+
+
+    public async Task ShowMessage(string text)
+    {
+
+
+        await JsRuntime.InvokeVoidAsync("changeMessageColorAndDissapear",text, UpdateMessageElem);
+
+
+    }
 
 
 
@@ -122,6 +145,11 @@
         {
 
             Message = message;
+
+
+            ShowMessage(message);
+
+
             UpdateTaskEvent();
 
             InvokeAsync(StateHasChanged);
@@ -129,13 +157,7 @@
 
 
 
-        //hubConnection.On<int>("UpdateTask2", (TaskId) =>
-        //{
-        //    Action = true;
-        //    //// call  refresh tasks and view messages
 
-        //    InvokeAsync(StateHasChanged);
-        //});
 
 
 

@@ -4,6 +4,20 @@
 @{  var cookie =
                  Context.Request.Cookies[".AspNetCore.Identity.Application"]; }
 
+<style>
+
+    .ChangeColor {
+        background-color: orange;
+        color: black;
+    }
+
+
+</style>
+
+
+
+
+
 
 <div class="text-center">
 
@@ -14,3 +28,27 @@
 
 
 </div>
+
+
+<script>
+
+
+
+    function changeMessageColorAndDissapear(text, elem) {
+
+        elem.innerHTML = text;
+
+        elem.classList.add("ChangeColor");
+
+        setInterval(function () {
+            elem.innerHTML = ""
+
+
+
+        }, 5000);
+
+
+
+
+    }
+</script>
