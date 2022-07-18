@@ -1,0 +1,68 @@
+﻿@page "/call-js-example-1"
+
+@using System.Json
+@using System.Net.Http
+@inject IHttpClientFactory ClientFactory
+@using System.Net.Http.Headers
+@inject IJSRuntime JS
+@using Newtonsoft.Json 
+
+@if(root!=null)
+            {
+
+<div class="container">
+    <h5>Gdzie jesteś : @root.name</h5>
+    <h6>Temperatura   @root.main.temp              Max :   @root.main.temp_max       Min :    @root.main.temp_min</h6>
+    <div id="icon"><img id="wicon" src=@SRC alt="Weather icon"></div>
+
+</div>
+
+            }
+
+
+
+@code {
+
+    public Root root = null;
+    public string SRC { get; set; } = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        string result = await JS.InvokeAsync<string>("getCoords");
+
+        string[] tokens = result.Split(' ');
+
+
+
+        string lon = tokens[0];
+        string lat = tokens[1];
+        string appikey = "479e261c6e9812ab2ad1c8b7f883ae19";
+
+        string url3 = "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid="+appikey+"&units=metric";
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.GetAsync(url3);
+        if (response.IsSuccessStatusCode)
+        {
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            root = JsonConvert.DeserializeObject<Root>(stringResponse);
+            SRC= "http://openweathermap.org/img/w/" + root.weather[0].icon + ".png";
+
+            //result = JsonSerializer.Deserialize<List<HolidayResponseModel>>(stringResponse,
+            //    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            }
+        else
+        {
+            //result = Array.Empty<HolidayResponseModel>().ToList();
+        }
+
+        //return result;
+
+
+
+
+
+
+    }
+}

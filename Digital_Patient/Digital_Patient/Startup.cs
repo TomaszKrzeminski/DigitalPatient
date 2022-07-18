@@ -77,12 +77,27 @@ namespace Digital_Patient
            .AddDefaultUI()
            .AddDefaultTokenProviders();
 
+            ////
+
+
+            services.AddHttpClient();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyHeader());
+            });
+
+
+         
 
 
 
-
-
-
+            /////
             services.AddAuthorizationCore();
 
 
@@ -144,11 +159,11 @@ namespace Digital_Patient
                 endpoints.MapHub<TaskHub>("/taskhub");
             });
 
+            /////
 
-            
+            app.UseCors("CorsPolicy");
 
-
-
+            //////
 
             SeedData data = new SeedData(context);
             data.EnsurePopulated();

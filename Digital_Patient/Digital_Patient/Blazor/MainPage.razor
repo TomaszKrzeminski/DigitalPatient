@@ -28,6 +28,17 @@
 <CascadingValue Name="BackGroundColor1" Value="BackGroundColor">
     <CascadingValue Name="TextColor1" Value="TextColor">
         <div class="container-fluid @BackGroundColor @TextColor ">
+
+            <div class="row">
+                <div class="col col-lg-4"></div>
+                <div class="col col-lg-4"></div>
+                <div class="col col-lg-4">
+                    <WebApiExample/>
+
+                </div>
+
+            </div>
+
             <div class="row">
                 <div class="col col-lg-12">
                     <h1> @ActionMessage</h1>
@@ -197,6 +208,8 @@ else
        
     </CascadingValue>
 </CascadingValue>
+
+<WebApiExample/>
 
 
 @code { [Parameter]

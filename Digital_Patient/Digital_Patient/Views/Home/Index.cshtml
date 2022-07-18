@@ -15,8 +15,21 @@
 </style>
 
 
+<script>
+window.getCoords = async () => {
+    const pos = await new Promise((resolve, reject) =>
+    {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+    /* return [pos.coords.longitude, pos.coords.latitude];*/
 
+    var longitude = pos.coords.longitude;
+    var latitude = pos.coords.latitude;
 
+    return longitude +" " + latitude;
+        
+      };
+</script>
 
 
 <div class="text-center">
